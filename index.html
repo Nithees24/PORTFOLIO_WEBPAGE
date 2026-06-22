@@ -21,22 +21,21 @@
 
     <header class="site-header">
       <a class="brand" href="#top" aria-label="Nithees Kanna home">
-        <img src="logo-transparent.png" alt="" class="brand-logo" />
-        <strong>Nithees Kanna</strong>
+        <img src="white_logo.png" alt="" class="brand-logo" />
       </a>
-      <nav class="nav-links" aria-label="Primary navigation">
-        <a href="#work">Work</a>
-        <a href="#stack">Stack</a>
-        <a href="#process">Process</a>
-        <a href="#contact">Contact</a>
-      </nav>
-      <button class="theme-toggle" type="button" aria-label="Toggle dark mode">
-        <span class="theme-dot"></span>
-      </button>
     </header>
 
     <main id="top">
-      <section class="hero section-shell">
+      <section class="hero">
+        <video
+          class="hero-video"
+          autoplay
+          muted
+          loop
+          playsinline
+          aria-hidden="true"
+        ></video>
+        <canvas id="videoCanvas" aria-hidden="true"></canvas>
         <div class="hero-copy reveal">
           <p class="eyebrow">Python ML Developer / Agentic AI / MLOps</p>
           <h1>
@@ -47,19 +46,7 @@
             focused on RAG systems, agentic workflows, model training, data
             pipelines, databases, and production automation.
           </p>
-          <div class="hero-actions">
-            <a class="button primary" href="#work">View Focus Areas</a>
-            <a class="button secondary" href="#contact">Contact Details</a>
-          </div>
         </div>
-
-        <aside class="hero-panel reveal" aria-label="Interactive AI systems visual">
-          <canvas id="systemCanvas" width="720" height="520"></canvas>
-          <div class="panel-overlay">
-            <span>Current Focus</span>
-            <strong>Full System Agentic AI for Research and STEM</strong>
-          </div>
-        </aside>
       </section>
 
       <section class="cred-strip reveal" aria-label="Core capabilities">
@@ -111,6 +98,86 @@
               systems, and support deployment workflows including Google Vertex
               AI.
             </p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section-shell split-section" id="projects">
+        <div class="section-heading reveal">
+          <p class="eyebrow">Selected Deployments</p>
+          <h2>Featured Projects</h2>
+        </div>
+        <div class="projects-grid">
+          <!-- Project 1: Agentic RAG Orchestrator -->
+          <article class="project-card reveal" data-tilt>
+            <div class="project-header">
+              <span class="project-number">01</span>
+              <div class="project-links">
+                <a href="#" class="project-link" aria-label="GitHub Repository">
+                  <svg class="icon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg>
+                </a>
+              </div>
+            </div>
+            <h3>Orchestra-RAG</h3>
+            <p class="project-desc">A multi-agent RAG framework using LangGraph to dynamically plan, retrieve, and validate queries across multiple documentation layers.</p>
+            <ul class="project-outcomes">
+              <li>Achieved 98.4% retrieval accuracy via custom reranking layers.</li>
+              <li>Implemented self-correcting retrieval loops using LangGraph.</li>
+            </ul>
+            <div class="project-tags">
+              <span>Python</span>
+              <span>LangGraph</span>
+              <span>Pinecone</span>
+              <span>RAG</span>
+            </div>
+          </article>
+
+          <!-- Project 2: Vertex AI MLOps Pipeline -->
+          <article class="project-card reveal" data-tilt>
+            <div class="project-header">
+              <span class="project-number">02</span>
+              <div class="project-links">
+                <a href="#" class="project-link" aria-label="GitHub Repository">
+                  <svg class="icon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg>
+                </a>
+              </div>
+            </div>
+            <h3>AutoTrain Vertex</h3>
+            <p class="project-desc">Continuous training and automated MLOps evaluation pipeline deploying fine-tuned transformer models onto Google Vertex AI endpoints.</p>
+            <ul class="project-outcomes">
+              <li>Automated deployment pipeline using Google Cloud Build and Vertex AI.</li>
+              <li>Monitored training runs, parameters, and loss metrics with MLflow.</li>
+            </ul>
+            <div class="project-tags">
+              <span>Vertex AI</span>
+              <span>Docker</span>
+              <span>MLOps</span>
+              <span>GitHub Actions</span>
+            </div>
+          </article>
+
+          <!-- Project 3: Real-Time Vector Sync -->
+          <article class="project-card reveal" data-tilt>
+            <div class="project-header">
+              <span class="project-number">03</span>
+              <div class="project-links">
+                <a href="#" class="project-link" aria-label="GitHub Repository">
+                  <svg class="icon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg>
+                </a>
+              </div>
+            </div>
+            <h3>VectorSync Engine</h3>
+            <p class="project-desc">A streaming ingestion sync computing real-time embeddings from relational DB changes directly into vector indexing stores.</p>
+            <ul class="project-outcomes">
+              <li>Reduced latency to sub-second vector synchronization.</li>
+              <li>Configured high-throughput queue utilizing Redis streams.</li>
+            </ul>
+            <div class="project-tags">
+              <span>FastAPI</span>
+              <span>PostgreSQL</span>
+              <span>Redis</span>
+              <span>ChromaDB</span>
+            </div>
           </article>
         </div>
       </section>
