@@ -96,40 +96,48 @@ let lastPointerPos = { x: 0, y: 0 };
 function getRandomColorType() {
   const rand = Math.random();
   if (rand < 0.45) {
-    // Ice Blue / Cyan
+    // Pure Black (Faded)
     return {
-      base: "rgba(0, 230, 255, 0.45)",
-      saturated: "rgba(0, 240, 255, 0.9)",
-      glowStart: "rgba(0, 240, 255, 0.35)",
+      highlight: "rgba(80, 80, 80, 0.45)",
+      base: "rgba(30, 30, 30, 0.5)",
+      saturated: "rgba(0, 0, 0, 0.7)",
+      glowStart: "rgba(0, 0, 0, 0.15)",
+      gradientEnd: "rgba(0, 0, 0, 0.55)",
       specular: "#ffffff",
-      stroke: "rgba(200, 250, 255, 0.75)"
+      stroke: "rgba(0, 0, 0, 0.45)"
     };
   } else if (rand < 0.75) {
-    // Rose Gold / Pink
+    // Charcoal / Ink (Faded)
     return {
-      base: "rgba(255, 105, 180, 0.45)",
-      saturated: "rgba(255, 71, 108, 0.9)",
-      glowStart: "rgba(255, 105, 180, 0.35)",
+      highlight: "rgba(90, 90, 90, 0.42)",
+      base: "rgba(45, 45, 45, 0.48)",
+      saturated: "rgba(21, 21, 21, 0.65)",
+      glowStart: "rgba(21, 21, 21, 0.12)",
+      gradientEnd: "rgba(21, 21, 21, 0.5)",
       specular: "#ffffff",
-      stroke: "rgba(255, 220, 230, 0.75)"
+      stroke: "rgba(21, 21, 21, 0.42)"
     };
   } else if (rand < 0.9) {
-    // Soft Amber / Gold
+    // Deep Slate (Faded)
     return {
-      base: "rgba(241, 184, 75, 0.45)",
-      saturated: "rgba(243, 201, 108, 0.9)",
-      glowStart: "rgba(241, 184, 75, 0.3)",
+      highlight: "rgba(100, 105, 115, 0.38)",
+      base: "rgba(60, 65, 75, 0.44)",
+      saturated: "rgba(40, 44, 52, 0.6)",
+      glowStart: "rgba(40, 44, 52, 0.1)",
+      gradientEnd: "rgba(40, 44, 52, 0.46)",
       specular: "#ffffff",
-      stroke: "rgba(250, 240, 200, 0.75)"
+      stroke: "rgba(40, 44, 52, 0.38)"
     };
   } else {
-    // Pure White Glass
+    // Dark Graphite (Faded)
     return {
-      base: "rgba(244, 247, 242, 0.35)",
-      saturated: "rgba(244, 247, 242, 0.85)",
-      glowStart: "rgba(244, 247, 242, 0.25)",
+      highlight: "rgba(110, 110, 110, 0.35)",
+      base: "rgba(75, 75, 75, 0.4)",
+      saturated: "rgba(60, 60, 60, 0.55)",
+      glowStart: "rgba(60, 60, 60, 0.1)",
+      gradientEnd: "rgba(60, 60, 60, 0.42)",
       specular: "#ffffff",
-      stroke: "rgba(255, 255, 255, 0.85)"
+      stroke: "rgba(60, 60, 60, 0.35)"
     };
   }
 }
@@ -387,7 +395,7 @@ function updateAndDrawBackground(ctx, rect) {
   const gridSpacing = 95;
   const endX = isMobile ? rect.width : rect.width * 0.52;
   
-  ctx.strokeStyle = "rgba(0, 240, 255, 0.024)"; // grid lines
+  ctx.strokeStyle = "rgba(22, 106, 79, 0.025)"; // grid lines (subtle green)
   ctx.lineWidth = 0.5;
   for (let x = gridSpacing; x < endX; x += gridSpacing) {
     ctx.beginPath();
@@ -406,7 +414,7 @@ function updateAndDrawBackground(ctx, rect) {
   ctx.textAlign = "left";
   for (let x = gridSpacing; x < endX; x += gridSpacing) {
     for (let y = gridSpacing; y < rect.height; y += gridSpacing) {
-      ctx.strokeStyle = "rgba(0, 240, 255, 0.14)"; // crosshair
+      ctx.strokeStyle = "rgba(21, 21, 21, 0.08)"; // crosshair
       ctx.beginPath();
       ctx.moveTo(x - 3, y); ctx.lineTo(x + 3, y);
       ctx.moveTo(x, y - 3); ctx.lineTo(x, y + 3);
@@ -415,7 +423,7 @@ function updateAndDrawBackground(ctx, rect) {
       // Occasionally draw coordinates label
       if ((x + y) % (gridSpacing * 3) === 0) {
         ctx.font = "8px 'JetBrains Mono', monospace";
-        ctx.fillStyle = "rgba(0, 240, 255, 0.16)"; // coordinate label
+        ctx.fillStyle = "rgba(21, 21, 21, 0.24)"; // coordinate label
         const labelX = (x * 0.12).toFixed(1);
         const labelY = (y * 0.12).toFixed(1);
         ctx.fillText(`[${labelX}, ${labelY}]`, x + 6, y - 4);
@@ -442,18 +450,18 @@ function updateAndDrawBackground(ctx, rect) {
     }
 
     // Trace vertical circuit lines
-    ctx.strokeStyle = `rgba(0, 240, 255, ${stream.opacity * 0.35})`;
+    ctx.strokeStyle = `rgba(22, 106, 79, ${stream.opacity * 0.22})`;
     ctx.beginPath();
     ctx.moveTo(stream.x, stream.y - 80);
     ctx.lineTo(stream.x, stream.y + 30);
     ctx.stroke();
 
     ctx.font = `${stream.fontSize}px 'JetBrains Mono', monospace`;
-    ctx.fillStyle = `rgba(0, 240, 255, ${stream.opacity})`;
+    ctx.fillStyle = `rgba(22, 106, 79, ${stream.opacity * 0.7})`;
     ctx.fillText(`▶ ${stream.currentWord}`, stream.x + 6, stream.y);
 
     // Draw auxiliary numbers
-    ctx.fillStyle = `rgba(0, 240, 255, ${stream.opacity * 0.55})`;
+    ctx.fillStyle = `rgba(21, 21, 21, ${stream.opacity * 0.4})`;
     const fakeData = (Math.random() * 1000).toFixed(0).padStart(3, '0');
     ctx.fillText(`0x${fakeData}`, stream.x + 6, stream.y + 12);
   });
@@ -525,7 +533,7 @@ function spawnParticlesPeriodically() {
       target: conn.target,
       progress: 0,
       speed: 0.008 + Math.random() * 0.012,
-      color: Math.random() < 0.5 ? "#00f0ff" : "#ff476c",
+      color: Math.random() < 0.5 ? "#000000" : "#3c3c3c",
       size: Math.random() * 1.5 + 1.2,
     });
   }
@@ -541,28 +549,19 @@ function drawHUDReadout(ctx, rect) {
   const isMobile = rect.width < 768;
   if (isMobile) return;
 
-  ctx.fillStyle = "rgba(3, 8, 20, 0.45)";
-  ctx.strokeStyle = "rgba(0, 240, 255, 0.15)";
-  ctx.lineWidth = 1;
-  ctx.beginPath();
-  if (ctx.roundRect) {
-    ctx.roundRect(24, 24, 200, 110, 6);
-  } else {
-    ctx.rect(24, 24, 200, 110);
-  }
-  ctx.fill();
-  ctx.stroke();
+  const hudX = rect.width - 224;
+  const hudY = 24;
   
   ctx.font = "9px 'JetBrains Mono', monospace";
-  ctx.fillStyle = "rgba(0, 240, 255, 0.9)";
-  ctx.fillText("● COGNITIVE NEURAL ENGINE v5.0", 34, 40);
+  ctx.fillStyle = "rgba(22, 106, 79, 0.95)";
+  ctx.fillText("● COGNITIVE NEURAL ENGINE v5.0", hudX + 10, hudY + 16);
   
-  ctx.fillStyle = "rgba(244, 247, 242, 0.7)";
-  ctx.fillText(`SYSTEM STATUS: ACTIVE`, 34, 58);
-  ctx.fillText(`SYNAPSE COUNT: ${neuralNodes.length} NODES`, 34, 72);
-  ctx.fillText(`CONNECTIONS: ${neuralConnections.length} TRACES`, 34, 86);
-  ctx.fillText(`SIGNAL COHERENCE: 99.87%`, 34, 100);
-  ctx.fillText(`BANDWIDTH: 4.8 GB/s`, 34, 114);
+  ctx.fillStyle = "rgba(21, 21, 21, 0.72)";
+  ctx.fillText(`SYSTEM STATUS: ACTIVE`, hudX + 10, hudY + 34);
+  ctx.fillText(`SYNAPSE COUNT: ${neuralNodes.length} NODES`, hudX + 10, hudY + 48);
+  ctx.fillText(`CONNECTIONS: ${neuralConnections.length} TRACES`, hudX + 10, hudY + 62);
+  ctx.fillText(`SIGNAL COHERENCE: 99.87%`, hudX + 10, hudY + 76);
+  ctx.fillText(`BANDWIDTH: 4.8 GB/s`, hudX + 10, hudY + 90);
 }
 
 function drawHoverTooltip(ctx, rect) {
@@ -577,7 +576,7 @@ function drawHoverTooltip(ctx, rect) {
   if (ty + boxHeight > rect.height) ty = rect.height - boxHeight - 10;
   if (ty < 10) ty = 10;
 
-  ctx.fillStyle = "rgba(2, 6, 18, 0.92)";
+  ctx.fillStyle = "rgba(255, 255, 255, 0.92)";
   ctx.strokeStyle = hoveredNode.colorType.saturated;
   ctx.lineWidth = 1;
   ctx.beginPath();
@@ -590,11 +589,11 @@ function drawHoverTooltip(ctx, rect) {
   ctx.stroke();
   
   ctx.font = "10px 'JetBrains Mono', monospace";
-  ctx.fillStyle = "#ffffff";
+  ctx.fillStyle = "#151515";
   ctx.fillText(`[SYNAPSE PROBE]`, tx + 12, ty + 20);
   
   ctx.font = "9px 'JetBrains Mono', monospace";
-  ctx.fillStyle = "rgba(244, 247, 242, 0.72)";
+  ctx.fillStyle = "rgba(21, 21, 21, 0.75)";
   ctx.fillText(`NODE ID: B-N${hoveredNode.id}`, tx + 12, ty + 38);
   ctx.fillText(`REGION: ${hoveredNode.region.replace("_LH", " (LH)").replace("_RH", " (RH)")}`, tx + 12, ty + 54);
   ctx.fillText(`POTENTIAL: ${(Math.abs(hoveredNode.baseSize * 1.5)).toFixed(2)} mV`, tx + 12, ty + 70);
@@ -613,29 +612,24 @@ function drawSystem(now = 0) {
   const rect = canvas.getBoundingClientRect();
   const time = now * 0.00022;
 
-  // Background deep space gradient
-  const bgGrad = ctx.createLinearGradient(0, 0, rect.width, rect.height);
-  bgGrad.addColorStop(0, "#030814");
-  bgGrad.addColorStop(0.5, "#01040a");
-  bgGrad.addColorStop(1, "#000104");
-  ctx.fillStyle = bgGrad;
-  ctx.fillRect(0, 0, rect.width, rect.height);
+  // Clear background for transparent overlay on light page theme
+  ctx.clearRect(0, 0, rect.width, rect.height);
 
   const isMobile = rect.width < 768;
-  const centerX = isMobile ? rect.width * 0.5 : rect.width * 0.68;
-  const centerY = isMobile ? rect.height * 0.5 : rect.height * 0.48;
+  const centerX = isMobile ? rect.width * 0.5 : rect.width * 0.42;
+  const centerY = isMobile ? rect.height * 0.35 : rect.height * 0.5;
 
   const sizeRef = Math.min(rect.width, rect.height);
   const scale = isMobile ? sizeRef * 0.48 : sizeRef * 0.58;
 
-  // Soft glowing radial background centered on the brain
+  // Soft glowing radial background centered on the brain (light theme friendly)
   const radialGlow = ctx.createRadialGradient(
     centerX, centerY, 0,
     centerX, centerY, scale * 2.2
   );
-  radialGlow.addColorStop(0, "rgba(24, 76, 120, 0.28)");
-  radialGlow.addColorStop(0.5, "rgba(12, 34, 60, 0.12)");
-  radialGlow.addColorStop(1, "rgba(0, 0, 0, 0)");
+  radialGlow.addColorStop(0, "rgba(22, 106, 79, 0.1)");
+  radialGlow.addColorStop(0.5, "rgba(22, 106, 79, 0.03)");
+  radialGlow.addColorStop(1, "rgba(255, 255, 255, 0)");
   ctx.fillStyle = radialGlow;
   ctx.fillRect(0, 0, rect.width, rect.height);
 
@@ -726,8 +720,8 @@ function drawSystem(now = 0) {
     const target = c.target;
 
     const depthFade = (c.zDepth + 0.8) / 1.6;
-    let opacity = 0.06 + depthFade * 0.15;
-    if (c.isAccent) opacity += 0.06;
+    let opacity = 0.07 + depthFade * 0.16;
+    if (c.isAccent) opacity += 0.05;
 
     const highlight = Math.max(source.pulseProgress, target.pulseProgress);
     const hoverVal = Math.max(source.hoverEffect, target.hoverEffect);
@@ -738,18 +732,18 @@ function drawSystem(now = 0) {
     ctx.lineTo(target.screenX, target.screenY);
 
     let strokeStyle = "";
-    if (source.colorType.base.includes("0, 230, 255")) {
-      strokeStyle = `rgba(0, 230, 255, ${opacity})`;
-    } else if (source.colorType.base.includes("255, 105, 180")) {
-      strokeStyle = `rgba(255, 105, 180, ${opacity})`;
-    } else if (source.colorType.base.includes("241, 184, 75")) {
-      strokeStyle = `rgba(241, 184, 75, ${opacity})`;
+    if (source.colorType.base.includes("0, 0, 0")) {
+      strokeStyle = `rgba(0, 0, 0, ${opacity})`;
+    } else if (source.colorType.base.includes("40, 44, 52")) {
+      strokeStyle = `rgba(40, 44, 52, ${opacity})`;
+    } else if (source.colorType.base.includes("60, 60, 60")) {
+      strokeStyle = `rgba(60, 60, 60, ${opacity})`;
     } else {
-      strokeStyle = `rgba(244, 247, 242, ${opacity})`;
+      strokeStyle = `rgba(21, 21, 21, ${opacity})`;
     }
 
     ctx.strokeStyle = strokeStyle;
-    ctx.lineWidth = c.isAccent ? 1.0 : 0.55;
+    ctx.lineWidth = c.isAccent ? 1.05 : 0.65;
     ctx.stroke();
   });
 
@@ -765,14 +759,14 @@ function drawSystem(now = 0) {
       ctx.beginPath();
       ctx.moveTo(lx, ly);
       ctx.lineTo(targetNode.screenX, targetNode.screenY);
-      ctx.strokeStyle = "rgba(0, 240, 255, 0.12)";
+      ctx.strokeStyle = "rgba(21, 21, 21, 0.15)";
       ctx.setLineDash([2, 4]);
       ctx.stroke();
       ctx.setLineDash([]);
     }
 
     ctx.font = "8px 'JetBrains Mono', monospace";
-    ctx.fillStyle = "rgba(0, 240, 255, 0.55)";
+    ctx.fillStyle = "rgba(21, 21, 21, 0.65)";
     ctx.textAlign = lbl.cx > 0 ? "left" : "right";
     ctx.fillText(lbl.text, lx + (lbl.cx > 0 ? 5 : -5), ly + 3);
   });
@@ -781,7 +775,7 @@ function drawSystem(now = 0) {
   const sortedNodes = [...neuralNodes].sort((a, b) => a.zRot - b.zRot);
 
   sortedNodes.forEach(node => {
-    const radius = node.projectedRadius * (1.0 + node.hoverEffect * 0.25);
+    const radius = node.projectedRadius * 1.06 * (1.0 + node.hoverEffect * 0.25);
 
     // 1. Radial glow behind node
     ctx.beginPath();
@@ -792,7 +786,7 @@ function drawSystem(now = 0) {
     );
     glowGrad.addColorStop(0, node.colorType.glowStart);
     glowGrad.addColorStop(0.5, node.colorType.glowStart.replace("0.25", "0.08").replace("0.2", "0.06").replace("0.15", "0.04"));
-    glowGrad.addColorStop(1, "rgba(0, 0, 0, 0)");
+    glowGrad.addColorStop(1, "rgba(255, 255, 255, 0)");
     ctx.fillStyle = glowGrad;
     ctx.fill();
 
@@ -803,9 +797,9 @@ function drawSystem(now = 0) {
       node.screenX - radius * 0.3, node.screenY - radius * 0.3, radius * 0.05,
       node.screenX, node.screenY, radius
     );
-    nodeGrad.addColorStop(0, "rgba(255, 255, 255, 0.95)");
+    nodeGrad.addColorStop(0, node.colorType.highlight);
     nodeGrad.addColorStop(0.2, node.colorType.base);
-    nodeGrad.addColorStop(1, node.colorType.saturated.replace("0.9", "0.45").replace("0.85", "0.4"));
+    nodeGrad.addColorStop(1, node.colorType.gradientEnd);
     ctx.fillStyle = nodeGrad;
     ctx.fill();
 
