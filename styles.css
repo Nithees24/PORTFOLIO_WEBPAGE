@@ -153,6 +153,29 @@ button {
   touch-action: pan-y;
 }
 
+.hero-title {
+  position: relative;
+  z-index: 1;
+  grid-column: 1;
+  align-self: center;
+  justify-self: start;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  font-family: "Poppins", "Inter", sans-serif;
+  font-weight: 300;
+  font-size: clamp(64px, 14vw, 200px);
+  line-height: 1;
+  letter-spacing: 0.02em;
+  color: var(--ink);
+  text-shadow: 0 2px 30px rgba(255, 255, 255, 0.9),
+    0 1px 4px rgba(255, 255, 255, 0.7);
+}
+
+.hero-title span {
+  display: block;
+}
+
 .hero-photo {
   position: relative;
   z-index: 1;
@@ -279,7 +302,19 @@ button {
 
 #videoCanvas {
   z-index: -1;
-  opacity: 1;
+  opacity: 0.35;
+  -webkit-mask-image: linear-gradient(
+    90deg,
+    rgba(0, 0, 0, 0.08) 0%,
+    rgba(0, 0, 0, 0.3) 35%,
+    rgba(0, 0, 0, 1) 70%
+  );
+  mask-image: linear-gradient(
+    90deg,
+    rgba(0, 0, 0, 0.08) 0%,
+    rgba(0, 0, 0, 0.3) 35%,
+    rgba(0, 0, 0, 1) 70%
+  );
 }
 
 .eyebrow {
@@ -846,6 +881,13 @@ h3 {
 
   .hero {
     padding: 118px 20px 42px;
+  }
+
+  .hero-title {
+    grid-column: auto;
+    justify-self: center;
+    text-align: center;
+    font-size: clamp(56px, 22vw, 120px);
   }
 
   .hero-photo {

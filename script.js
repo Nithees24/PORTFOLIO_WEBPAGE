@@ -551,7 +551,9 @@ function drawHUDReadout(ctx, rect) {
 
   const hudX = rect.width - 224;
   const hudY = 24;
-  
+
+  ctx.textAlign = "left";
+  ctx.textBaseline = "alphabetic";
   ctx.font = "9px 'JetBrains Mono', monospace";
   ctx.fillStyle = "rgba(22, 106, 79, 0.95)";
   ctx.fillText("● COGNITIVE NEURAL ENGINE v5.0", hudX + 10, hudY + 16);
@@ -566,6 +568,11 @@ function drawHUDReadout(ctx, rect) {
 
 function drawHoverTooltip(ctx, rect) {
   if (!hoveredNode) return;
+
+  // Reset text alignment — the floating-labels loop may have left it as "right",
+  // which would draw the tooltip text shifted to the left of the box.
+  ctx.textAlign = "left";
+  ctx.textBaseline = "alphabetic";
 
   const boxWidth = 180;
   const boxHeight = 96;
