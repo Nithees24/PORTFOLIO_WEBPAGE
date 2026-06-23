@@ -16,11 +16,71 @@ window.addEventListener("pointermove", (event) => {
   glow.style.transform = `translate(${event.clientX - 160}px, ${event.clientY - 160}px)`;
 });
 
+function startHeroTypewriter() {
+  const title = document.querySelector(".hero-title");
+  if (!title) return;
+
+  const line1 = title.querySelector("span:first-child");
+  const line2 = title.querySelector("span:last-child");
+  if (!line1 || !line2) return;
+
+  const text1 = "Hello";
+  const text2 = "World";
+
+  line1.innerHTML = "";
+  line2.innerHTML = "";
+
+  const cursor1 = document.createElement("span");
+  cursor1.className = "typewriter-cursor";
+  line1.appendChild(cursor1);
+
+  const cursor2 = document.createElement("span");
+  cursor2.className = "typewriter-cursor";
+  cursor2.style.display = "none";
+  line2.appendChild(cursor2);
+
+  let i = 0;
+  function typeLine1() {
+    if (i < text1.length) {
+      cursor1.before(text1.charAt(i));
+      i++;
+      setTimeout(typeLine1, 35 + Math.random() * 20);
+    } else {
+      cursor1.remove();
+      cursor2.style.display = "inline-block";
+      let j = 0;
+      function typeLine2() {
+        if (j < text2.length) {
+          cursor2.before(text2.charAt(j));
+          j++;
+          setTimeout(typeLine2, 35 + Math.random() * 20);
+        } else {
+          const exclamation = document.createElement("span");
+          exclamation.className = "accent-mark";
+          exclamation.textContent = "!";
+          cursor2.before(exclamation);
+          
+          setTimeout(() => {
+            cursor2.style.animation = "none";
+            cursor2.style.opacity = "0";
+          }, 2000);
+        }
+      }
+      setTimeout(typeLine2, 100);
+    }
+  }
+  setTimeout(typeLine1, 150);
+}
+
 const revealObserver = new IntersectionObserver(
   (entries) => {
     entries.forEach((entry) => {
       if (entry.isIntersecting) {
         entry.target.classList.add("in-view");
+        if (entry.target.classList.contains("hero-title")) {
+          startHeroTypewriter();
+        }
+        revealObserver.unobserve(entry.target);
       }
     });
   },
@@ -840,26 +900,26 @@ window.addEventListener("pointerdown", (event) => {
   }
 
   const rect = canvas.getBoundingClientRect();
-  const px = event.clientX - rect.left;
   const isMobile = rect.width < 768;
 
-  // Start dragging if clicking on the right 55% of the screen (on desktop)
-  // or anywhere on mobile
-  if (isMobile || px > rect.width * 0.45) {
-    isDragging = true;
-    document.body.style.cursor = "grabbing";
-    document.body.style.userSelect = "none";
-    document.body.style.webkitUserSelect = "none";
-    
-    if (!isMobile) {
-      event.preventDefault();
-    }
-    
-    lastPointerPos.x = event.clientX;
-    lastPointerPos.y = event.clientY;
-    velocityX = 0;
-    velocityY = 0;
+  isDragging = true;
+  document.body.style.cursor = "grabbing";
+  document.body.style.userSelect = "none";
+  document.body.style.webkitUserSelect = "none";
+  
+  if (!isMobile) {
+    event.preventDefault();
   }
+  
+  lastPointerPos.x = event.clientX;
+  lastPointerPos.y = event.clientY;
+  velocityX = 0;
+  velocityY = 0;
+});
+
+// Prevent native browser dragging (like image dragging) from interrupting
+window.addEventListener("dragstart", (event) => {
+  event.preventDefault();
 });
 
 window.addEventListener("pointermove", (event) => {
