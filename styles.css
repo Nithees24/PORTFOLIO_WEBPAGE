@@ -61,13 +61,20 @@ button {
   left: 0;
   top: 0;
   z-index: 0;
-  width: 320px;
-  height: 320px;
+  width: 220px;
+  height: 220px;
   border-radius: 50%;
   pointer-events: none;
-  background: radial-gradient(circle, rgba(22, 106, 79, 0.16), transparent 68%);
+  background: radial-gradient(circle, rgba(22, 106, 79, 0.16) 0%, rgba(22, 106, 79, 0.04) 60%, rgba(22, 106, 79, 0) 85%);
+  filter: blur(15px);
   transform: translate(-50%, -50%);
   transition: opacity 180ms ease;
+}
+
+@media (hover: none) {
+  .cursor-glow {
+    display: none;
+  }
 }
 
 .site-header {

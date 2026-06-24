@@ -13,7 +13,7 @@ if (toggle) {
 }
 
 window.addEventListener("pointermove", (event) => {
-  glow.style.transform = `translate(${event.clientX - 160}px, ${event.clientY - 160}px)`;
+  glow.style.transform = `translate(${event.clientX}px, ${event.clientY}px) translate(-50%, -50%)`;
 });
 
 function startHeroTypewriter() {
