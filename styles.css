@@ -43,7 +43,8 @@ body {
   margin: 0;
   background: var(--bg);
   color: var(--ink);
-  font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-family: 'Inter', sans-serif;
+  font-weight: 300;
   transition: background-color 240ms ease, color 240ms ease;
 }
 
@@ -176,13 +177,12 @@ button {
   display: flex;
   flex-direction: column;
   font-family: "Coolvetica", sans-serif;
-  font-weight: 500;
+  font-weight: normal;
+  font-synthesis: none;
   font-size: clamp(64px, 14vw, 200px);
   line-height: 1;
   letter-spacing: -0.01em;
   color: var(--ink);
-  text-shadow: 0 2px 30px rgba(255, 255, 255, 0.9),
-    0 1px 4px rgba(255, 255, 255, 0.7);
 }
 
 .hero-title > span {
@@ -353,10 +353,10 @@ button {
 .eyebrow {
   margin: 0 0 16px;
   color: var(--accent);
-  font-family: "JetBrains Mono", monospace;
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 700;
   text-transform: uppercase;
+  letter-spacing: 0.08em;
 }
 
 h1,
@@ -364,6 +364,13 @@ h2,
 h3,
 p {
   margin-top: 0;
+}
+
+h1,
+h2 {
+  font-family: 'Coolvetica', sans-serif;
+  font-weight: normal;
+  font-synthesis: none;
 }
 
 h1 {
@@ -385,6 +392,7 @@ h3 {
   margin-bottom: 12px;
   font-size: 24px;
   line-height: 1.12;
+  font-weight: 600;
 }
 
 .hero-summary {
@@ -405,10 +413,9 @@ h3 {
   background: rgba(21, 21, 21, 0.04);
   backdrop-filter: blur(6px);
   color: var(--ink);
-  font-family: "JetBrains Mono", monospace;
   font-size: 12px;
   font-weight: 500;
-  letter-spacing: 0.02em;
+  letter-spacing: 0.04em;
 }
 
 .status-dot {
@@ -485,10 +492,9 @@ h3 {
 
 .hero-stats span {
   color: var(--muted);
-  font-family: "JetBrains Mono", monospace;
   font-size: 12px;
   text-transform: uppercase;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.06em;
 }
 
 .profile-card {
@@ -536,11 +542,10 @@ h3 {
 .profile-role {
   margin: 0 0 22px;
   color: var(--accent);
-  font-family: "JetBrains Mono", monospace;
   font-size: 13px;
   font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.06em;
 }
 
 .profile-meta {
@@ -562,10 +567,9 @@ h3 {
 .profile-meta dt {
   margin: 0 0 5px;
   color: var(--muted);
-  font-family: "JetBrains Mono", monospace;
-  font-size: 11px;
+  font-size: 12px;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.06em;
 }
 
 .profile-meta dd {
@@ -584,10 +588,9 @@ h3 {
   align-items: center;
   gap: 10px;
   color: var(--muted);
-  font-family: "JetBrains Mono", monospace;
-  font-size: 11px;
+  font-size: 12px;
   text-transform: uppercase;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.1em;
   writing-mode: vertical-rl;
 }
 
@@ -693,11 +696,11 @@ h3 {
 }
 
 .section-heading {
-  display: grid;
-  grid-template-columns: minmax(240px, 0.7fr) minmax(0, 1fr);
-  gap: 34px;
-  align-items: end;
-  margin-bottom: 34px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+  margin-bottom: 40px;
 }
 
 .work-grid {
@@ -803,7 +806,6 @@ h3 {
   border-radius: 50%;
   background: var(--accent-3);
   color: #151515;
-  font-family: "JetBrains Mono", monospace;
   font-weight: 800;
 }
 
@@ -907,7 +909,6 @@ h3 {
   }
 
   .hero,
-  .section-heading,
   .contact-inner {
     grid-template-columns: 1fr;
   }
@@ -1017,8 +1018,7 @@ h3 {
 
 .project-number {
   color: var(--muted);
-  font-family: "JetBrains Mono", monospace;
-  font-size: 14px;
+  font-size: 16px;
   font-weight: 700;
 }
 

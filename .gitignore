@@ -2,6 +2,7 @@
 node_modules/
 jspm_packages/
 web_modules/
+.agents/
 
 # Logs
 logs
@@ -22,6 +23,7 @@ desktop.ini
 .project
 .classpath
 .c9/
+.agents/
 *.launch
 .settings/
 *.sublime-workspace
