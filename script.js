@@ -978,3 +978,127 @@ canvas.style.display = "block";
 canvas.style.opacity = "1";
 
 drawSystem();
+
+// Scroll-driven Timeline & Connector Animation
+function initScrollTimeline() {
+  const timeline = document.querySelector(".vertical-timeline");
+  const progressLine = document.querySelector(".timeline-line-progress");
+  const nodes = document.querySelectorAll(".timeline-node");
+  const connector = document.querySelector(".connector-line");
+  const profileSection = document.querySelector(".profile-section");
+
+  if (!timeline || !progressLine) return;
+
+  function updateTimeline() {
+    const windowHeight = window.innerHeight;
+
+    // 0. Visiting card strike-through and vengeance reveal based on scroll
+    const visitingCard = document.querySelector(".visiting-card");
+    const strikeLine = document.querySelector(".strike-line");
+    const textVengeance = document.querySelector(".text-vengeance");
+
+    if (visitingCard) {
+      const cardRect = visitingCard.getBoundingClientRect();
+      // Progress starts when card top crosses 92% window height, completes when card top crosses 22% window height
+      const triggerStart = windowHeight * 0.92;
+      const triggerEnd = windowHeight * 0.22;
+      const scrollDistance = triggerStart - cardRect.top;
+      const totalDistance = triggerStart - triggerEnd;
+      const progress = Math.min(1, Math.max(0, scrollDistance / totalDistance));
+
+      // Strike line draws from 0 to 100% (over the first 45% of card scroll progress)
+      const strikeProgress = Math.min(1, Math.max(0, progress / 0.45));
+      if (strikeLine) {
+        strikeLine.style.width = `${strikeProgress * 100}%`;
+      }
+
+      // Vengeance text fade-in and card background color shift (over the remaining 55% of card scroll progress)
+      const revealProgress = progress > 0.45 ? Math.min(1, Math.max(0, (progress - 0.45) / 0.55)) : 0;
+      
+      if (textVengeance) {
+        textVengeance.style.opacity = revealProgress;
+        textVengeance.style.transform = `translateY(${12 - (revealProgress * 12)}px)`;
+      }
+      
+      // Set the custom CSS variable to smoothly interpolate background, borders, and text to blood red / white
+      visitingCard.style.setProperty('--v-progress', revealProgress);
+    }
+
+    // 0b. Card Stacking 3D Depth Animation
+    const overviewCard = document.querySelector(".overview-card");
+    if (visitingCard && overviewCard && window.innerWidth > 860) {
+      const visitingRect = visitingCard.getBoundingClientRect();
+      const overviewRect = overviewCard.getBoundingClientRect();
+      
+      // Overlap begins when overview card top touches visiting card bottom
+      const overlapStart = visitingRect.bottom;
+      // Overlap completes when overview card top aligns with visiting card top (both at sticky 120px)
+      const overlapEnd = visitingRect.top;
+      
+      const totalOverlapDistance = overlapStart - overlapEnd;
+      const currentOverlap = overlapStart - overviewRect.top;
+      
+      // Calculate overlap progress (0 to 1)
+      const overlapProgress = Math.min(1, Math.max(0, currentOverlap / totalOverlapDistance));
+      
+      // Apply 3D depth transform (scale down to 0.94, translate up by 25px, fade to 0.15)
+      const scale = 1 - (overlapProgress * 0.06);
+      const translateY = -overlapProgress * 25;
+      const opacity = 1 - (overlapProgress * 0.85);
+      
+      visitingCard.style.transform = `scale(${scale}) translateY(${translateY}px)`;
+      visitingCard.style.opacity = opacity;
+    } else if (visitingCard) {
+      // Reset if not in desktop mode
+      visitingCard.style.transform = "";
+      visitingCard.style.opacity = "";
+    }
+
+    // 1. Profile connector scale calculation based on scroll
+    if (profileSection && connector) {
+      const profileBox = profileSection.querySelector(".profile-box");
+      if (profileBox) {
+        const boxRect = profileBox.getBoundingClientRect();
+        // The line starts drawing as the bottom of the profile box enters the viewport
+        const triggerStart = windowHeight * 0.95;
+        const triggerEnd = windowHeight * 0.45;
+        const scrollDistance = triggerStart - boxRect.bottom;
+        const totalDistance = triggerStart - triggerEnd;
+        const progress = Math.min(1, Math.max(0, scrollDistance / totalDistance));
+        connector.style.transform = `scaleY(${progress})`;
+      }
+    }
+
+    // 2. Timeline vertical line progress calculation based on scroll
+    const timelineRect = timeline.getBoundingClientRect();
+    
+    // Line draws from the top of the timeline (crossing 75% of viewport) to the bottom node
+    const startTrigger = windowHeight * 0.75;
+    const scrollOffset = startTrigger - timelineRect.top;
+    const timelineHeight = timelineRect.height;
+    
+    // Limit progress mapping to the active timeline height
+    const progress = Math.min(1, Math.max(0, scrollOffset / (timelineHeight - 80)));
+    progressLine.style.height = `${progress * 100}%`;
+
+    // 3. Toggle node active classes as they pass viewport trigger line
+    nodes.forEach((node) => {
+      const nodeRect = node.getBoundingClientRect();
+      if (nodeRect.top < windowHeight * 0.65) {
+        node.classList.add("node-active");
+      } else {
+        node.classList.remove("node-active");
+      }
+    });
+  }
+
+  window.addEventListener("scroll", () => {
+    requestAnimationFrame(updateTimeline);
+  }, { passive: true });
+
+  // Run initial state calculation
+  updateTimeline();
+  window.addEventListener("resize", updateTimeline);
+}
+
+initScrollTimeline();
