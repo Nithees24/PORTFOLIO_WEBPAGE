@@ -102,9 +102,10 @@
         </div>
         
         <div class="vertical-timeline">
-          <div class="timeline-line-bg">
-            <div class="timeline-line-progress"></div>
-          </div>
+          <svg class="timeline-svg" xmlns="http://www.w3.org/2000/svg">
+            <path class="timeline-svg-bg" fill="none" />
+            <path class="timeline-svg-progress" fill="none" />
+          </svg>
           
           <div class="timeline-node is-left reveal" id="node-1">
             <div class="node-marker"></div>
@@ -139,6 +140,87 @@
               <p class="node-desc">
                 Designed sub-second streaming ingestion syncs for vector databases. Built automated testing suites for ML models and optimized relational DB pipelines for embedding computations.
               </p>
+            </div>
+          </div>
+
+          <div class="timeline-node is-right reveal" id="node-4">
+            <div class="node-marker"></div>
+            <div class="node-content">
+              <span class="node-date">2019 — 2020</span>
+              <h3>Machine Learning Researcher</h3>
+              <p class="node-role">NLP & Vision</p>
+              <p class="node-desc">
+                Developed custom deep learning models for classification and text generation. Focused on transfer learning and optimization of transformer architectures.
+              </p>
+            </div>
+          </div>
+
+          <div class="timeline-node is-left reveal" id="node-5">
+            <div class="node-marker"></div>
+            <div class="node-content">
+              <span class="node-date">2018 — 2019</span>
+              <h3>Software Engineer Intern</h3>
+              <p class="node-role">Backend & Data</p>
+              <p class="node-desc">
+                Integrated database schemas and designed REST APIs. Optimized ETL workflows and developed dashboards for data visualization.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section-shell tech-section" id="tech-stack">
+        <div class="section-heading reveal">
+          <p class="eyebrow">Stack</p>
+          <h2>Technology & Frameworks</h2>
+        </div>
+        <div class="tech-grid reveal">
+          <div class="tech-slot" id="tech-slot-0">
+            <div class="tech-card">
+              <div class="tech-card-inner">
+                <div class="tech-card-front"></div>
+                <div class="tech-card-back"></div>
+              </div>
+            </div>
+          </div>
+          <div class="tech-slot" id="tech-slot-1">
+            <div class="tech-card">
+              <div class="tech-card-inner">
+                <div class="tech-card-front"></div>
+                <div class="tech-card-back"></div>
+              </div>
+            </div>
+          </div>
+          <div class="tech-slot" id="tech-slot-2">
+            <div class="tech-card">
+              <div class="tech-card-inner">
+                <div class="tech-card-front"></div>
+                <div class="tech-card-back"></div>
+              </div>
+            </div>
+          </div>
+          <div class="tech-slot" id="tech-slot-3">
+            <div class="tech-card">
+              <div class="tech-card-inner">
+                <div class="tech-card-front"></div>
+                <div class="tech-card-back"></div>
+              </div>
+            </div>
+          </div>
+          <div class="tech-slot" id="tech-slot-4">
+            <div class="tech-card">
+              <div class="tech-card-inner">
+                <div class="tech-card-front"></div>
+                <div class="tech-card-back"></div>
+              </div>
+            </div>
+          </div>
+          <div class="tech-slot" id="tech-slot-5">
+            <div class="tech-card">
+              <div class="tech-card-inner">
+                <div class="tech-card-front"></div>
+                <div class="tech-card-back"></div>
+              </div>
             </div>
           </div>
         </div>
@@ -195,10 +277,67 @@
           <h2>Featured Projects</h2>
         </div>
         <div class="projects-grid">
-          <!-- Project 1: Agentic RAG Orchestrator -->
+          <!-- Highlighted Project: Project Lovelace -->
+          <article class="project-card reveal highlighted-project" data-tilt>
+            <!-- Header spanning full width -->
+            <div class="project-highlight-header">
+              <div class="project-highlight-title-group">
+                <div class="project-logo">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="44" height="44">
+                    <defs>
+                      <linearGradient id="lovelaceGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stop-color="#20312d"/>
+                        <stop offset="100%" stop-color="#314b43"/>
+                      </linearGradient>
+                    </defs>
+                    <rect width="64" height="64" rx="16" fill="url(#lovelaceGrad)"/>
+                    <circle cx="32" cy="32" r="6" fill="#fff7ef"></circle>
+                    <ellipse cx="32" cy="32" rx="22" ry="10" fill="none" stroke="rgba(255, 247, 239, 0.92)" stroke-width="2.4"></ellipse>
+                    <ellipse cx="32" cy="32" rx="22" ry="10" fill="none" stroke="rgba(255, 247, 239, 0.92)" stroke-width="2.4" transform="rotate(60 32 32)"></ellipse>
+                    <ellipse cx="32" cy="32" rx="22" ry="10" fill="none" stroke="rgba(255, 247, 239, 0.92)" stroke-width="2.4" transform="rotate(120 32 32)"></ellipse>
+                    <circle cx="52" cy="32" r="3" fill="#f2b36c"></circle>
+                    <circle cx="22" cy="15" r="3" fill="#f2b36c"></circle>
+                    <circle cx="23" cy="49" r="3" fill="#f2b36c"></circle>
+                  </svg>
+                </div>
+                <div class="project-highlight-meta">
+                  <span class="project-badge">BIGGEST PROJECT</span>
+                  <h3>Project Lovelace</h3>
+                </div>
+              </div>
+              <div class="project-links">
+                <a href="#" class="project-link" aria-label="GitHub Repository">
+                  <svg class="icon" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg>
+                </a>
+              </div>
+            </div>
+
+            <!-- Two columns body -->
+            <div class="project-highlight-body">
+              <div class="project-highlight-left">
+                <p class="project-desc">An autonomous reasoning AI Agent for STEM fields designed to solve complex multi-step math proving, scientific simulation, and symbolic calculation tasks with self-correcting loop logic.</p>
+                <div class="project-tags">
+                  <span>AI Agents</span>
+                  <span>LangGraph</span>
+                  <span>STEM Reasoning</span>
+                  <span>Python</span>
+                  <span>SymPy</span>
+                </div>
+              </div>
+              <div class="project-highlight-right">
+                <ul class="project-outcomes">
+                  <li>Engineered custom reflection prompts yielding a 35% accuracy improvement in multi-step STEM proofs.</li>
+                  <li>Configured interactive Python sandboxes and WolframAlpha tool bindings.</li>
+                  <li>Designed self-correcting reasoning loops to validate outputs dynamically.</li>
+                </ul>
+              </div>
+            </div>
+          </article>
+
+          <!-- Project 02: Agentic RAG Orchestrator -->
           <article class="project-card reveal" data-tilt>
             <div class="project-header">
-              <span class="project-number">01</span>
+              <span class="project-number">02</span>
               <div class="project-links">
                 <a href="#" class="project-link" aria-label="GitHub Repository">
                   <svg class="icon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg>
@@ -219,10 +358,10 @@
             </div>
           </article>
 
-          <!-- Project 2: Vertex AI MLOps Pipeline -->
+          <!-- Project 03: Vertex AI MLOps Pipeline -->
           <article class="project-card reveal" data-tilt>
             <div class="project-header">
-              <span class="project-number">02</span>
+              <span class="project-number">03</span>
               <div class="project-links">
                 <a href="#" class="project-link" aria-label="GitHub Repository">
                   <svg class="icon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg>
@@ -243,10 +382,10 @@
             </div>
           </article>
 
-          <!-- Project 3: Real-Time Vector Sync -->
+          <!-- Project 04: Real-Time Vector Sync -->
           <article class="project-card reveal" data-tilt>
             <div class="project-header">
-              <span class="project-number">03</span>
+              <span class="project-number">04</span>
               <div class="project-links">
                 <a href="#" class="project-link" aria-label="GitHub Repository">
                   <svg class="icon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg>
@@ -264,6 +403,156 @@
               <span>PostgreSQL</span>
               <span>Redis</span>
               <span>ChromaDB</span>
+            </div>
+          </article>
+        </div>
+
+        <div class="section-heading reveal" style="margin-top: 80px;">
+          <p class="eyebrow">Core Work & Research</p>
+          <h2>Academic & Applied ML</h2>
+        </div>
+        <div class="projects-grid">
+          <!-- Project 05: Weak File Security Analyzer -->
+          <article class="project-card reveal" data-tilt>
+            <div class="project-header">
+              <span class="project-number">05</span>
+              <div class="project-links">
+                <a href="#" class="project-link" aria-label="GitHub Repository">
+                  <svg class="icon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg>
+                </a>
+              </div>
+            </div>
+            <h3>File Security Analyzer</h3>
+            <p class="project-desc">A security scanning application checking local files for weak protections and permission configurations using ML techniques.</p>
+            <ul class="project-outcomes">
+              <li>Built classification layers using TensorFlow and Dense neural networks to predict vulnerability scores.</li>
+              <li>Analyzed access control logs to identify risky user privilege delegations.</li>
+            </ul>
+            <div class="project-tags">
+              <span>TensorFlow</span>
+              <span>Security</span>
+              <span>Neural Networks</span>
+              <span>Python</span>
+            </div>
+          </article>
+
+          <!-- Project 06: Wastewater CNN Classifier -->
+          <article class="project-card reveal" data-tilt>
+            <div class="project-header">
+              <span class="project-number">06</span>
+              <div class="project-links">
+                <a href="#" class="project-link" aria-label="GitHub Repository">
+                  <svg class="icon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg>
+                </a>
+              </div>
+            </div>
+            <h3>Wastewater Quality Classifier</h3>
+            <p class="project-desc">An environmental monitoring system classifying water safety and identifying potable thresholds in wastewater sumps.</p>
+            <ul class="project-outcomes">
+              <li>Integrated sensor data streams measuring physical and chemical water properties.</li>
+              <li>Implemented a Convolutional Neural Network (CNN) in Python to categorize safety parameters.</li>
+            </ul>
+            <div class="project-tags">
+              <span>Python</span>
+              <span>CNN</span>
+              <span>Sensors</span>
+              <span>Data Analysis</span>
+            </div>
+          </article>
+
+          <!-- Project 07: License Plate Recognition -->
+          <article class="project-card reveal" data-tilt>
+            <div class="project-header">
+              <span class="project-number">07</span>
+              <div class="project-links">
+                <a href="#" class="project-link" aria-label="GitHub Repository">
+                  <svg class="icon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg>
+                </a>
+              </div>
+            </div>
+            <h3>License Plate Detector</h3>
+            <p class="project-desc">A deep-learning computer vision system automating license plate detection and reading from vehicle images.</p>
+            <ul class="project-outcomes">
+              <li>Developed a Convolutional Neural Network (CNN) model for bounding box region detection.</li>
+              <li>Applied deep regression networks to locate and isolate license text under varied light levels.</li>
+            </ul>
+            <div class="project-tags">
+              <span>CNN</span>
+              <span>Deep Regression</span>
+              <span>Computer Vision</span>
+              <span>TensorFlow</span>
+            </div>
+          </article>
+
+          <!-- Project 08: Spotify Customer Segmenter -->
+          <article class="project-card reveal" data-tilt>
+            <div class="project-header">
+              <span class="project-number">08</span>
+              <div class="project-links">
+                <a href="#" class="project-link" aria-label="GitHub Repository">
+                  <svg class="icon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg>
+                </a>
+              </div>
+            </div>
+            <h3>Spotify Music Segmenter</h3>
+            <p class="project-desc">A customer segmentation application categorizing listeners based on music taste and database profiles.</p>
+            <ul class="project-outcomes">
+              <li>Analyzed user listen histories, tracking acoustic qualities across different genres.</li>
+              <li>Implemented clustering models to identify distinct listener persona buckets.</li>
+            </ul>
+            <div class="project-tags">
+              <span>Clustering</span>
+              <span>Spotify API</span>
+              <span>Data Mining</span>
+              <span>Python</span>
+            </div>
+          </article>
+
+          <!-- Project 09: OpenCV Facemask Recognition -->
+          <article class="project-card reveal" data-tilt>
+            <div class="project-header">
+              <span class="project-number">09</span>
+              <div class="project-links">
+                <a href="#" class="project-link" aria-label="GitHub Repository">
+                  <svg class="icon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg>
+                </a>
+              </div>
+            </div>
+            <h3>Face Mask Detector</h3>
+            <p class="project-desc">A real-time vision classifier detecting face masks in video streams and logging compliance data.</p>
+            <ul class="project-outcomes">
+              <li>Built detection and tracking scripts using OpenCV and CNN models in TensorFlow.</li>
+              <li>Integrated Pytesseract for reading text and generating log entries for monitoring feeds.</li>
+            </ul>
+            <div class="project-tags">
+              <span>OpenCV</span>
+              <span>TensorFlow</span>
+              <span>Pytesseract</span>
+              <span>CNN</span>
+            </div>
+          </article>
+
+          <!-- Project 10: Hand Gesture Media Controller -->
+          <article class="project-card reveal" data-tilt>
+            <div class="project-header">
+              <span class="project-number">10</span>
+              <div class="project-links">
+                <a href="#" class="project-link" aria-label="GitHub Repository">
+                  <svg class="icon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg>
+                </a>
+              </div>
+            </div>
+            <h3>Gesture Media Controller</h3>
+            <p class="project-desc">A human-computer interaction system translating real-time hand movements into PC media controls.</p>
+            <ul class="project-outcomes">
+              <li>Trained lightweight gesture mapping networks using TensorFlow.</li>
+              <li>Used OpenCV streaming to trigger play, pause, and volume changes hands-free.</li>
+            </ul>
+            <div class="project-tags">
+              <span>TensorFlow</span>
+              <span>OpenCV</span>
+              <span>Computer Vision</span>
+              <span>Python</span>
             </div>
           </article>
         </div>
