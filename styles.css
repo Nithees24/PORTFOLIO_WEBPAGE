@@ -707,7 +707,7 @@ h3 {
   min-height: 310px;
   padding: 22px;
   border: 1px solid var(--line);
-  border-radius: 8px;
+  border-radius: 20px;
   background: var(--surface);
   box-shadow: 0 18px 40px rgba(0, 0, 0, 0.05);
   transform-style: preserve-3d;
@@ -722,7 +722,28 @@ h3 {
   display: flex;
   justify-content: space-between;
   gap: 16px;
-  margin-bottom: 116px;
+  margin-bottom: 36px;
+}
+
+.card-icon {
+  width: 48px;
+  height: 48px;
+  margin-bottom: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: left;
+}
+
+.card-icon-svg {
+  width: 36px;
+  height: 36px;
+  stroke: var(--accent-2);
+  transition: transform 0.2s ease, stroke 0.2s ease;
+}
+
+.work-card:hover .card-icon-svg {
+  transform: scale(1.08);
+  stroke: var(--accent);
 }
 
 .work-card p,
@@ -827,6 +848,22 @@ h3 {
   margin: 0 auto;
 }
 
+
+.visiting-card-spacer {
+  width: 100%;
+}
+
+@media (min-width: 861px) {
+  .visiting-card-spacer {
+    height: 100vh;
+  }
+}
+@media (max-width: 860px) {
+  .visiting-card-spacer {
+    display: none;
+  }
+}
+
 /* Visiting Card Spec */
 .visiting-card {
   top: 120px;
@@ -839,7 +876,7 @@ h3 {
   box-shadow: 0 12px 40px rgba(0, 0, 0, 0.03);
   overflow: hidden;
   transition: box-shadow 0.3s ease;
-  min-height: 260px;
+  min-height: 380px;
   /* Ensure visiting card is a stable, premium rectangle shape */
   display: flex;
   flex-direction: column;
@@ -867,10 +904,10 @@ h3 {
   position: absolute;
   right: 0;
   bottom: 0;
-  transform: translate(18%, calc(42% + (60px - var(--v-progress, 0) * 60px)));
+  transform: translate(18%, calc(42% + (60px - var(--bat-progress, 0) * 60px)));
   width: clamp(350px, 45vw, 600px);
   height: auto;
-  opacity: var(--v-progress, 0);
+  opacity: var(--bat-progress, 0);
   pointer-events: none;
   z-index: 1;
   mix-blend-mode: screen;

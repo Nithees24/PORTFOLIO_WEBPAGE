@@ -118,7 +118,6 @@ The project display is split into two major containers under `#projects`:
 Designed to command primary visual attention as a full-width featured card (`.highlighted-project`):
 *   **Desktop Layout:** Spans 3 columns (`grid-column: span 3`) with a two-column body layout (Left: Description/Tags, Right: Core Outcomes).
 *   **Logo:** SVG icon of an atomic orbit structure with theme-compliant brand styling.
-*   **Pulse Badge:** Status badge `[BIGGEST PROJECT]` with keyframe pulse animation.
 *   **Border Glow:** Double-stroke custom gradient border highlighting Lovelace as the flagship AI system.
 
 ### 4.2 Standard Project Cards

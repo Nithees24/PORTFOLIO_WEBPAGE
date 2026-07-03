@@ -1041,32 +1041,75 @@ function initScrollTimeline() {
   function updateTimeline() {
     const windowHeight = window.innerHeight;
 
-    // 0. Visiting card strike-through and vengeance reveal based on scroll
+    // 0. Visiting card sequential scroll animations
+    const visitingCardSpacer = document.querySelector(".visiting-card-spacer");
     const visitingCard = document.querySelector(".visiting-card");
     const strikeLine = document.querySelector(".strike-line");
     const textVengeance = document.querySelector(".text-vengeance");
+    const visitingTitle = document.querySelector(".visiting-title");
+    const textOriginalWrapper = document.querySelector(".text-original-wrapper");
 
     if (visitingCard) {
-      const cardRect = visitingCard.getBoundingClientRect();
-      const triggerStart = windowHeight * 0.92;
-      const triggerEnd = windowHeight * 0.22;
-      const scrollDistance = triggerStart - cardRect.top;
-      const totalDistance = triggerStart - triggerEnd;
-      const progress = Math.min(1, Math.max(0, scrollDistance / totalDistance));
+      let progress = 0;
+      if (window.innerWidth > 860 && visitingCardSpacer) {
+        const spacerRect = visitingCardSpacer.getBoundingClientRect();
+        const cardRect = visitingCard.getBoundingClientRect();
+        const stickyOffset = 120; // top offset in CSS
+        const startScroll = stickyOffset + cardRect.height;
+        const totalScroll = spacerRect.height;
+        if (totalScroll > 0) {
+          const scrolled = startScroll - spacerRect.top;
+          progress = Math.min(1, Math.max(0, scrolled / totalScroll));
+        } else {
+          progress = 0;
+        }
+      } else {
+        // Mobile fallback: viewport-based progress calculation
+        const cardRect = visitingCard.getBoundingClientRect();
+        const triggerStart = windowHeight * 0.92;
+        const triggerEnd = windowHeight * 0.22;
+        const scrollDistance = triggerStart - cardRect.top;
+        const totalDistance = triggerStart - triggerEnd;
+        progress = Math.min(1, Math.max(0, scrollDistance / totalDistance));
+      }
 
-      const strikeProgress = Math.min(1, Math.max(0, progress / 0.45));
+      // Helper function to map overall progress to a localized segment
+      const getActiveProgress = (p, start, end) => {
+        if (p < start) return 0;
+        if (p > end) return 1;
+        return (p - start) / (end - start);
+      };
+
+      const nameProgress = getActiveProgress(progress, 0.0, 0.1);
+      const textOriginalProgress = getActiveProgress(progress, 0.15, 0.3);
+      const strikeProgress = getActiveProgress(progress, 0.35, 0.5);
+      const redProgress = getActiveProgress(progress, 0.55, 0.75);
+      const batProgress = getActiveProgress(progress, 0.8, 0.95);
+
+      // Phase 1: Name fades in
+      if (visitingTitle) {
+        visitingTitle.style.opacity = nameProgress;
+      }
+
+      // Phase 2: Next text fades in
+      if (textOriginalWrapper) {
+        textOriginalWrapper.style.opacity = textOriginalProgress;
+      }
+
+      // Phase 3: Next text gets cancelled
       if (strikeLine) {
         strikeLine.style.width = `${strikeProgress * 100}%`;
       }
 
-      const revealProgress = progress > 0.45 ? Math.min(1, Math.max(0, (progress - 0.45) / 0.55)) : 0;
-      
+      // Phase 4: Red color transition and vengeance text reveal
+      visitingCard.style.setProperty('--v-progress', redProgress);
       if (textVengeance) {
-        textVengeance.style.opacity = revealProgress;
-        textVengeance.style.transform = `translateY(${12 - (revealProgress * 12)}px)`;
+        textVengeance.style.opacity = redProgress;
+        textVengeance.style.transform = `translateY(${12 - (redProgress * 12)}px)`;
       }
-      
-      visitingCard.style.setProperty('--v-progress', revealProgress);
+
+      // Phase 5: Bat symbol appears
+      visitingCard.style.setProperty('--bat-progress', batProgress);
     }
 
     // 0b. Card Stacking 3D Depth Animation
