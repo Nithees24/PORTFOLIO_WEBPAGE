@@ -982,57 +982,143 @@ drawSystem();
 // Scroll-driven Timeline & Connector Animation
 // Scroll-driven Timeline & Connector Animation
 function initScrollTimeline() {
-  const timeline = document.querySelector(".vertical-timeline");
-  const svg = document.querySelector(".timeline-svg");
-  const bgPath = document.querySelector(".timeline-svg-bg");
-  const progressPath = document.querySelector(".timeline-svg-progress");
-  const nodes = document.querySelectorAll(".timeline-node");
+  const journey = document.querySelector(".journey-flow");
+  const svg = document.querySelector(".journey-svg");
+  const bgPath = document.querySelector(".journey-svg-bg");
+  const progressPath = document.querySelector(".journey-svg-progress");
+  const nodes = document.querySelectorAll(".journey-node");
+  const detailText = document.querySelector(".journey-detail-text");
   const connector = document.querySelector(".connector-line");
   const profileSection = document.querySelector(".profile-section");
 
-  if (!timeline || !svg || !bgPath || !progressPath) return;
+  if (!journey || !svg || !bgPath || !progressPath) return;
+
+  let nodeFractions = [];
+  let lastActiveIndex = -1;
+  let hoverLock = false;
+
+  function setDetail(node) {
+    if (!detailText || !node) return;
+    const desc = node.querySelector(".journey-desc");
+    detailText.textContent = desc ? desc.textContent.trim() : "";
+    detailText.classList.add("is-visible");
+  }
+
+  function clearDetail() {
+    if (detailText) detailText.classList.remove("is-visible");
+  }
+
+  // Hovering a node previews its description in the shared caption
+  nodes.forEach((node) => {
+    node.addEventListener("pointerenter", () => {
+      hoverLock = true;
+      setDetail(node);
+    });
+    node.addEventListener("pointerleave", () => {
+      hoverLock = false;
+      if (lastActiveIndex >= 0) setDetail(nodes[lastActiveIndex]);
+      else clearDetail();
+    });
+  });
 
   function drawTimelinePath() {
-    const timelineRect = timeline.getBoundingClientRect();
-    svg.setAttribute("width", timelineRect.width);
-    svg.setAttribute("height", timelineRect.height);
+    const flowRect = journey.getBoundingClientRect();
+    svg.setAttribute("width", flowRect.width);
+    svg.setAttribute("height", flowRect.height);
 
-    const markers = document.querySelectorAll(".timeline-node .node-marker");
     const points = [];
 
-    markers.forEach((marker) => {
+    nodes.forEach((node) => {
+      const marker = node.querySelector(".journey-marker");
       const markerRect = marker.getBoundingClientRect();
-      const x = markerRect.left - timelineRect.left + markerRect.width / 2;
-      const y = markerRect.top - timelineRect.top + markerRect.height / 2;
-      points.push({ x, y });
+      points.push({
+        x: markerRect.left - flowRect.left + markerRect.width / 2,
+        y: markerRect.top - flowRect.top + markerRect.height / 2,
+      });
     });
 
-    let pathD = "";
-    if (points.length > 0) {
-      // Start at the top center of the timeline container
-      const firstX = points[0].x;
-      pathD = `M ${firstX} 0 L ${points[0].x} ${points[0].y}`;
+    if (!points.length) return;
 
-      // Connect markers with smooth bezier curves
+    const isMobileLayout = window.innerWidth <= 860;
+    const cubics = [];
+
+    if (isMobileLayout) {
+      // Stacked list: simple vertical flow between markers
       for (let i = 1; i < points.length; i++) {
         const p1 = points[i - 1];
         const p2 = points[i];
         const cpY1 = p1.y + (p2.y - p1.y) * 0.45;
         const cpY2 = p2.y - (p2.y - p1.y) * 0.45;
-        pathD += ` C ${p1.x} ${cpY1}, ${p2.x} ${cpY2}, ${p2.x} ${p2.y}`;
+        cubics.push({
+          c: `C ${p1.x} ${cpY1}, ${p2.x} ${cpY2}, ${p2.x} ${p2.y}`,
+          endsNode: true,
+        });
       }
+    } else {
+      // Serpentine: level sweeps between edges, with a rounded U-turn
+      // wrapping around the outside of each stop's label
+      const width = flowRect.width;
+      const reach = Math.min(320, width * 0.3);
+      const hug = 36; // how far the route runs level past a stop before turning
+      const bulge = 38; // how far the turn apex sits beyond the marker
+      const vTan = 32; // vertical tangent strength at the apex
 
-      // Extend slightly below the last marker
-      const lastPoint = points[points.length - 1];
-      pathD += ` L ${lastPoint.x} ${timelineRect.height}`;
+      for (let i = 1; i < points.length; i++) {
+        const p1 = points[i - 1];
+        const p2 = points[i];
+
+        if (i === 1) {
+          // Opening sweep: level out of the first stop, level into the next
+          cubics.push({
+            c: `C ${p1.x + reach} ${p1.y}, ${p2.x - reach} ${p2.y}, ${p2.x} ${p2.y}`,
+            endsNode: true,
+          });
+        } else {
+          const dir = p1.x > p2.x ? 1 : -1; // 1 = turning at right edge
+          const apexX =
+            dir > 0 ? Math.min(width - 6, p1.x + bulge) : Math.max(6, p1.x - bulge);
+          const apexY = p1.y + (p2.y - p1.y) * 0.85;
+
+          // Around the outside of the label...
+          cubics.push({
+            c: `C ${p1.x + dir * hug} ${p1.y}, ${apexX} ${apexY - vTan}, ${apexX} ${apexY}`,
+            endsNode: false,
+          });
+          // ...then level across into the next stop
+          cubics.push({
+            c: `C ${apexX} ${apexY + vTan}, ${p2.x + dir * reach} ${p2.y}, ${p2.x} ${p2.y}`,
+            endsNode: true,
+          });
+        }
+      }
     }
 
+    let pathD = `M ${points[0].x} ${points[0].y}`;
+    const prefixPaths = [];
+    cubics.forEach((seg) => {
+      pathD += " " + seg.c;
+      prefixPaths.push({ d: pathD, endsNode: seg.endsNode });
+    });
+
     bgPath.setAttribute("d", pathD);
+
+    // Exact arc length up to each stop, so activation matches the
+    // moment the line actually reaches it (turns add length)
+    const lengths = [0];
+    prefixPaths.forEach((prefix) => {
+      if (!prefix.endsNode) return;
+      progressPath.setAttribute("d", prefix.d);
+      lengths.push(progressPath.getTotalLength());
+    });
     progressPath.setAttribute("d", pathD);
 
     const pathLength = progressPath.getTotalLength();
     progressPath.style.strokeDasharray = pathLength;
+    progressPath.style.strokeDashoffset = pathLength;
     progressPath.dataset.length = pathLength;
+
+    const totalDist = lengths[lengths.length - 1] || 1;
+    nodeFractions = lengths.map((d) => d / totalDist);
   }
 
   // Draw the path initially
@@ -1151,28 +1237,35 @@ function initScrollTimeline() {
       }
     }
 
-    // 2. Timeline vertical line progress calculation based on scroll
-    const timelineRect = timeline.getBoundingClientRect();
-    const startTrigger = windowHeight * 0.75;
-    const scrollOffset = startTrigger - timelineRect.top;
-    const timelineHeight = timelineRect.height;
-    
-    const progress = Math.min(1, Math.max(0, scrollOffset / (timelineHeight - 80)));
-    
+    // 2. Journey wave progress: fills as the flow travels up the viewport
+    const flowRect = journey.getBoundingClientRect();
+    const startTrigger = windowHeight * 0.85;
+    const travel = Math.max(windowHeight * 0.5, flowRect.height * 0.9);
+    const jProgress = Math.min(1, Math.max(0, (startTrigger - flowRect.top) / travel));
+
     if (progressPath.dataset.length) {
       const pathLength = parseFloat(progressPath.dataset.length);
-      progressPath.style.strokeDashoffset = pathLength - (progress * pathLength);
+      progressPath.style.strokeDashoffset = pathLength - jProgress * pathLength;
     }
 
-    // 3. Toggle node active classes as they pass viewport trigger line
-    nodes.forEach((node) => {
-      const nodeRect = node.getBoundingClientRect();
-      if (nodeRect.top < windowHeight * 0.65) {
+    // 3. Activate nodes as the progress line reaches them
+    let activeIndex = -1;
+    nodes.forEach((node, i) => {
+      if (jProgress > 0.02 && jProgress >= (nodeFractions[i] || 0) - 0.01) {
         node.classList.add("node-active");
+        activeIndex = i;
       } else {
         node.classList.remove("node-active");
       }
     });
+
+    if (activeIndex !== lastActiveIndex) {
+      lastActiveIndex = activeIndex;
+      if (!hoverLock) {
+        if (activeIndex >= 0) setDetail(nodes[activeIndex]);
+        else clearDetail();
+      }
+    }
   }
 
   window.addEventListener("scroll", () => {
@@ -1190,6 +1283,24 @@ function initScrollTimeline() {
 }
 
 initScrollTimeline();
+
+// --- Project Lovelace showcase video: autoplay only while visible ---
+const showcaseVideo = document.querySelector(".showcase-video");
+if (showcaseVideo) {
+  const videoObserver = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          showcaseVideo.play().catch(() => {});
+        } else {
+          showcaseVideo.pause();
+        }
+      });
+    },
+    { threshold: 0.35 }
+  );
+  videoObserver.observe(showcaseVideo);
+}
 
 // --- Technology Swapping Logo Logic ---
 const techPool = [

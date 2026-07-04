@@ -14,7 +14,7 @@
       href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@500;700&family=Space+Grotesk:wght@400;500;600;700&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="styles.css?v=2" />
+    <link rel="stylesheet" href="styles.css?v=7" />
   </head>
   <body>
     <div class="cursor-glow" aria-hidden="true"></div>
@@ -104,71 +104,75 @@
           <h2>Professional Journey</h2>
         </div>
         
-        <div class="vertical-timeline">
-          <svg class="timeline-svg" xmlns="http://www.w3.org/2000/svg">
-            <path class="timeline-svg-bg" fill="none" />
-            <path class="timeline-svg-progress" fill="none" />
+        <div class="journey-flow reveal">
+          <svg class="journey-svg" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path class="journey-svg-bg" fill="none" />
+            <path class="journey-svg-progress" fill="none" />
           </svg>
-          
-          <div class="timeline-node is-left reveal" id="node-1">
-            <div class="node-marker"></div>
-            <div class="node-content">
-              <span class="node-date">2024 — Present</span>
-              <h3>AI Systems Architect</h3>
-              <p class="node-role">Lead Developer</p>
-              <p class="node-desc">
-                Architecting multi-agent orchestrations and agentic RAG workflows using LangGraph and Vertex AI. Designing production-grade evaluation frameworks and self-correcting retrieval systems.
-              </p>
-            </div>
-          </div>
-          
-          <div class="timeline-node is-right reveal" id="node-2">
-            <div class="node-marker"></div>
-            <div class="node-content">
-              <span class="node-date">2022 — 2024</span>
-              <h3>Senior Machine Learning Engineer</h3>
-              <p class="node-role">MLOps & Pipelines</p>
-              <p class="node-desc">
-                Built continuous training and deployment pipelines on Google Vertex AI. Integrated MLflow for experiment tracking and developed custom reranking models to boost search relevance.
-              </p>
-            </div>
-          </div>
-          
-          <div class="timeline-node is-left reveal" id="node-3">
-            <div class="node-marker"></div>
-            <div class="node-content">
-              <span class="node-date">2020 — 2022</span>
-              <h3>Data & ML Engineer</h3>
-              <p class="node-role">Infrastructure & Search</p>
-              <p class="node-desc">
-                Designed sub-second streaming ingestion syncs for vector databases. Built automated testing suites for ML models and optimized relational DB pipelines for embedding computations.
+
+          <div class="journey-node edge-left is-low" style="--x: 4%; --y: 6%">
+            <div class="journey-marker"></div>
+            <div class="journey-content">
+              <span class="journey-date">2018 — 2019</span>
+              <h3>Software Engineer Intern</h3>
+              <p class="journey-role">Backend & Data</p>
+              <p class="journey-desc">
+                Integrated database schemas and designed REST APIs. Optimized ETL workflows and developed dashboards for data visualization.
               </p>
             </div>
           </div>
 
-          <div class="timeline-node is-right reveal" id="node-4">
-            <div class="node-marker"></div>
-            <div class="node-content">
-              <span class="node-date">2019 — 2020</span>
+          <div class="journey-node edge-right is-low" style="--x: 96%; --y: 28%">
+            <div class="journey-marker"></div>
+            <div class="journey-content">
+              <span class="journey-date">2019 — 2020</span>
               <h3>Machine Learning Researcher</h3>
-              <p class="node-role">NLP & Vision</p>
-              <p class="node-desc">
+              <p class="journey-role">NLP & Vision</p>
+              <p class="journey-desc">
                 Developed custom deep learning models for classification and text generation. Focused on transfer learning and optimization of transformer architectures.
               </p>
             </div>
           </div>
 
-          <div class="timeline-node is-left reveal" id="node-5">
-            <div class="node-marker"></div>
-            <div class="node-content">
-              <span class="node-date">2018 — 2019</span>
-              <h3>Software Engineer Intern</h3>
-              <p class="node-role">Backend & Data</p>
-              <p class="node-desc">
-                Integrated database schemas and designed REST APIs. Optimized ETL workflows and developed dashboards for data visualization.
+          <div class="journey-node edge-left is-low" style="--x: 4%; --y: 50%">
+            <div class="journey-marker"></div>
+            <div class="journey-content">
+              <span class="journey-date">2020 — 2022</span>
+              <h3>Data & ML Engineer</h3>
+              <p class="journey-role">Infrastructure & Search</p>
+              <p class="journey-desc">
+                Designed sub-second streaming ingestion syncs for vector databases. Built automated testing suites for ML models and optimized relational DB pipelines for embedding computations.
               </p>
             </div>
           </div>
+
+          <div class="journey-node edge-right is-low" style="--x: 96%; --y: 72%">
+            <div class="journey-marker"></div>
+            <div class="journey-content">
+              <span class="journey-date">2022 — 2024</span>
+              <h3>Senior Machine Learning Engineer</h3>
+              <p class="journey-role">MLOps & Pipelines</p>
+              <p class="journey-desc">
+                Built continuous training and deployment pipelines on Google Vertex AI. Integrated MLflow for experiment tracking and developed custom reranking models to boost search relevance.
+              </p>
+            </div>
+          </div>
+
+          <div class="journey-node edge-left is-high is-x" style="--x: 4%; --y: 94%">
+            <div class="journey-marker"></div>
+            <div class="journey-content">
+              <span class="journey-date">2024 — Present</span>
+              <h3>AI Systems Architect</h3>
+              <p class="journey-role">Lead Developer</p>
+              <p class="journey-desc">
+                Architecting multi-agent orchestrations and agentic RAG workflows using LangGraph and Vertex AI. Designing production-grade evaluation frameworks and self-correcting retrieval systems.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="journey-detail" aria-live="polite">
+          <p class="journey-detail-text"></p>
         </div>
       </section>
 
@@ -337,10 +341,35 @@
               </div>
             </div>
 
-            <!-- Two columns body -->
+            <!-- Video showcase + details body -->
             <div class="project-highlight-body">
-              <div class="project-highlight-left">
+              <div class="project-showcase">
+                <div class="showcase-frame">
+                  <div class="showcase-titlebar" aria-hidden="true">
+                    <span class="showcase-dot dot-orange"></span>
+                    <span class="showcase-dot dot-gold"></span>
+                    <span class="showcase-dot dot-green"></span>
+                    <span class="showcase-title">lovelace — live demo</span>
+                  </div>
+                  <video
+                    class="showcase-video"
+                    src="lovelace.mp4"
+                    muted
+                    loop
+                    playsinline
+                    controls
+                    preload="metadata"
+                    aria-label="Project Lovelace product demo"
+                  ></video>
+                </div>
+              </div>
+              <div class="project-highlight-right">
                 <p class="project-desc">An autonomous reasoning AI Agent for STEM fields designed to solve complex multi-step math proving, scientific simulation, and symbolic calculation tasks with self-correcting loop logic.</p>
+                <ul class="project-outcomes">
+                  <li>Engineered custom reflection prompts yielding a 35% accuracy improvement in multi-step STEM proofs.</li>
+                  <li>Configured interactive Python sandboxes and WolframAlpha tool bindings.</li>
+                  <li>Designed self-correcting reasoning loops to validate outputs dynamically.</li>
+                </ul>
                 <div class="project-tags">
                   <span>AI Agents</span>
                   <span>LangGraph</span>
@@ -348,13 +377,6 @@
                   <span>Python</span>
                   <span>SymPy</span>
                 </div>
-              </div>
-              <div class="project-highlight-right">
-                <ul class="project-outcomes">
-                  <li>Engineered custom reflection prompts yielding a 35% accuracy improvement in multi-step STEM proofs.</li>
-                  <li>Configured interactive Python sandboxes and WolframAlpha tool bindings.</li>
-                  <li>Designed self-correcting reasoning loops to validate outputs dynamically.</li>
-                </ul>
               </div>
             </div>
           </article>
@@ -674,6 +696,6 @@
       </section>
     </main>
 
-    <script src="script.js?v=9"></script>
+    <script src="script.js?v=14"></script>
   </body>
 </html>
