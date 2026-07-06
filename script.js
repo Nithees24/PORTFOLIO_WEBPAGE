@@ -20,56 +20,108 @@ function startHeroTypewriter() {
   const title = document.querySelector(".hero-title");
   if (!title) return;
 
-  const line1 = title.querySelector("span:first-child");
-  const line2 = title.querySelector("span:last-child");
+  // Grab the two direct child spans (not nested accent spans, which a
+  // `span:last-child` selector could match and later leave detached).
+  const lines = title.querySelectorAll(":scope > span");
+  const line1 = lines[0];
+  const line2 = lines[1];
   if (!line1 || !line2) return;
 
-  const text1 = "Hello";
-  const text2 = "World";
+  // Cycled hero phrases: the greeting plus a few ML / AI-agent one-liners.
+  // `aAccent` / `bAccent` list character index ranges [start, end) to paint in
+  // the accent green (e.g. "print" in phrase 1, "()" in vector.search()).
+  const phrases = [
+    { a: 'print("Hello', aAccent: [[0, 5]], b: 'World")', bAccent: [] },
+    { a: "model", aAccent: [], b: ".fit()", bAccent: [[4, 6]] },
+    { a: "agent", aAccent: [], b: ".run()", bAccent: [[4, 6]] },
+    { a: "vector", aAccent: [], b: ".search()", bAccent: [[7, 9]] },
+  ];
 
-  line1.innerHTML = "";
-  line2.innerHTML = "";
+  const typeSpeed = () => 55 + Math.random() * 25;
+  const eraseSpeed = 28;
+  const holdTime = 1800;
+  const betweenTime = 320;
 
-  const cursor1 = document.createElement("span");
-  cursor1.className = "typewriter-cursor";
-  line1.appendChild(cursor1);
+  const cursor = document.createElement("span");
+  cursor.className = "typewriter-cursor";
 
-  const cursor2 = document.createElement("span");
-  cursor2.className = "typewriter-cursor";
-  cursor2.style.display = "none";
-  line2.appendChild(cursor2);
-
-  let i = 0;
-  function typeLine1() {
-    if (i < text1.length) {
-      cursor1.before(text1.charAt(i));
-      i++;
-      setTimeout(typeLine1, 35 + Math.random() * 20);
-    } else {
-      cursor1.remove();
-      cursor2.style.display = "inline-block";
-      let j = 0;
-      function typeLine2() {
-        if (j < text2.length) {
-          cursor2.before(text2.charAt(j));
-          j++;
-          setTimeout(typeLine2, 35 + Math.random() * 20);
-        } else {
-          const exclamation = document.createElement("span");
-          exclamation.className = "accent-mark";
-          exclamation.textContent = "!";
-          cursor2.before(exclamation);
-          
-          setTimeout(() => {
-            cursor2.style.animation = "none";
-            cursor2.style.opacity = "0";
-          }, 2000);
-        }
+  // Render `text` into `host`, painting characters whose index falls inside an
+  // accent range green, then optionally park the cursor at the end.
+  function draw(host, text, ranges, withCursor) {
+    host.textContent = "";
+    for (let idx = 0; idx < text.length; idx++) {
+      const ch = text[idx];
+      const accented = ranges.some(([s, e]) => idx >= s && idx < e);
+      if (accented) {
+        const span = document.createElement("span");
+        span.className = "accent-char";
+        span.textContent = ch;
+        host.appendChild(span);
+      } else {
+        host.appendChild(document.createTextNode(ch));
       }
-      setTimeout(typeLine2, 100);
+    }
+    if (withCursor) {
+      host.appendChild(cursor);
     }
   }
-  setTimeout(typeLine1, 150);
+
+  let p = 0;
+  function runPhrase() {
+    const { a, aAccent, b, bAccent } = phrases[p];
+    line1.textContent = "";
+    line2.textContent = "";
+    let i = 0;
+    let j = 0;
+
+    function typeA() {
+      draw(line1, a.slice(0, i), aAccent, true);
+      if (i < a.length) {
+        i++;
+        setTimeout(typeA, typeSpeed());
+      } else {
+        draw(line1, a, aAccent, false); // keep the colour, drop the cursor
+        setTimeout(typeB, 120);
+      }
+    }
+
+    function typeB() {
+      draw(line2, b.slice(0, j), bAccent, true);
+      if (j < b.length) {
+        j++;
+        setTimeout(typeB, typeSpeed());
+      } else {
+        setTimeout(eraseB, holdTime);
+      }
+    }
+
+    function eraseB() {
+      if (j > 0) {
+        j--;
+        draw(line2, b.slice(0, j), bAccent, true);
+        setTimeout(eraseB, eraseSpeed);
+      } else {
+        line2.textContent = "";
+        setTimeout(eraseA, 40);
+      }
+    }
+
+    function eraseA() {
+      if (i > 0) {
+        i--;
+        draw(line1, a.slice(0, i), aAccent, true);
+        setTimeout(eraseA, eraseSpeed);
+      } else {
+        line1.textContent = "";
+        p = (p + 1) % phrases.length;
+        setTimeout(runPhrase, betweenTime);
+      }
+    }
+
+    setTimeout(typeA, 150);
+  }
+
+  runPhrase();
 }
 
 const revealObserver = new IntersectionObserver(
@@ -89,23 +141,119 @@ const revealObserver = new IntersectionObserver(
 
 revealItems.forEach((item) => revealObserver.observe(item));
 
+// --- Technology Map Interactive Details & Filtering ---
+const detailsPanel = document.getElementById("stack-details-panel");
+const detailsPlaceholder = detailsPanel ? detailsPanel.querySelector(".stack-details-placeholder") : null;
+const detailsInner = detailsPanel ? detailsPanel.querySelector(".stack-details-inner") : null;
+
 filterButtons.forEach((button) => {
   button.addEventListener("click", () => {
     const filter = button.dataset.filter;
     filterButtons.forEach((item) => item.classList.remove("active"));
     button.classList.add("active");
 
+    // Clear active item and close details panel when switching filters
     stackItems.forEach((item) => {
+      item.classList.remove("is-active");
       const isVisible = filter === "all" || item.dataset.category === filter;
       item.classList.toggle("is-muted", !isVisible);
     });
+
+    if (detailsPanel) {
+      detailsPanel.classList.remove("is-open");
+      setTimeout(() => {
+        if (detailsInner) {
+          detailsInner.style.display = "none";
+          detailsInner.innerHTML = "";
+        }
+        if (detailsPlaceholder) {
+          detailsPlaceholder.style.display = "flex";
+        }
+      }, 360);
+    }
   });
 });
 
 stackItems.forEach((item) => {
   item.addEventListener("click", () => {
+    // If the clicked item is already active, close the details panel
+    if (item.classList.contains("is-active")) {
+      item.classList.remove("is-active");
+      if (detailsPanel) {
+        detailsPanel.classList.remove("is-open");
+        setTimeout(() => {
+          if (detailsInner) {
+            detailsInner.style.display = "none";
+            detailsInner.innerHTML = "";
+          }
+          if (detailsPlaceholder) {
+            detailsPlaceholder.style.display = "flex";
+          }
+        }, 360);
+      }
+      return;
+    }
+
+    // Set active item class
     stackItems.forEach((entry) => entry.classList.remove("is-active"));
     item.classList.add("is-active");
+
+    // Load template details
+    const template = item.querySelector("template");
+    if (template && detailsPanel && detailsInner && detailsPlaceholder) {
+      detailsPlaceholder.style.display = "none";
+      detailsInner.innerHTML = template.innerHTML;
+      detailsInner.style.display = "block";
+      detailsPanel.classList.add("is-open");
+      
+      // Scroll slightly to details panel if it's not fully visible in window
+      const rect = detailsPanel.getBoundingClientRect();
+      if (rect.bottom > window.innerHeight) {
+        detailsPanel.scrollIntoView({ behavior: "smooth", block: "nearest" });
+      }
+    }
+  });
+});
+
+// --- How I Work Timeline Interactivity & Connecting Line Fill ---
+const timeline = document.querySelector(".timeline");
+const timelineTrackFill = document.querySelector(".timeline-track-fill");
+const timelineSteps = document.querySelectorAll(".timeline-step");
+
+if (timeline && timelineTrackFill) {
+  const timelineObserver = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          timelineTrackFill.style.width = "100%";
+          timelineObserver.unobserve(entry.target);
+        }
+      });
+    },
+    { threshold: 0.25 }
+  );
+  timelineObserver.observe(timeline);
+}
+
+timelineSteps.forEach((step) => {
+  step.addEventListener("click", () => {
+    const isExpanded = step.classList.contains("is-expanded");
+    
+    // Close other steps to function like a clean accordion
+    timelineSteps.forEach((s) => s.classList.remove("is-expanded"));
+    
+    // Open clicked step if not already open
+    if (!isExpanded) {
+      step.classList.add("is-expanded");
+    }
+  });
+  
+  // Support trigger via Enter key for accessibility
+  step.addEventListener("keydown", (e) => {
+    if (e.key === "Enter" || e.key === " ") {
+      e.preventDefault();
+      step.click();
+    }
   });
 });
 
@@ -1023,8 +1171,10 @@ function initScrollTimeline() {
 
   function drawTimelinePath() {
     const flowRect = journey.getBoundingClientRect();
-    svg.setAttribute("width", flowRect.width);
-    svg.setAttribute("height", flowRect.height);
+    // Use the un-rotated layout box: getBoundingClientRect returns the tilted
+    // bounding box, which would stretch the path away from the CSS-placed markers.
+    svg.setAttribute("width", journey.offsetWidth);
+    svg.setAttribute("height", journey.offsetHeight);
 
     const points = [];
 
@@ -1041,6 +1191,7 @@ function initScrollTimeline() {
 
     const isMobileLayout = window.innerWidth <= 860;
     const cubics = [];
+    let startPt = points[0];
 
     if (isMobileLayout) {
       // Stacked list: simple vertical flow between markers
@@ -1055,45 +1206,71 @@ function initScrollTimeline() {
         });
       }
     } else {
-      // Serpentine: level sweeps between edges, with a rounded U-turn
-      // wrapping around the outside of each stop's label
-      const width = flowRect.width;
-      const reach = Math.min(320, width * 0.3);
-      const hug = 36; // how far the route runs level past a stop before turning
-      const bulge = 38; // how far the turn apex sits beyond the marker
-      const vTan = 32; // vertical tangent strength at the apex
+      // Straight, non-drifting serpentine: 4 horizontal rows connected by
+      // U-turns on the sides. Starts top-left (Node 1), loops right (Node 2),
+      // loops left (Node 3), loops right (Node 4), and ends bottom-left (Node 5).
+      const W = journey.offsetWidth;
+      const H = journey.offsetHeight;
+      const k = 0.55; // bezier handle ratio
 
-      for (let i = 1; i < points.length; i++) {
-        const p1 = points[i - 1];
-        const p2 = points[i];
+      // 4 row heights
+      const yA = 0.10 * H;
+      const yB = 0.36 * H;
+      const yC = 0.62 * H;
+      const yD = 0.88 * H;
 
-        if (i === 1) {
-          // Opening sweep: level out of the first stop, level into the next
-          cubics.push({
-            c: `C ${p1.x + reach} ${p1.y}, ${p2.x - reach} ${p2.y}, ${p2.x} ${p2.y}`,
-            endsNode: true,
-          });
-        } else {
-          const dir = p1.x > p2.x ? 1 : -1; // 1 = turning at right edge
-          const apexX =
-            dir > 0 ? Math.min(width - 6, p1.x + bulge) : Math.max(6, p1.x - bulge);
-          const apexY = p1.y + (p2.y - p1.y) * 0.85;
+      // 2 straight vertical rails (no drift) - positioned at 15% and 85%
+      const L = 0.15 * W;
+      const R = 0.85 * W;
 
-          // Around the outside of the label...
-          cubics.push({
-            c: `C ${p1.x + dir * hug} ${p1.y}, ${apexX} ${apexY - vTan}, ${apexX} ${apexY}`,
-            endsNode: false,
-          });
-          // ...then level across into the next stop
-          cubics.push({
-            c: `C ${apexX} ${apexY + vTan}, ${p2.x + dir * reach} ${p2.y}, ${p2.x} ${p2.y}`,
-            endsNode: true,
-          });
+      // Bulge is exactly the vertical radius of the U-turn to ensure perfectly circular curves
+      const bulge = (yB - yA) / 2;
+
+      const apex1 = { x: R + bulge, y: (yA + yB) / 2 }; // Node 2
+      const apex2 = { x: L - bulge, y: (yB + yC) / 2 }; // Node 3
+      const apex3 = { x: R + bulge, y: (yC + yD) / 2 }; // Node 4
+
+      startPt = { x: L - bulge, y: yA }; // Node 1
+
+      // Set node style properties dynamically so that markers align perfectly with curves on all screen widths
+      const nodeCoords = [
+        { x: L - bulge, y: yA },
+        { x: apex1.x, y: apex1.y },
+        { x: apex2.x, y: apex2.y },
+        { x: apex3.x, y: apex3.y },
+        { x: L - bulge, y: yD }
+      ];
+
+      nodes.forEach((node, idx) => {
+        if (nodeCoords[idx]) {
+          node.style.setProperty("--x", `${(nodeCoords[idx].x / W) * 100}%`);
+          node.style.setProperty("--y", `${(nodeCoords[idx].y / H) * 100}%`);
         }
-      }
+      });
+
+      // A rounded U-turn through an apex: enters at (ax,ay) travelling level,
+      // is vertical at the apex, and exits level toward (bx,by).
+      const addTurn = (ax, ay, apex, bx, by) => {
+        cubics.push({
+          c: `C ${ax + (apex.x - ax) * k} ${ay}, ${apex.x} ${apex.y - (apex.y - ay) * k}, ${apex.x} ${apex.y}`,
+          endsNode: true,
+        });
+        cubics.push({
+          c: `C ${apex.x} ${apex.y + (by - apex.y) * k}, ${bx + (apex.x - bx) * k} ${by}, ${bx} ${by}`,
+          endsNode: false,
+        });
+      };
+
+      cubics.push({ c: `L ${R} ${yA}`, endsNode: false }); // row 1 flat (L → R)
+      addTurn(R, yA, apex1, R, yB); // U-turn 1 to Row 2 (apex = Node 2)
+      cubics.push({ c: `L ${L} ${yB}`, endsNode: false }); // row 2 flat (R → L)
+      addTurn(L, yB, apex2, L, yC); // U-turn 2 to Row 3 (apex = Node 3)
+      cubics.push({ c: `L ${R} ${yC}`, endsNode: false }); // row 3 flat (L → R)
+      addTurn(R, yC, apex3, R, yD); // U-turn 3 to Row 4 (apex = Node 4)
+      cubics.push({ c: `L ${L - bulge} ${yD}`, endsNode: true }); // row 4 flat (R → L, ends at Node 5)
     }
 
-    let pathD = `M ${points[0].x} ${points[0].y}`;
+    let pathD = `M ${startPt.x} ${startPt.y}`;
     const prefixPaths = [];
     cubics.forEach((seg) => {
       pathD += " " + seg.c;
@@ -1124,16 +1301,80 @@ function initScrollTimeline() {
   // Draw the path initially
   drawTimelinePath();
 
+  // 0. Visiting card sequential scroll animations.
+  // Wheel scrolling arrives in coarse steps (one notch can cover ~15% of the
+  // sticky range), so phase values are eased toward the scroll-derived target
+  // each frame instead of applied raw — otherwise the red takeover jumps
+  // most of its range in a single tick and reads as a flash.
+  const visitingCardSpacer = document.querySelector(".visiting-card-spacer");
+  const visitingCard = document.querySelector(".visiting-card");
+  const strikeLine = document.querySelector(".strike-line");
+  const textVengeance = document.querySelector(".text-vengeance");
+  const visitingTitle = document.querySelector(".visiting-title");
+  const textOriginalWrapper = document.querySelector(".text-original-wrapper");
+  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+
+  let visitingTarget = 0;
+  let visitingCurrent = -1; // sentinel: first update paints without tweening
+  let visitingRaf = null;
+
+  // Map overall progress to a localized segment
+  const getActiveProgress = (p, start, end) => {
+    if (p < start) return 0;
+    if (p > end) return 1;
+    return (p - start) / (end - start);
+  };
+
+  function applyVisitingPhases(progress) {
+    // Contiguous phase windows — no dead zones between beats, and the red
+    // takeover gets the widest window so it blends rather than snaps.
+    const nameProgress = getActiveProgress(progress, 0.0, 0.12);
+    const textOriginalProgress = getActiveProgress(progress, 0.14, 0.28);
+    const strikeProgress = getActiveProgress(progress, 0.3, 0.44);
+    const redProgress = getActiveProgress(progress, 0.46, 0.72);
+    const batProgress = getActiveProgress(progress, 0.74, 0.92);
+
+    // Phase 1: Name fades in
+    if (visitingTitle) {
+      visitingTitle.style.opacity = nameProgress;
+    }
+
+    // Phase 2: Next text fades in
+    if (textOriginalWrapper) {
+      textOriginalWrapper.style.opacity = textOriginalProgress;
+    }
+
+    // Phase 3: Next text gets cancelled
+    if (strikeLine) {
+      strikeLine.style.width = `${strikeProgress * 100}%`;
+    }
+
+    // Phase 4: Red color transition and vengeance text reveal
+    visitingCard.style.setProperty("--v-progress", redProgress);
+    if (textVengeance) {
+      textVengeance.style.opacity = redProgress;
+      textVengeance.style.transform = `translateY(${12 - redProgress * 12}px)`;
+    }
+
+    // Phase 5: Bat symbol appears
+    visitingCard.style.setProperty("--bat-progress", batProgress);
+  }
+
+  function smoothVisitingStep() {
+    const diff = visitingTarget - visitingCurrent;
+    if (Math.abs(diff) < 0.0015) {
+      visitingCurrent = visitingTarget;
+      applyVisitingPhases(visitingCurrent);
+      visitingRaf = null;
+      return;
+    }
+    visitingCurrent += diff * 0.16;
+    applyVisitingPhases(visitingCurrent);
+    visitingRaf = requestAnimationFrame(smoothVisitingStep);
+  }
+
   function updateTimeline() {
     const windowHeight = window.innerHeight;
-
-    // 0. Visiting card sequential scroll animations
-    const visitingCardSpacer = document.querySelector(".visiting-card-spacer");
-    const visitingCard = document.querySelector(".visiting-card");
-    const strikeLine = document.querySelector(".strike-line");
-    const textVengeance = document.querySelector(".text-vengeance");
-    const visitingTitle = document.querySelector(".visiting-title");
-    const textOriginalWrapper = document.querySelector(".text-original-wrapper");
 
     if (visitingCard) {
       let progress = 0;
@@ -1159,43 +1400,14 @@ function initScrollTimeline() {
         progress = Math.min(1, Math.max(0, scrollDistance / totalDistance));
       }
 
-      // Helper function to map overall progress to a localized segment
-      const getActiveProgress = (p, start, end) => {
-        if (p < start) return 0;
-        if (p > end) return 1;
-        return (p - start) / (end - start);
-      };
-
-      const nameProgress = getActiveProgress(progress, 0.0, 0.1);
-      const textOriginalProgress = getActiveProgress(progress, 0.15, 0.3);
-      const strikeProgress = getActiveProgress(progress, 0.35, 0.5);
-      const redProgress = getActiveProgress(progress, 0.55, 0.75);
-      const batProgress = getActiveProgress(progress, 0.8, 0.95);
-
-      // Phase 1: Name fades in
-      if (visitingTitle) {
-        visitingTitle.style.opacity = nameProgress;
+      visitingTarget = progress;
+      if (visitingCurrent < 0 || reduceMotion.matches) {
+        // First paint (or reduced motion): apply directly, no tween
+        visitingCurrent = progress;
+        applyVisitingPhases(progress);
+      } else if (!visitingRaf) {
+        visitingRaf = requestAnimationFrame(smoothVisitingStep);
       }
-
-      // Phase 2: Next text fades in
-      if (textOriginalWrapper) {
-        textOriginalWrapper.style.opacity = textOriginalProgress;
-      }
-
-      // Phase 3: Next text gets cancelled
-      if (strikeLine) {
-        strikeLine.style.width = `${strikeProgress * 100}%`;
-      }
-
-      // Phase 4: Red color transition and vengeance text reveal
-      visitingCard.style.setProperty('--v-progress', redProgress);
-      if (textVengeance) {
-        textVengeance.style.opacity = redProgress;
-        textVengeance.style.transform = `translateY(${12 - (redProgress * 12)}px)`;
-      }
-
-      // Phase 5: Bat symbol appears
-      visitingCard.style.setProperty('--bat-progress', batProgress);
     }
 
     // 0b. Card Stacking 3D Depth Animation
@@ -1467,3 +1679,30 @@ function initTechSwap() {
 
 // Initialize the technology swap widget
 initTechSwap();
+
+// Mobile navigation toggle
+const siteNav = document.querySelector(".site-nav");
+const navToggle = document.querySelector(".nav-toggle");
+
+if (siteNav && navToggle) {
+  navToggle.addEventListener("click", () => {
+    const isOpen = siteNav.classList.toggle("open");
+    navToggle.setAttribute("aria-expanded", String(isOpen));
+  });
+
+  // Close the menu after choosing a destination
+  siteNav.querySelectorAll(".nav-links a").forEach((link) => {
+    link.addEventListener("click", () => {
+      siteNav.classList.remove("open");
+      navToggle.setAttribute("aria-expanded", "false");
+    });
+  });
+
+  // Close when clicking anywhere outside the menu
+  document.addEventListener("click", (event) => {
+    if (siteNav.classList.contains("open") && !siteNav.contains(event.target)) {
+      siteNav.classList.remove("open");
+      navToggle.setAttribute("aria-expanded", "false");
+    }
+  });
+}
