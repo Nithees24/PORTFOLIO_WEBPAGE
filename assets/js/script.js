@@ -1,5 +1,10 @@
 const root = document.documentElement;
 const toggle = document.querySelector(".theme-toggle");
+
+// While the theme wave (view transition) plays, page-level animation work is
+// frozen so the browser can cache the old/new snapshots instead of
+// re-rasterizing the whole viewport on every frame.
+let themeWaveActive = false;
 const glow = document.querySelector(".cursor-glow");
 const revealItems = document.querySelectorAll(".reveal");
 const filterButtons = document.querySelectorAll(".filter-button");
@@ -7,8 +12,72 @@ const stackItems = document.querySelectorAll(".stack-item");
 const tiltCards = document.querySelectorAll("[data-tilt]");
 
 if (toggle) {
+  const syncThemeToggle = () => {
+    const isDark = root.classList.contains("dark");
+    toggle.setAttribute("aria-pressed", String(isDark));
+    toggle.setAttribute(
+      "aria-label",
+      isDark ? "Switch to light mode" : "Switch to dark mode"
+    );
+  };
+
+  syncThemeToggle(); // reflect the theme applied by the inline head script
+
+  const applyTheme = () => {
+    const isDark = root.classList.toggle("dark");
+    try {
+      localStorage.setItem("theme", isDark ? "dark" : "light");
+    } catch (e) {}
+    syncThemeToggle();
+  };
+
   toggle.addEventListener("click", () => {
-    root.classList.toggle("dark");
+    const reduceMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)"
+    ).matches;
+
+    // No View Transitions support (or reduced motion) -> just switch instantly.
+    if (!document.startViewTransition || reduceMotion) {
+      applyTheme();
+      return;
+    }
+
+    // Wave originates from the centre of the toggle button and expands to the
+    // farthest corner, so the new theme washes across the whole page.
+    const rect = toggle.getBoundingClientRect();
+    const x = rect.left + rect.width / 2;
+    const y = rect.top + rect.height / 2;
+    const endRadius = Math.hypot(
+      Math.max(x, window.innerWidth - x),
+      Math.max(y, window.innerHeight - y)
+    );
+
+    // Freeze the canvas loop and CSS transitions/animations for the duration
+    // of the wave; otherwise every frame they produce invalidates the live
+    // view-transition snapshot and forces a full-viewport repaint.
+    themeWaveActive = true;
+    root.classList.add("theme-wave");
+
+    const transition = document.startViewTransition(applyTheme);
+    transition.ready.then(() => {
+      root.animate(
+        {
+          clipPath: [
+            `circle(0px at ${x}px ${y}px)`,
+            `circle(${endRadius}px at ${x}px ${y}px)`,
+          ],
+        },
+        {
+          duration: 620,
+          easing: "cubic-bezier(0.4, 0, 0.2, 1)",
+          pseudoElement: "::view-transition-new(root)",
+        }
+      );
+    });
+    transition.finished.finally(() => {
+      themeWaveActive = false;
+      root.classList.remove("theme-wave");
+    });
   });
 }
 
@@ -146,11 +215,37 @@ const detailsPanel = document.getElementById("stack-details-panel");
 const detailsPlaceholder = detailsPanel ? detailsPanel.querySelector(".stack-details-placeholder") : null;
 const detailsInner = detailsPanel ? detailsPanel.querySelector(".stack-details-inner") : null;
 
+// --- Segmented filter control: sliding indicator ---
+const stackControls = document.querySelector(".stack-controls");
+const filterIndicator = stackControls
+  ? stackControls.querySelector(".filter-indicator")
+  : null;
+
+const moveFilterIndicator = (button, instant = false) => {
+  if (!filterIndicator || !stackControls || !button) return;
+
+  // For instant placement, suppress the slide synchronously (no rAF, which
+  // gets paused when the tab is backgrounded) then restore the transition.
+  if (instant) filterIndicator.style.transition = "none";
+
+  const rect = button.getBoundingClientRect();
+  const parentRect = stackControls.getBoundingClientRect();
+  filterIndicator.style.width = `${rect.width}px`;
+  filterIndicator.style.transform = `translateX(${rect.left - parentRect.left - 5}px)`;
+  filterIndicator.style.opacity = "1";
+
+  if (instant) {
+    void filterIndicator.offsetWidth; // commit the jump without animating
+    filterIndicator.style.transition = ""; // fall back to the stylesheet transition
+  }
+};
+
 filterButtons.forEach((button) => {
   button.addEventListener("click", () => {
     const filter = button.dataset.filter;
     filterButtons.forEach((item) => item.classList.remove("active"));
     button.classList.add("active");
+    moveFilterIndicator(button);
 
     // Clear active item and close details panel when switching filters
     stackItems.forEach((item) => {
@@ -173,6 +268,20 @@ filterButtons.forEach((button) => {
     }
   });
 });
+
+// Place the filter indicator under the active button (instant, no fly-in)
+const initFilterIndicator = () => {
+  const active = stackControls
+    ? stackControls.querySelector(".filter-button.active")
+    : null;
+  if (active) moveFilterIndicator(active, true);
+};
+initFilterIndicator();
+window.addEventListener("load", initFilterIndicator);
+window.addEventListener("resize", initFilterIndicator);
+if (document.fonts && document.fonts.ready) {
+  document.fonts.ready.then(initFilterIndicator);
+}
 
 stackItems.forEach((item) => {
   item.addEventListener("click", () => {
@@ -289,6 +398,10 @@ let globalAccuracy = 99.74;
 
 let hoveredNode = null;
 
+const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+const AUTO_SPIN = prefersReducedMotion ? 0 : 0.0016;
+let heroInView = true;
+
 // Interactive 3D drag-to-rotate state (momentum-based)
 let baseRotationX = 0.24;
 let baseRotationY = 0.0;
@@ -296,7 +409,7 @@ let rotationX = 0.24;
 let rotationY = 0.0;
 let rotationZ = 0.0;
 let velocityX = 0.0;
-let velocityY = 0.0016; // default auto-rotation speed
+let velocityY = AUTO_SPIN; // default auto-rotation speed
 let isDragging = false;
 let lastPointerPos = { x: 0, y: 0 };
 
@@ -516,6 +629,44 @@ function generateConnections(nodes) {
 let neuralNodes = generateBrain();
 let neuralConnections = generateConnections(neuralNodes);
 
+// Adjacency map so a firing node can relay signals to its neighbours
+const nodeNeighbors = new Map();
+neuralConnections.forEach(c => {
+  if (!nodeNeighbors.has(c.source.id)) nodeNeighbors.set(c.source.id, []);
+  if (!nodeNeighbors.has(c.target.id)) nodeNeighbors.set(c.target.id, []);
+  nodeNeighbors.get(c.source.id).push({ conn: c, next: c.target });
+  nodeNeighbors.get(c.target.id).push({ conn: c, next: c.source });
+});
+const hubNodes = neuralNodes.filter(n => n.baseSize >= 7);
+
+let pulseRings = [];
+const PARTICLE_CAP = 70;
+
+function fireNode(node, energy) {
+  node.pulseProgress = 1.0;
+  pulseRings.push({ node, progress: 0 });
+  if (energy <= 0 || particles.length >= PARTICLE_CAP) return;
+
+  const neighbors = nodeNeighbors.get(node.id);
+  if (!neighbors || !neighbors.length) return;
+
+  const branches = Math.min(neighbors.length, 1 + Math.floor(Math.random() * 2));
+  const shuffled = [...neighbors].sort(() => Math.random() - 0.5);
+  for (let i = 0; i < branches; i++) {
+    const { conn, next } = shuffled[i];
+    particles.push({
+      source: node,
+      target: next,
+      conn,
+      progress: 0,
+      speed: 0.012 + Math.random() * 0.014,
+      rgb: Math.random() < 0.4 ? "22, 106, 79" : (Math.random() < 0.5 ? "40, 44, 52" : "0, 0, 0"),
+      size: Math.random() * 1.5 + 1.2,
+      energy: energy - 1
+    });
+  }
+}
+
 const floatingLabels = [
   { text: "L01: FRONTAL_LOBE", cx: 0.52, cy: -0.22, cz: 0.42, targetRegion: "FRONTAL_LOBE" },
   { text: "L02: PARIETAL_LOBE", cx: 0.52, cy: -0.32, cz: -0.12, targetRegion: "PARIETAL_LOBE" },
@@ -705,51 +856,91 @@ function updateAndDrawBackground(ctx, rect) {
 }
 
 function updateAndDrawParticles(ctx, angleX, angleY, angleZ, centerX, centerY, scale) {
+  const project = (p, t) => {
+    const x = p.source.x + (p.target.x - p.source.x) * t;
+    const y = p.source.y + (p.target.y - p.source.y) * t;
+    const z = p.source.z + (p.target.z - p.source.z) * t;
+    const rot = rotate3D(x, y, z, angleX, angleY, angleZ);
+    const perspective = fov / (fov + rot.z);
+    return {
+      x: centerX + rot.x * scale * perspective,
+      y: centerY + rot.y * scale * perspective,
+      perspective
+    };
+  };
+
   for (let i = particles.length - 1; i >= 0; i--) {
     const p = particles[i];
     p.progress += p.speed;
+    p.conn.flowGlow = 1.0; // keep the synapse lit while a signal travels along it
 
     if (p.progress >= 1) {
-      p.target.pulseProgress = 1.0;
       particles.splice(i, 1);
-    } else {
-      const x = p.source.x + (p.target.x - p.source.x) * p.progress;
-      const y = p.source.y + (p.target.y - p.source.y) * p.progress;
-      const z = p.source.z + (p.target.z - p.source.z) * p.progress;
-
-      const rot = rotate3D(x, y, z, angleX, angleY, angleZ);
-      const perspective = fov / (fov + rot.z);
-      const sx = centerX + rot.x * scale * perspective;
-      const sy = centerY + rot.y * scale * perspective;
-
-      ctx.beginPath();
-      ctx.arc(sx, sy, p.size * perspective, 0, Math.PI * 2);
-      ctx.fillStyle = p.color;
-      ctx.shadowBlur = 6;
-      ctx.shadowColor = p.color;
-      ctx.fill();
+      fireNode(p.target, p.energy); // relay the signal onward (cascade)
+      continue;
     }
+
+    const head = project(p, p.progress);
+    const tail = project(p, Math.max(0, p.progress - 0.22));
+
+    // Comet trail fading toward the tail
+    const trailGrad = ctx.createLinearGradient(tail.x, tail.y, head.x, head.y);
+    trailGrad.addColorStop(0, `rgba(${p.rgb}, 0)`);
+    trailGrad.addColorStop(1, `rgba(${p.rgb}, 0.5)`);
+    ctx.beginPath();
+    ctx.moveTo(tail.x, tail.y);
+    ctx.lineTo(head.x, head.y);
+    ctx.strokeStyle = trailGrad;
+    ctx.lineWidth = 1.4 * head.perspective;
+    ctx.stroke();
+
+    ctx.beginPath();
+    ctx.arc(head.x, head.y, p.size * head.perspective, 0, Math.PI * 2);
+    ctx.fillStyle = `rgba(${p.rgb}, 0.9)`;
+    ctx.shadowBlur = 6;
+    ctx.shadowColor = `rgba(${p.rgb}, 0.9)`;
+    ctx.fill();
   }
   ctx.shadowBlur = 0;
 }
 
+function drawPulseRings(ctx) {
+  for (let i = pulseRings.length - 1; i >= 0; i--) {
+    const ring = pulseRings[i];
+    ring.progress += 0.04;
+    if (ring.progress >= 1) {
+      pulseRings.splice(i, 1);
+      continue;
+    }
+    const node = ring.node;
+    const radius = node.projectedRadius * (1.5 + ring.progress * 3.4);
+    const alpha = (1 - ring.progress) * 0.32;
+    ctx.beginPath();
+    ctx.arc(node.screenX, node.screenY, radius, 0, Math.PI * 2);
+    ctx.strokeStyle = `rgba(22, 106, 79, ${alpha})`;
+    ctx.lineWidth = 0.4 + (1 - ring.progress) * 1.1;
+    ctx.stroke();
+  }
+}
+
 function spawnParticlesPeriodically() {
-  if (Math.random() < 0.16 && neuralConnections.length) {
-    const conn = neuralConnections[Math.floor(Math.random() * neuralConnections.length)];
-    particles.push({
-      source: conn.source,
-      target: conn.target,
-      progress: 0,
-      speed: 0.008 + Math.random() * 0.012,
-      color: Math.random() < 0.5 ? "#000000" : "#3c3c3c",
-      size: Math.random() * 1.5 + 1.2,
-    });
+  if (!prefersReducedMotion) {
+    // Ambient single-hop firings anywhere in the brain
+    if (Math.random() < 0.05 && particles.length < PARTICLE_CAP) {
+      fireNode(neuralNodes[Math.floor(Math.random() * neuralNodes.length)], 1);
+    }
+
+    // Occasional deeper "thought burst" cascading out from a hub node
+    if (Math.random() < 0.01 && particles.length < PARTICLE_CAP * 0.6) {
+      const pool = hubNodes.length ? hubNodes : neuralNodes;
+      fireNode(pool[Math.floor(Math.random() * pool.length)], 3);
+    }
   }
 
-  if (Math.random() < 0.006) {
+  if (Math.random() < 0.025) {
     epochCounter += 1;
-    globalLoss = Math.max(0.0005, Math.min(0.0085, globalLoss + (Math.random() * 0.0002 - 0.0001)));
-    globalAccuracy = Math.max(99.2, Math.min(99.98, globalAccuracy + (Math.random() * 0.03 - 0.015)));
+    globalLoss = Math.max(0.0005, Math.min(0.0085, globalLoss + (Math.random() * 0.0002 - 0.00011)));
+    globalAccuracy = Math.max(99.2, Math.min(99.98, globalAccuracy + (Math.random() * 0.03 - 0.014)));
   }
 }
 
@@ -768,10 +959,10 @@ function drawHUDReadout(ctx, rect) {
   
   ctx.fillStyle = "rgba(21, 21, 21, 0.72)";
   ctx.fillText(`SYSTEM STATUS: ACTIVE`, hudX + 10, hudY + 34);
-  ctx.fillText(`SYNAPSE COUNT: ${neuralNodes.length} NODES`, hudX + 10, hudY + 48);
-  ctx.fillText(`CONNECTIONS: ${neuralConnections.length} TRACES`, hudX + 10, hudY + 62);
-  ctx.fillText(`SIGNAL COHERENCE: 99.87%`, hudX + 10, hudY + 76);
-  ctx.fillText(`BANDWIDTH: 4.8 GB/s`, hudX + 10, hudY + 90);
+  ctx.fillText(`EPOCH: ${epochCounter}  LOSS: ${globalLoss.toFixed(4)}`, hudX + 10, hudY + 48);
+  ctx.fillText(`ACCURACY: ${globalAccuracy.toFixed(2)}%`, hudX + 10, hudY + 62);
+  ctx.fillText(`SYNAPSES: ${neuralNodes.length} NODES / ${neuralConnections.length} TRACES`, hudX + 10, hudY + 76);
+  ctx.fillText(`ACTIVE SIGNALS: ${String(particles.length).padStart(2, "0")}`, hudX + 10, hudY + 90);
 }
 
 function drawHoverTooltip(ctx, rect) {
@@ -818,6 +1009,13 @@ function drawHoverTooltip(ctx, rect) {
 }
 
 function drawSystem(now = 0) {
+  if (!heroInView) return; // paused off-screen; the IntersectionObserver restarts the loop
+  if (themeWaveActive) {
+    // Hold the last frame during the theme wave; a repainting canvas would
+    // invalidate the view-transition snapshot every frame
+    requestAnimationFrame(drawSystem);
+    return;
+  }
   if (now - lastFrameTime < 1000 / 60) {
     requestAnimationFrame(drawSystem);
     return;
@@ -831,6 +1029,10 @@ function drawSystem(now = 0) {
   ctx.clearRect(0, 0, rect.width, rect.height);
 
   const isMobile = rect.width < 768;
+
+  // On mobile the hero text sits directly over the brain, so dim the whole
+  // rendering there to keep the headline readable
+  ctx.globalAlpha = isMobile ? 0.4 : 1;
   const centerX = isMobile ? rect.width * 0.5 : rect.width * 0.42;
   const centerY = isMobile ? rect.height * 0.35 : rect.height * 0.5;
 
@@ -857,7 +1059,7 @@ function drawSystem(now = 0) {
     // Damped return to default states: vertical speed decays to 0,
     // horizontal speed returns to default auto speed (0.0016)
     velocityX *= 0.95;
-    velocityY = velocityY * 0.95 + 0.0016 * 0.05;
+    velocityY = velocityY * 0.95 + AUTO_SPIN * 0.05;
 
     baseRotationX += velocityX;
     baseRotationY += velocityY;
@@ -866,10 +1068,10 @@ function drawSystem(now = 0) {
   // Smoothly interpolate rotations to target base rotation
   rotationX += (baseRotationX - rotationX) * 0.08;
   rotationY += (baseRotationY - rotationY) * 0.08;
-  rotationZ = Math.cos(time * 0.9) * 0.04;
+  rotationZ = prefersReducedMotion ? 0 : Math.cos(time * 0.9) * 0.04;
 
   // Add the gentle bobbing motion on top of the base rotation
-  const bobbingX = Math.sin(time * 1.36) * 0.08;
+  const bobbingX = prefersReducedMotion ? 0 : Math.sin(time * 1.36) * 0.08;
   
   const angleX = rotationX + bobbingX;
   const angleY = rotationY;
@@ -927,6 +1129,7 @@ function drawSystem(now = 0) {
   // Depth-sort connections & draw them
   neuralConnections.forEach(c => {
     c.zDepth = (c.source.zRot + c.target.zRot) / 2;
+    if (c.flowGlow) c.flowGlow *= 0.92; // fade the traveling-signal glow
   });
   neuralConnections.sort((a, b) => a.zDepth - b.zDepth);
 
@@ -940,7 +1143,7 @@ function drawSystem(now = 0) {
 
     const highlight = Math.max(source.pulseProgress, target.pulseProgress);
     const hoverVal = Math.max(source.hoverEffect, target.hoverEffect);
-    opacity += highlight * 0.22 + hoverVal * 0.18;
+    opacity += highlight * 0.22 + hoverVal * 0.18 + (c.flowGlow || 0) * 0.2;
 
     ctx.beginPath();
     ctx.moveTo(source.screenX, source.screenY);
@@ -1033,6 +1236,7 @@ function drawSystem(now = 0) {
     ctx.stroke();
   });
 
+  drawPulseRings(ctx);
   updateAndDrawParticles(ctx, angleX, angleY, angleZ, centerX, centerY, scale);
   spawnParticlesPeriodically();
   drawHUDReadout(ctx, rect);
@@ -1119,6 +1323,20 @@ window.addEventListener("selectstart", (event) => {
 window.addEventListener("resize", syncCanvasSize);
 syncCanvasSize();
 
+// Pause the render loop while the hero is scrolled out of view to save CPU/battery
+if ("IntersectionObserver" in window) {
+  new IntersectionObserver((entries) => {
+    const visible = entries[0].isIntersecting;
+    if (visible && !heroInView) {
+      heroInView = true;
+      lastFrameTime = 0;
+      requestAnimationFrame(drawSystem);
+    } else {
+      heroInView = visible;
+    }
+  }, { threshold: 0.02 }).observe(canvas);
+}
+
 if (video) {
   video.style.display = "none";
 }
@@ -1194,30 +1412,77 @@ function initScrollTimeline() {
     let startPt = points[0];
 
     if (isMobileLayout) {
-      // Stacked list: simple vertical flow between markers
-      for (let i = 1; i < points.length; i++) {
-        const p1 = points[i - 1];
-        const p2 = points[i];
-        const cpY1 = p1.y + (p2.y - p1.y) * 0.45;
-        const cpY2 = p2.y - (p2.y - p1.y) * 0.45;
+      // Vertical zig-zag: stops alternate left/right and the route snakes
+      // down between them like a subway map — straight rails past each
+      // card, rounded corners, and side crossings only in the clear band
+      // between cards, never through text
+      const W = journey.offsetWidth;
+      const xInset = 0.08 * W;
+
+      // Alternate sides first: label wrap (and so card height) depends on x
+      nodes.forEach((node, i) => {
+        node.style.setProperty("--x", `${i % 2 === 0 ? xInset : W - xInset}px`);
+      });
+
+      const cardHeights = Array.from(nodes).map(
+        (node) => node.querySelector(".journey-content").getBoundingClientRect().height
+      );
+
+      // Stack cards with a fixed clear band; markers sit at card centres.
+      // The flow container is sized to fit whatever the labels measure.
+      const pad = 24;
+      const band = 56;
+      const ys = [];
+      let yCursor = pad + cardHeights[0] / 2;
+      cardHeights.forEach((h, i) => {
+        if (i > 0) yCursor += cardHeights[i - 1] / 2 + band + h / 2;
+        ys.push(yCursor);
+      });
+      const H = yCursor + cardHeights[cardHeights.length - 1] / 2 + pad;
+      journey.style.height = `${H}px`;
+      svg.setAttribute("height", H);
+
+      const nodeCoords = Array.from(nodes).map((_, i) => ({
+        x: i % 2 === 0 ? xInset : W - xInset,
+        y: ys[i],
+      }));
+
+      nodes.forEach((node, i) => {
+        node.style.setProperty("--y", `${nodeCoords[i].y}px`);
+      });
+
+      startPt = nodeCoords[0];
+
+      const k = 0.5523; // circular-arc bezier constant
+      for (let i = 1; i < nodeCoords.length; i++) {
+        const p1 = nodeCoords[i - 1];
+        const p2 = nodeCoords[i];
+        const yc = p1.y + cardHeights[i - 1] / 2 + band / 2; // centre of the clear band
+        const r = Math.min(26, band / 2 - 2);
+        const dir = p2.x > p1.x ? 1 : -1;
         cubics.push({
-          c: `C ${p1.x} ${cpY1}, ${p2.x} ${cpY2}, ${p2.x} ${p2.y}`,
-          endsNode: true,
+          c:
+            `L ${p1.x} ${yc - r} ` +
+            `C ${p1.x} ${yc - r + k * r}, ${p1.x + dir * (1 - k) * r} ${yc}, ${p1.x + dir * r} ${yc} ` +
+            `L ${p2.x - dir * r} ${yc} ` +
+            `C ${p2.x - dir * (1 - k) * r} ${yc}, ${p2.x} ${yc + r - k * r}, ${p2.x} ${yc + r}`,
+          endsNode: false,
         });
+        cubics.push({ c: `L ${p2.x} ${p2.y}`, endsNode: true });
       }
     } else {
-      // Straight, non-drifting serpentine: 4 horizontal rows connected by
+      // Straight, non-drifting serpentine: 3 horizontal rows connected by
       // U-turns on the sides. Starts top-left (Node 1), loops right (Node 2),
-      // loops left (Node 3), loops right (Node 4), and ends bottom-left (Node 5).
+      // loops left (Node 3), and ends bottom-right (Node 4).
+      journey.style.height = ""; // drop the mobile-computed height
       const W = journey.offsetWidth;
       const H = journey.offsetHeight;
       const k = 0.55; // bezier handle ratio
 
-      // 4 row heights
-      const yA = 0.10 * H;
-      const yB = 0.36 * H;
-      const yC = 0.62 * H;
-      const yD = 0.88 * H;
+      // 3 row heights
+      const yA = 0.14 * H;
+      const yB = 0.50 * H;
+      const yC = 0.86 * H;
 
       // 2 straight vertical rails (no drift) - positioned at 15% and 85%
       const L = 0.15 * W;
@@ -1228,7 +1493,6 @@ function initScrollTimeline() {
 
       const apex1 = { x: R + bulge, y: (yA + yB) / 2 }; // Node 2
       const apex2 = { x: L - bulge, y: (yB + yC) / 2 }; // Node 3
-      const apex3 = { x: R + bulge, y: (yC + yD) / 2 }; // Node 4
 
       startPt = { x: L - bulge, y: yA }; // Node 1
 
@@ -1237,8 +1501,7 @@ function initScrollTimeline() {
         { x: L - bulge, y: yA },
         { x: apex1.x, y: apex1.y },
         { x: apex2.x, y: apex2.y },
-        { x: apex3.x, y: apex3.y },
-        { x: L - bulge, y: yD }
+        { x: R + bulge, y: yC }
       ];
 
       nodes.forEach((node, idx) => {
@@ -1265,9 +1528,7 @@ function initScrollTimeline() {
       addTurn(R, yA, apex1, R, yB); // U-turn 1 to Row 2 (apex = Node 2)
       cubics.push({ c: `L ${L} ${yB}`, endsNode: false }); // row 2 flat (R → L)
       addTurn(L, yB, apex2, L, yC); // U-turn 2 to Row 3 (apex = Node 3)
-      cubics.push({ c: `L ${R} ${yC}`, endsNode: false }); // row 3 flat (L → R)
-      addTurn(R, yC, apex3, R, yD); // U-turn 3 to Row 4 (apex = Node 4)
-      cubics.push({ c: `L ${L - bulge} ${yD}`, endsNode: true }); // row 4 flat (R → L, ends at Node 5)
+      cubics.push({ c: `L ${R + bulge} ${yC}`, endsNode: true }); // row 3 flat (L → R, ends at Node 4)
     }
 
     let pathD = `M ${startPt.x} ${startPt.y}`;
@@ -1492,9 +1753,274 @@ function initScrollTimeline() {
   // Run initial state calculation
   drawTimelinePath();
   updateTimeline();
+
+  // Re-measure once webfonts settle: label heights decide the crossing bands
+  if (document.fonts && document.fonts.ready) {
+    document.fonts.ready.then(() => {
+      drawTimelinePath();
+      updateTimeline();
+    });
+  }
 }
 
 initScrollTimeline();
+
+// --- Fun section: fade the whole page to black from here downward ---
+// One-way threshold: black kicks in once the section top crosses the lower
+// third of the viewport and STAYS black for everything below it (contact,
+// footer). It only fades back to light when scrolling up past the section.
+const funSection = document.querySelector(".fun-section");
+if (funSection) {
+  const updateFunMode = () => {
+    const top = funSection.getBoundingClientRect().top;
+    document.body.classList.toggle("fun-mode", top < window.innerHeight * 0.65);
+  };
+  window.addEventListener("scroll", () => requestAnimationFrame(updateFunMode), { passive: true });
+  window.addEventListener("resize", updateFunMode);
+  updateFunMode();
+}
+
+// --- Fun section tabs (Music / Movies / Games / Sports) ---
+const funTabs = document.querySelectorAll(".fun-tab");
+const funPanels = document.querySelectorAll(".fun-panel");
+const funShell = document.querySelector(".fun-shell");
+
+// Animate the shell's height around a content change so the container
+// doesn't jump when panels of different sizes are switched in
+const animateShellHeight = (mutate) => {
+  if (!funShell) {
+    mutate();
+    return;
+  }
+  const startHeight = funShell.getBoundingClientRect().height;
+  // Clear any in-flight animation so the new end height measures naturally
+  funShell.style.transition = "";
+  funShell.style.height = "";
+  mutate();
+  const endHeight = funShell.getBoundingClientRect().height;
+  if (Math.round(startHeight) === Math.round(endHeight)) return;
+  funShell.style.boxSizing = "border-box";
+  funShell.style.overflow = "hidden";
+  funShell.style.height = `${startHeight}px`;
+  funShell.getBoundingClientRect(); // force reflow before transitioning
+  funShell.style.transition = "height 380ms cubic-bezier(0.4, 0, 0.2, 1)";
+  funShell.style.height = `${endHeight}px`;
+  funShell.addEventListener("transitionend", function clear(e) {
+    if (e.propertyName !== "height") return;
+    funShell.style.height = "";
+    funShell.style.transition = "";
+    funShell.style.overflow = "";
+    funShell.style.boxSizing = "";
+    funShell.removeEventListener("transitionend", clear);
+  });
+};
+
+// Helper to align tab indicator
+const alignTabIndicator = (tabList, activeTab, indicatorClass) => {
+  const indicator = tabList.querySelector(indicatorClass);
+  if (!indicator || !activeTab) return;
+  const rect = activeTab.getBoundingClientRect();
+  const parentRect = tabList.getBoundingClientRect();
+  indicator.style.width = `${rect.width}px`;
+  indicator.style.left = `${rect.left - parentRect.left}px`;
+};
+
+// Initialize all main tabs and visible subtabs indicators
+const initAllTabIndicators = () => {
+  // Main tabs
+  const mainTabList = document.querySelector(".fun-tabs");
+  if (mainTabList) {
+    const activeTab = mainTabList.querySelector(".fun-tab.active");
+    alignTabIndicator(mainTabList, activeTab, ".fun-tab-indicator");
+  }
+
+  // Subtabs (only those in currently active panels)
+  document.querySelectorAll(".fun-panel.is-active .fun-subtabs").forEach((subtabList) => {
+    const activeSubtab = subtabList.querySelector(".fun-subtab.active");
+    alignTabIndicator(subtabList, activeSubtab, ".fun-subtab-indicator");
+  });
+};
+
+// Main tab click handler
+funTabs.forEach((tab) => {
+  const tabList = tab.closest(".fun-tabs");
+  tab.addEventListener("click", () => {
+    // Switch active class
+    funTabs.forEach((t) => t.classList.toggle("active", t === tab));
+    
+    // Slide main tab indicator
+    alignTabIndicator(tabList, tab, ".fun-tab-indicator");
+    
+    // Toggle panels, animating the shell height between the two sizes
+    animateShellHeight(() => {
+      funPanels.forEach((p) => {
+        const isActive = p.dataset.panel === tab.dataset.tab;
+        p.classList.toggle("is-active", isActive);
+
+        if (isActive) {
+          // Trigger subtab indicator calculation since this panel is now visible
+          const subtabList = p.querySelector(".fun-subtabs");
+          if (subtabList) {
+            const activeSubtab = subtabList.querySelector(".fun-subtab.active");
+            setTimeout(() => {
+              alignTabIndicator(subtabList, activeSubtab, ".fun-subtab-indicator");
+            }, 20);
+          }
+        }
+      });
+    });
+  });
+});
+
+// Sub-toggles inside a panel (Directors/Actors, Cricket/Football/F1)
+document.querySelectorAll(".fun-subtabs").forEach((group) => {
+  const subtabs = group.querySelectorAll(".fun-subtab");
+  const panel = group.closest(".fun-panel");
+  const subpanels = panel ? panel.querySelectorAll(".fun-subpanel") : [];
+
+  subtabs.forEach((subtab) => {
+    subtab.addEventListener("click", () => {
+      // Toggle button classes
+      subtabs.forEach((t) => t.classList.toggle("active", t === subtab));
+      
+      // Slide subtab indicator
+      alignTabIndicator(group, subtab, ".fun-subtab-indicator");
+      
+      // Toggle subpanels, animating the shell height between the two sizes
+      animateShellHeight(() => {
+        subpanels.forEach((sp) => sp.classList.toggle("is-active", sp.dataset.subpanel === subtab.dataset.subtab));
+      });
+    });
+  });
+});
+
+// Align indicators on load and resize
+window.addEventListener("load", initAllTabIndicators);
+window.addEventListener("resize", initAllTabIndicators);
+// Fallback triggers to ensure initial positions are calculated correctly
+setTimeout(initAllTabIndicators, 100);
+setTimeout(initAllTabIndicators, 500);
+
+// --- Fun section Billboard Carousels ---
+document.querySelectorAll(".fun-billboard").forEach((billboard) => {
+  const slides = billboard.querySelectorAll(".fun-billboard-slide");
+  let currentIndex = 0;
+  let autoSlideTimer = null;
+  const slideInterval = 5000; // slide every 5s
+
+  // Dynamically inject minimalist left/right chevron arrow overlays
+  const prevBtn = document.createElement("button");
+  prevBtn.className = "fun-billboard-arrow prev";
+  prevBtn.setAttribute("aria-label", "Previous slide");
+  prevBtn.innerHTML = `
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <polyline points="15 18 9 12 15 6"></polyline>
+    </svg>
+  `;
+
+  const nextBtn = document.createElement("button");
+  nextBtn.className = "fun-billboard-arrow next";
+  nextBtn.setAttribute("aria-label", "Next slide");
+  nextBtn.innerHTML = `
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  `;
+
+  billboard.appendChild(prevBtn);
+  billboard.appendChild(nextBtn);
+
+  const showSlide = (index) => {
+    currentIndex = index;
+    slides.forEach((slide, i) => {
+      slide.classList.toggle("active", i === index);
+    });
+  };
+
+  const nextSlide = () => {
+    let nextIndex = (currentIndex + 1) % slides.length;
+    showSlide(nextIndex);
+  };
+
+  const prevSlide = () => {
+    let prevIndex = (currentIndex - 1 + slides.length) % slides.length;
+    showSlide(prevIndex);
+  };
+
+  const startAutoSlide = () => {
+    if (autoSlideTimer) clearInterval(autoSlideTimer);
+    autoSlideTimer = setInterval(nextSlide, slideInterval);
+  };
+
+  const stopAutoSlide = () => {
+    if (autoSlideTimer) clearInterval(autoSlideTimer);
+  };
+
+  // Arrow button click handlers
+  prevBtn.addEventListener("click", (e) => {
+    e.stopPropagation(); // Prevent advancing slide from track click
+    prevSlide();
+    startAutoSlide();
+  });
+
+  nextBtn.addEventListener("click", (e) => {
+    e.stopPropagation(); // Prevent advancing slide from track click
+    nextSlide();
+    startAutoSlide();
+  });
+
+  // Click anywhere on the image/track to advance slide (minimalist click-to-next)
+  const track = billboard.querySelector(".fun-billboard-track");
+  if (track) {
+    track.style.cursor = "pointer";
+    track.addEventListener("click", () => {
+      nextSlide();
+      startAutoSlide();
+    });
+  }
+
+  // Pause on hover
+  billboard.addEventListener("mouseenter", stopAutoSlide);
+  billboard.addEventListener("mouseleave", startAutoSlide);
+
+  // Mobile Touch Swipe Gesture Support
+  let touchStartX = 0;
+  let touchStartY = 0;
+  let touchMoved = false;
+
+  billboard.addEventListener("touchstart", (e) => {
+    touchStartX = e.changedTouches[0].screenX;
+    touchStartY = e.changedTouches[0].screenY;
+    touchMoved = false;
+  }, { passive: true });
+
+  billboard.addEventListener("touchmove", (e) => {
+    const diffX = Math.abs(e.changedTouches[0].screenX - touchStartX);
+    const diffY = Math.abs(e.changedTouches[0].screenY - touchStartY);
+    // If movement is mostly horizontal, mark as a swipe gesture
+    if (diffX > 10 && diffX > diffY) {
+      touchMoved = true;
+    }
+  }, { passive: true });
+
+  billboard.addEventListener("touchend", (e) => {
+    if (!touchMoved) return;
+    const touchEndX = e.changedTouches[0].screenX;
+    const diff = touchEndX - touchStartX;
+    const swipeThreshold = 40; // minimum pixels to register swipe
+    if (Math.abs(diff) > swipeThreshold) {
+      if (diff > 0) {
+        prevSlide(); // Swipe Right -> Show Previous
+      } else {
+        nextSlide(); // Swipe Left -> Show Next
+      }
+      startAutoSlide();
+    }
+  }, { passive: true });
+
+  // Initial auto slide start
+  startAutoSlide();
+});
 
 // --- Project Lovelace showcase video: autoplay only while visible ---
 const showcaseVideo = document.querySelector(".showcase-video");
@@ -1706,3 +2232,204 @@ if (siteNav && navToggle) {
     }
   });
 }
+
+// --- Main Navbar Sliding Indicator & Scroll Spy ---
+const initNavbarIndicator = () => {
+  const navLinksList = document.querySelector(".nav-links");
+  if (!navLinksList) return;
+
+  const indicator = navLinksList.querySelector(".nav-indicator");
+  const links = navLinksList.querySelectorAll("a");
+  const sections = Array.from(links).map((link) => {
+    const href = link.getAttribute("href");
+    return href.startsWith("#") ? document.querySelector(href) : null;
+  });
+
+  let activeLink = null;
+
+  const alignIndicator = (targetLink, instant = false) => {
+    if (!indicator) return;
+    if (instant) indicator.classList.add("nav-indicator--instant");
+
+    if (!targetLink) {
+      indicator.style.width = "0px";
+      indicator.style.opacity = "0";
+    } else {
+      const rect = targetLink.getBoundingClientRect();
+      const parentRect = navLinksList.getBoundingClientRect();
+
+      // Slide via GPU-accelerated transform, relative to the 6px base offset.
+      indicator.style.width = `${rect.width}px`;
+      indicator.style.transform = `translateX(${rect.left - parentRect.left - 6}px)`;
+      indicator.style.opacity = "1";
+    }
+
+    if (instant) {
+      // Commit styles without a transition, then re-enable animation.
+      void indicator.offsetWidth;
+      requestAnimationFrame(() => {
+        indicator.classList.remove("nav-indicator--instant");
+      });
+    }
+  };
+
+  // Hover animations
+  links.forEach((link) => {
+    link.addEventListener("mouseenter", () => {
+      alignIndicator(link);
+    });
+    
+    link.addEventListener("mouseleave", () => {
+      // Return to active link
+      alignIndicator(activeLink);
+    });
+  });
+
+  // Scroll spy to track active section
+  const updateActiveSection = (instant = false) => {
+    let currentActive = null;
+    const scrollPosition = window.scrollY + window.innerHeight * 0.35; // trigger line at 35% height
+    
+    sections.forEach((sec, idx) => {
+      if (!sec) return;
+      const top = sec.offsetTop;
+      const height = sec.offsetHeight;
+      
+      if (scrollPosition >= top && scrollPosition < top + height) {
+        currentActive = links[idx];
+      }
+    });
+
+    // Fallback to top section if scrolled past top
+    if (!currentActive && window.scrollY < 200 && links.length > 0) {
+      currentActive = links[0];
+    }
+
+    if (currentActive !== activeLink) {
+      activeLink = currentActive;
+      links.forEach((link) => link.classList.toggle("active", link === activeLink));
+      alignIndicator(activeLink, instant);
+    }
+  };
+
+  // Align initially and listen to scroll/resize
+  window.addEventListener("scroll", () => updateActiveSection(false), { passive: true });
+  window.addEventListener("resize", () => {
+    // Reposition without sliding — layout width may have changed.
+    alignIndicator(activeLink, true);
+  });
+
+  // Initial run — place the pill instantly so it doesn't fly in on load.
+  updateActiveSection(true);
+  // Re-measure instantly once fonts/layout settle (widths may shift).
+  const resettle = () => {
+    updateActiveSection(true);
+    if (activeLink) alignIndicator(activeLink, true);
+  };
+  setTimeout(resettle, 100);
+  setTimeout(resettle, 500);
+  if (document.fonts && document.fonts.ready) {
+    document.fonts.ready.then(resettle);
+  }
+};
+
+// Start the navbar indicator
+initNavbarIndicator();
+
+// --- Premium eased scrolling for in-page anchor links ---
+// Replaces the browser's fixed-speed smooth scroll with a distance-aware
+// glide: immediate response, long soft settle (ease-out-expo).
+const initPremiumAnchorScroll = () => {
+  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+  let rafId = null;
+
+  const cancelGlide = () => {
+    if (rafId === null) return;
+    cancelAnimationFrame(rafId);
+    rafId = null;
+    ["wheel", "touchstart", "keydown"].forEach((type) =>
+      window.removeEventListener(type, cancelGlide)
+    );
+  };
+
+  const glideTo = (targetY) => {
+    cancelGlide();
+    const startY = window.scrollY;
+    const maxY = document.documentElement.scrollHeight - window.innerHeight;
+    const endY = Math.max(0, Math.min(targetY, maxY));
+    const distance = endY - startY;
+    if (Math.abs(distance) < 1) return;
+
+    // Short hops stay quick; long jumps get room to breathe
+    const duration = Math.min(1400, 700 + Math.abs(distance) * 0.12);
+    const startTime = performance.now();
+    const ease = (t) => (t >= 1 ? 1 : 1 - Math.pow(2, -10 * t));
+
+    // Hand control back the moment the user scrolls
+    ["wheel", "touchstart", "keydown"].forEach((type) =>
+      window.addEventListener(type, cancelGlide, { passive: true })
+    );
+
+    const step = (now) => {
+      const progress = Math.min(1, (now - startTime) / duration);
+      window.scrollTo({ top: startY + distance * ease(progress), behavior: "instant" });
+      if (progress < 1) {
+        rafId = requestAnimationFrame(step);
+      } else {
+        cancelGlide();
+      }
+    };
+    rafId = requestAnimationFrame(step);
+  };
+
+  document.addEventListener("click", (event) => {
+    if (event.defaultPrevented) return;
+    if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+    const link = event.target.closest('a[href^="#"]');
+    if (!link) return;
+
+    const hash = link.getAttribute("href");
+    const target = hash.length > 1 ? document.getElementById(hash.slice(1)) : null;
+    if (hash.length > 1 && !target) return; // unknown target: let the browser decide
+
+    event.preventDefault();
+    let targetY = target ? target.getBoundingClientRect().top + window.scrollY : 0;
+
+    // Custom scroll target for About (#profile) link to align directly to the red active/vengeance card state
+    if (hash === "#profile") {
+      const visitingCard = document.querySelector(".visiting-card");
+      const visitingCardSpacer = document.querySelector(".visiting-card-spacer");
+      if (visitingCard) {
+        if (window.innerWidth > 860 && visitingCardSpacer) {
+          const stickyOffset = 120;
+          const cardHeight = visitingCard.offsetHeight;
+          const spacerHeight = visitingCardSpacer.offsetHeight;
+          const spacerTopPage = visitingCardSpacer.getBoundingClientRect().top + window.scrollY;
+          
+          // targetProgress = 0.72 matches when the card becomes fully red (vengeance state)
+          const targetProgress = 0.72;
+          const targetScrolled = targetProgress * spacerHeight;
+          targetY = targetScrolled + spacerTopPage - (stickyOffset + cardHeight);
+        } else {
+          // Mobile fallback scroll target
+          const cardOffsetTop = visitingCard.getBoundingClientRect().top + window.scrollY;
+          const triggerStart = window.innerHeight * 0.92;
+          const triggerEnd = window.innerHeight * 0.22;
+          const totalDistance = triggerStart - triggerEnd;
+          const targetProgress = 0.72;
+          targetY = (targetProgress * totalDistance) - triggerStart + cardOffsetTop;
+        }
+      }
+    }
+
+    if (hash.length > 1) history.pushState(null, "", hash);
+
+    if (reduceMotion.matches) {
+      window.scrollTo({ top: targetY, behavior: "instant" });
+      return;
+    }
+    glideTo(targetY);
+  });
+};
+
+initPremiumAnchorScroll();

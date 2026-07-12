@@ -1,6 +1,6 @@
 @font-face {
   font-family: 'Coolvetica';
-  src: url('Coolvetica.ttf') format('truetype');
+  src: url('../fonts/Coolvetica.ttf') format('truetype');
   font-weight: normal;
   font-style: normal;
 }
@@ -35,9 +35,19 @@
   box-sizing: border-box;
 }
 
-html {
-  scroll-behavior: smooth;
+/* While the theme wave (view transition) plays, freeze transitions and
+   animations page-wide: the wave already animates the theme change, and any
+   concurrently animating element forces the browser to re-rasterize the
+   view-transition snapshot on every frame (the source of the toggle jank).
+   View-transition pseudo-elements are unaffected by these selectors. */
+:root.theme-wave *,
+:root.theme-wave *::before,
+:root.theme-wave *::after {
+  transition: none !important;
+  animation-play-state: paused !important;
 }
+
+/* In-page anchor scrolling is animated in script.js (eased, distance-aware) */
 
 body {
   margin: 0;
@@ -45,7 +55,12 @@ body {
   color: var(--ink);
   font-family: 'Inter', sans-serif;
   font-weight: 300;
-  transition: background-color 240ms ease, color 240ms ease;
+  transition: background-color 800ms ease, color 240ms ease;
+}
+
+/* Fun section takeover: whole page fades to the footer black */
+body.fun-mode {
+  background: #000000;
 }
 
 /* Fixed ambient color field so glass surfaces have color to refract site-wide */
@@ -59,6 +74,11 @@ body::before {
     radial-gradient(600px 420px at 12% 18%, rgba(22, 106, 79, 0.1), transparent 70%),
     radial-gradient(520px 380px at 88% 30%, rgba(212, 87, 50, 0.08), transparent 70%),
     radial-gradient(640px 460px at 50% 78%, rgba(241, 184, 75, 0.08), transparent 72%);
+  transition: opacity 800ms ease;
+}
+
+body.fun-mode::before {
+  opacity: 0;
 }
 
 :root.dark body::before {
@@ -90,6 +110,11 @@ button {
   filter: blur(15px);
   transform: translate(-50%, -50%);
   transition: opacity 180ms ease;
+}
+
+/* Brighter accent glow so the pointer light reads on the black takeover */
+body.fun-mode .cursor-glow {
+  background: radial-gradient(circle, rgba(103, 198, 156, 0.18) 0%, rgba(103, 198, 156, 0.05) 60%, rgba(103, 198, 156, 0) 85%);
 }
 
 @media (hover: none) {
@@ -144,6 +169,15 @@ button {
   filter: invert(1) drop-shadow(0 14px 32px rgba(22, 106, 79, 0.3));
 }
 
+/* The logo source is white; skip the light-mode invert on the dark base */
+:root.dark .brand-logo {
+  filter: invert(0) drop-shadow(0 10px 24px rgba(0, 0, 0, 0.35));
+}
+
+:root.dark .brand-logo:hover {
+  filter: invert(0) drop-shadow(0 14px 32px rgba(103, 198, 156, 0.35));
+}
+
 @keyframes logo-intro {
   from {
     opacity: 0;
@@ -160,6 +194,91 @@ button {
   .brand-logo {
     animation: none;
   }
+}
+
+/* Dark-mode toggle button (lives in the nav; right of the pill on desktop,
+   left of the hamburger on mobile). Glass matches the nav pill. */
+.theme-toggle {
+  flex: none;
+  order: 2; /* desktop: sits to the right of the nav pill (order 1) */
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.18) 0%, rgba(255, 255, 255, 0.04) 100%), color-mix(in srgb, var(--surface) 35%, transparent);
+  backdrop-filter: blur(32px) saturate(150%);
+  -webkit-backdrop-filter: blur(32px) saturate(150%);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.08),
+              inset 0 1px 0 rgba(255, 255, 255, 0.35),
+              inset 0 -1px 0 rgba(0, 0, 0, 0.03);
+  color: var(--ink);
+  cursor: pointer;
+  transition: transform 220ms ease, border-color 220ms ease, color 220ms ease;
+}
+
+:root.dark .theme-toggle,
+body.fun-mode .theme-toggle {
+  border-color: rgba(255, 255, 255, 0.12);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.01) 100%), color-mix(in srgb, #191d1a 30%, transparent);
+  box-shadow: 0 18px 48px rgba(0, 0, 0, 0.4),
+              inset 0 1px 0 rgba(255, 255, 255, 0.15),
+              inset 0 -1px 0 rgba(0, 0, 0, 0.4);
+}
+
+body.fun-mode .theme-toggle {
+  color: #f4f7f2;
+}
+
+.theme-toggle:hover {
+  transform: translateY(-1px) rotate(-12deg);
+  border-color: var(--accent);
+}
+
+.theme-toggle:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+.theme-toggle svg {
+  width: 20px;
+  height: 20px;
+}
+
+/* Moon in light mode (go dark), sun in dark mode (go light) */
+.theme-icon-moon {
+  display: block;
+}
+
+.theme-icon-sun {
+  display: none;
+}
+
+:root.dark .theme-icon-moon {
+  display: none;
+}
+
+:root.dark .theme-icon-sun {
+  display: block;
+}
+
+/* Wave reveal for theme change: the incoming theme is clipped by an
+   expanding circle (animated from JS) so the new UI washes across the page.
+   Disable the default cross-fade so only the wave shows. */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+
+::view-transition-old(root) {
+  z-index: 0;
+}
+
+::view-transition-new(root) {
+  z-index: 1;
 }
 
 .filter-button,
@@ -271,6 +390,23 @@ button {
   transform: translateY(-4px) scale(1.01);
 }
 
+/* The B&W portrait is mostly dark tones; a soft backlight keeps it from
+   melting into the dark hero, and a slight lift restores midtone detail */
+:root.dark .hero-photo::before {
+  content: "";
+  position: absolute;
+  inset: 6% -4% 0;
+  z-index: -1;
+  border-radius: 50%;
+  background: radial-gradient(closest-side at 50% 55%, rgba(244, 247, 242, 0.14), rgba(103, 198, 156, 0.05) 55%, transparent 78%);
+  filter: blur(36px);
+  pointer-events: none;
+}
+
+:root.dark .hero-photo img {
+  filter: brightness(1.12) contrast(0.98);
+}
+
 .hero-copy {
   position: relative;
   align-self: center;
@@ -298,6 +434,13 @@ button {
   }
 }
 
+:root.dark .hero::after {
+  background:
+    radial-gradient(circle at 74% 34%, rgba(103, 198, 156, 0.08), transparent 50%),
+    linear-gradient(90deg, #0c0e0d, rgba(17, 20, 18, 0.85) 60%, rgba(12, 14, 13, 0.95)),
+    linear-gradient(180deg, rgba(17, 20, 18, 0.5), #0c0e0d);
+}
+
 .hero-overlays {
   position: absolute;
   inset: 0;
@@ -313,6 +456,12 @@ button {
   opacity: 0.42;
   mix-blend-mode: multiply;
   will-change: transform;
+}
+
+/* Multiply-blended orbs disappear on a dark base; screen makes them glow */
+:root.dark .orb {
+  mix-blend-mode: screen;
+  opacity: 0.3;
 }
 
 .orb-1 {
@@ -368,6 +517,13 @@ button {
 .hero-video {
   z-index: -3;
   display: none;
+}
+
+/* The canvas draws dark ink strokes tuned for the light hero; invert them
+   (hue-rotate keeps the green accents green) so they read on the dark base */
+:root.dark #videoCanvas {
+  filter: invert(1) hue-rotate(180deg);
+  opacity: 0.28;
 }
 
 #videoCanvas {
@@ -754,8 +910,8 @@ h3 {
   border: 1px solid rgba(255, 255, 255, 0.18);
   border-radius: 20px;
   background: color-mix(in srgb, var(--surface) 60%, transparent);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
+  backdrop-filter: blur(16px) saturate(140%);
+  -webkit-backdrop-filter: blur(16px) saturate(140%);
   box-shadow: 0 18px 40px rgba(0, 0, 0, 0.04),
               inset 0 1px 1px rgba(255, 255, 255, 0.15);
   transform-style: preserve-3d;
@@ -807,20 +963,81 @@ h3 {
   line-height: 1.65;
 }
 
+/* Segmented pill filter control with a sliding indicator */
 .stack-controls {
-  margin-bottom: 18px;
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  flex-wrap: nowrap;
+  gap: 2px;
+  margin-bottom: 22px;
+  padding: 5px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  background: color-mix(in srgb, var(--surface) 55%, transparent);
+  backdrop-filter: blur(16px) saturate(140%);
+  -webkit-backdrop-filter: blur(16px) saturate(140%);
+  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.2),
+              0 10px 28px rgba(0, 0, 0, 0.06);
+}
+
+:root.dark .stack-controls {
+  border-color: rgba(255, 255, 255, 0.1);
+  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.06),
+              0 12px 30px rgba(0, 0, 0, 0.3);
+}
+
+.filter-indicator {
+  position: absolute;
+  top: 5px;
+  bottom: 5px;
+  left: 5px;
+  width: 0;
+  opacity: 0;
+  border-radius: 999px;
+  background: var(--accent);
+  box-shadow: 0 4px 14px rgba(22, 106, 79, 0.4),
+              inset 0 1px 0 rgba(255, 255, 255, 0.25);
+  transform: translateX(0);
+  transition: transform 380ms cubic-bezier(0.4, 0, 0.2, 1),
+              width 380ms cubic-bezier(0.4, 0, 0.2, 1),
+              opacity 200ms ease;
+  pointer-events: none;
+  z-index: 0;
 }
 
 .filter-button {
-  padding: 0 16px;
-  min-width: 68px;
+  position: relative;
+  z-index: 1;
+  min-height: 34px;
+  min-width: 56px;
+  padding: 0 18px;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  box-shadow: none;
   color: var(--muted);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  transition: color 250ms ease;
+}
+
+.filter-button:hover {
+  transform: none;
+  color: var(--ink);
 }
 
 .filter-button.active {
-  border-color: var(--accent);
-  background: rgba(22, 106, 79, 0.12);
-  color: var(--ink);
+  border-color: transparent;
+  background: transparent;
+  color: #ffffff;
+}
+
+:root.dark .filter-button.active {
+  color: #0e1a14;
 }
 
 .stack-list {
@@ -838,8 +1055,8 @@ h3 {
   border: 1px solid rgba(255, 255, 255, 0.18);
   border-radius: 16px;
   background: color-mix(in srgb, var(--surface) 60%, transparent);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
+  backdrop-filter: blur(16px) saturate(140%);
+  -webkit-backdrop-filter: blur(16px) saturate(140%);
   box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.15);
   color: var(--ink);
   text-align: left;
@@ -1046,8 +1263,8 @@ h3 {
   border: 1px solid rgba(255, 255, 255, 0.18) !important;
   border-radius: 16px;
   background: color-mix(in srgb, var(--surface) 60%, transparent) !important;
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
+  backdrop-filter: blur(16px) saturate(140%);
+  -webkit-backdrop-filter: blur(16px) saturate(140%);
   box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.15);
   transition: transform 300ms ease, border-color 300ms ease;
   cursor: pointer;
@@ -1249,7 +1466,9 @@ h3 {
   position: absolute;
   right: 0;
   bottom: 0;
-  transform: translate(18%, calc(42% + (60px - var(--bat-progress, 0) * 60px)));
+  /* Anchored to the bottom-right corner (bleeding off) so it never overlaps
+     the text, just lifted slightly higher than before. */
+  transform: translate(18%, calc(34% + (60px - var(--bat-progress, 0) * 60px)));
   width: clamp(350px, 45vw, 600px);
   height: auto;
   opacity: var(--bat-progress, 0);
@@ -1391,7 +1610,7 @@ h3 {
 /* Compact treasure-map journey route */
 .journey-flow {
   position: relative;
-  height: 800px;
+  height: 560px;
   margin: 44px 0 76px;
 }
 
@@ -1479,6 +1698,13 @@ h3 {
   left: 18px;
   top: calc(var(--y) + 16px);
   text-align: left;
+}
+
+/* Bottom-right finish: label ABOVE the marker, right-aligned */
+.journey-node.j-end-top-right .journey-content {
+  right: 18px;
+  bottom: calc(100% - var(--y) + 16px);
+  text-align: right;
 }
 
 /* "X marks the spot" — final stop on the route */
@@ -1615,12 +1841,706 @@ h3 {
   opacity: 1;
 }
 
+/* --- Fun side section: lives on the blacked-out page --- */
+.fun-section {
+  position: relative;
+  z-index: 1;
+  padding-bottom: 24px;
+}
+
+.fun-section .section-heading h2,
+.fun-section .eyebrow,
+.fun-section-lead,
+.fun-panel-note,
+.fun-tab,
+.fun-subtab,
+.fun-tile,
+.fun-playlist-card {
+  transition: color 800ms ease, border-color 800ms ease, background-color 800ms ease;
+}
+
+.fun-section-lead {
+  margin: 0;
+  font-size: clamp(15px, 1.8vw, 18px);
+  line-height: 1.5;
+  color: var(--muted);
+}
+
+body.fun-mode .fun-section {
+  --bg: #000000;
+  --ink: #f4f7f2;
+  --muted: #a0aba5;
+  --line: rgba(244, 247, 242, 0.14);
+  --accent: #67c69c;
+  color: #f4f7f2;
+}
+
+/* Single container with a tab bar on top */
+.fun-shell {
+  position: relative;
+  margin-top: 44px;
+  border: 1px solid var(--line);
+  border-radius: 22px;
+  padding: 26px clamp(18px, 3vw, 34px) 34px;
+  background: transparent;
+  transition: background-color 800ms ease, border-color 800ms ease;
+}
+
+body.fun-mode .fun-shell {
+  background: rgba(244, 247, 242, 0.045);
+  border-color: rgba(244, 247, 242, 0.14);
+}
+
+.fun-tabs {
+  position: relative;
+  display: flex;
+  width: fit-content;
+  margin: 0 auto 26px;
+  flex-wrap: wrap;
+  gap: 4px;
+  padding: 5px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: rgba(244, 247, 242, 0.02);
+  z-index: 1;
+}
+
+.fun-tab-indicator {
+  position: absolute;
+  top: 5px;
+  bottom: 5px;
+  left: 5px;
+  width: 0;
+  border-radius: 999px;
+  background: var(--ink);
+  transition: left 380ms cubic-bezier(0.34, 1.56, 0.64, 1),
+              width 380ms cubic-bezier(0.34, 1.56, 0.64, 1);
+  z-index: 0;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
+}
+
+.fun-tab {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  border-radius: 999px;
+  border: 0;
+  background: transparent;
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  cursor: pointer;
+  z-index: 1;
+  transition: color 250ms ease;
+}
+
+.fun-tab svg {
+  width: 16px;
+  height: 16px;
+  z-index: 1;
+}
+
+.fun-tab:hover {
+  color: var(--ink);
+}
+
+.fun-tab.active {
+  color: var(--bg);
+}
+
+/* Panels */
+.fun-panel {
+  display: none;
+}
+
+.fun-panel.is-active {
+  display: block;
+  animation: fun-panel-in 360ms ease;
+}
+
+@keyframes fun-panel-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.fun-panel-note {
+  margin: 0 0 18px;
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--muted);
+}
+
+/* Sub-toggles (Directors/Actors, Cricket/Football/F1) */
+.fun-subtabs {
+  position: relative;
+  display: inline-flex;
+  gap: 4px;
+  padding: 4px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: rgba(244, 247, 242, 0.01);
+  margin-bottom: 22px;
+  z-index: 1;
+}
+
+.fun-subtab-indicator {
+  position: absolute;
+  top: 4px;
+  bottom: 4px;
+  left: 4px;
+  width: 0;
+  border-radius: 999px;
+  background: var(--ink);
+  transition: left 380ms cubic-bezier(0.34, 1.56, 0.64, 1),
+              width 380ms cubic-bezier(0.34, 1.56, 0.64, 1);
+  z-index: 0;
+}
+
+.fun-subtab {
+  position: relative;
+  padding: 7px 16px;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  cursor: pointer;
+  z-index: 1;
+  transition: color 250ms ease;
+}
+
+.fun-subtab:hover {
+  color: var(--ink);
+}
+
+.fun-subtab.active {
+  color: var(--bg);
+}
+
+.fun-subpanel {
+  display: none;
+}
+
+.fun-subpanel.is-active {
+  display: block;
+  animation: fun-panel-in 360ms ease;
+}
+
+/* Netflix-style Cinema Billboard */
+.fun-billboard {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 21 / 9;
+  border-radius: 16px;
+  overflow: hidden;
+  background: #000000;
+  margin-bottom: 20px;
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.4);
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  transition: box-shadow 300ms ease;
+}
+
+/* Absolute border overlay to completely cover any subpixel rendering gaps */
+.fun-billboard::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  pointer-events: none;
+  z-index: 10;
+  transition: border-color 800ms ease;
+}
+
+body.fun-mode .fun-billboard::after {
+  border-color: rgba(244, 247, 242, 0.14);
+}
+
+.fun-billboard:hover {
+  box-shadow: 0 20px 48px rgba(0, 0, 0, 0.6);
+}
+
+.fun-billboard-track {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.fun-billboard-slide {
+  position: absolute;
+  inset: -6px;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 600ms cubic-bezier(0.25, 0.46, 0.45, 0.94),
+              visibility 600ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  z-index: 1;
+}
+
+.fun-billboard-slide.active {
+  opacity: 1;
+  visibility: visible;
+  z-index: 2;
+}
+
+.fun-billboard-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* The athlete photos are tall portraits; bias the 21:9 crop toward the
+   top of the frame so faces stay in view */
+.fun-panel[data-panel="sports"] .fun-billboard-img {
+  object-position: 50% 22%;
+}
+
+/* Individual athlete image position overrides to ensure faces/heads are not cropped */
+.fun-billboard-slide img[src*="messi"] {
+  object-position: 50% 10%;
+}
+.fun-billboard-slide img[src*="neymar"] {
+  object-position: 50% 20%;
+}
+.fun-billboard-slide img[src*="yamal"] {
+  object-position: 50% 20%;
+}
+.fun-billboard-slide img[src*="haaland"] {
+  object-position: 50% 15%;
+}
+.fun-billboard-slide img[src*="ponting"] {
+  object-position: 50% 50%;
+}
+.fun-billboard-slide img[src*="rohit"] {
+  object-position: 50% 10%;
+}
+.fun-billboard-slide img[src*="kohli"] {
+  object-position: 50% 15%;
+}
+.fun-billboard-slide img[src*="vettaikaaran"] {
+  object-position: 50% 15%;
+}
+.fun-billboard-slide img[src*="dennis"] {
+  object-position: 50% 50%;
+}
+.fun-billboard-slide img[src*="david_fincher"] {
+  object-position: 50% 43%;
+}
+.fun-billboard-slide img[src*="karthick"] {
+  object-position: 50% 27%;
+}
+.fun-billboard-slide img[src*="loki"] {
+  object-position: 50% 30%;
+}
+.fun-billboard-slide img[src*="martin"] {
+  object-position: 50% 34%;
+}
+.fun-billboard-slide img[src*="nolan"] {
+  object-position: 50% 37%;
+}
+.fun-billboard-slide img[src*="quintin"] {
+  object-position: 50% 45%;
+}
+.fun-billboard-slide img[src*="ranjith"] {
+  object-position: 50% 42%;
+}
+.fun-billboard-slide img[src*="steven"] {
+  object-position: 50% 45%;
+}
+.fun-billboard-slide img[src*="vetri"] {
+  object-position: 50% 22%;
+}
+.fun-billboard-slide img[src*="al_pachino"] {
+  object-position: 50% 28%;
+}
+.fun-billboard-slide img[src*="christian_bale"] {
+  object-position: 50% 34%;
+}
+.fun-billboard-slide img[src*="cillian"] {
+  object-position: 50% 20%;
+}
+.fun-billboard-slide img[src*="kamal"] {
+  object-position: 50% 36%;
+}
+.fun-billboard-slide img[src*="karthi.jpg"] {
+  object-position: 50% 25%;
+}
+.fun-billboard-slide img[src*="leo"] {
+  object-position: 50% 34%;
+}
+.fun-billboard-slide img[src*="rober_d_jr"] {
+  object-position: 50% 37%;
+}
+.fun-billboard-slide img[src*="simbu"] {
+  object-position: 50% 39%;
+}
+.fun-billboard-slide img[src*="suriya"] {
+  object-position: 50% 56%;
+}
+.fun-billboard-slide img[src*="tom_cruise"] {
+  object-position: 50% 74%;
+}
+.fun-billboard-slide img[src*="arr"] {
+  object-position: 50% 28%;
+}
+.fun-billboard-slide img[src*="anirudh"] {
+  object-position: 50% 48%;
+}
+.fun-billboard-slide img[src*="u1"] {
+  object-position: 50% 38%;
+}
+.fun-billboard-slide img[src*="harris"] {
+  object-position: 50% 32%;
+}
+.fun-billboard-slide img[src*="vs"] {
+  object-position: 50% 26%;
+}
+.fun-billboard-slide img[src*="rdr2"] {
+  object-position: 50% 35%;
+}
+.fun-billboard-slide img[src*="gta"] {
+  object-position: 50% 25%;
+}
+.fun-billboard-slide img[src*="ets"] {
+  object-position: 50% 60%;
+}
+
+
+/* Netflix-style bottom gradient scrim */
+.fun-billboard-scrim {
+  position: absolute;
+  inset: 0 0 -6px 0;
+  background: linear-gradient(
+    to top,
+    #000000 0%,
+    rgba(0, 0, 0, 0.7) 25%,
+    rgba(0, 0, 0, 0.15) 65%,
+    rgba(0, 0, 0, 0) 100%
+  );
+  pointer-events: none;
+  z-index: 3;
+}
+
+/* Metadata overlay */
+.fun-billboard-meta {
+  position: absolute;
+  left: clamp(20px, 4vw, 40px);
+  bottom: clamp(25px, 5vw, 48px);
+  z-index: 6;
+  pointer-events: none;
+}
+
+/* Disclaimer caption in flow directly below the billboard image */
+.fun-billboard-note {
+  margin: 10px 4px 4px 0;
+  text-align: right;
+  font-family: 'Coolvetica', sans-serif;
+  font-weight: normal;
+  font-synthesis: none;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--muted);
+}
+
+.fun-billboard-title {
+  display: block;
+  color: #ffffff;
+  font-family: 'Coolvetica', sans-serif;
+  font-weight: 500;
+  font-size: clamp(22px, 3.5vw, 38px);
+  letter-spacing: 0.03em;
+  line-height: 1.15;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.8);
+}
+
+.fun-billboard-logo {
+  display: block;
+  max-width: min(360px, 65vw);
+  max-height: clamp(65px, 12vw, 115px);
+  object-fit: contain;
+  filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.85));
+  pointer-events: none;
+}
+
+/* Typographic slides for people (no licensed photography): dark accent
+   gradient with a giant translucent monogram behind the name */
+.fun-name-slide {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background:
+    radial-gradient(120% 170% at 82% 12%, rgba(103, 198, 156, 0.3), transparent 58%),
+    linear-gradient(135deg, #12211b, #090c0a 72%);
+}
+
+.fun-name-slide.tone-2 {
+  background:
+    radial-gradient(120% 170% at 15% 18%, rgba(238, 129, 95, 0.26), transparent 58%),
+    linear-gradient(135deg, #241512, #0d0a09 72%);
+}
+
+.fun-name-slide.tone-3 {
+  background:
+    radial-gradient(130% 170% at 50% 0%, rgba(243, 201, 108, 0.24), transparent 60%),
+    linear-gradient(135deg, #221c0f, #0c0b08 72%);
+}
+
+.fun-name-slide span {
+  font-family: 'Coolvetica', sans-serif;
+  font-size: clamp(90px, 20vw, 210px);
+  line-height: 1;
+  letter-spacing: 0.04em;
+  color: rgba(244, 247, 242, 0.09);
+  user-select: none;
+  transform: translateY(-4%);
+}
+
+.fun-panel[data-panel="movies"] .fun-billboard-logo {
+  filter: brightness(0) invert(1) drop-shadow(0 4px 12px rgba(0, 0, 0, 0.85));
+}
+
+.logo-gta {
+  max-height: clamp(80px, 15vw, 140px);
+}
+
+.logo-ets {
+  max-height: clamp(65px, 12vw, 110px);
+}
+
+.logo-fight-club {
+  max-height: clamp(90px, 16vw, 150px);
+}
+
+.logo-cars {
+  max-height: clamp(80px, 14vw, 130px);
+}
+
+
+
+/* Minimalist side arrows for navigating */
+.fun-billboard-arrow {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 70px;
+  background: transparent;
+  border: 0;
+  color: rgba(255, 255, 255, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 5;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 300ms ease, visibility 300ms ease, color 200ms ease, background 300ms ease;
+  padding: 0;
+}
+
+.fun-billboard-arrow.next {
+  left: auto;
+  right: 0;
+  background: transparent;
+}
+
+.fun-billboard:hover .fun-billboard-arrow {
+  opacity: 1;
+  visibility: visible;
+}
+
+.fun-billboard-arrow:hover {
+  color: #ffffff;
+}
+
+.fun-billboard-arrow svg {
+  width: 22px;
+  height: 22px;
+  transition: transform 200ms ease;
+}
+
+.fun-billboard-arrow.prev:hover svg {
+  transform: translateX(-3px);
+}
+
+.fun-billboard-arrow.next:hover svg {
+  transform: translateX(3px);
+}
+
+.fun-playlists-heading {
+  margin: 18px 0 12px;
+  font-family: 'Coolvetica', sans-serif;
+  font-weight: normal;
+  font-synthesis: none;
+  font-size: clamp(18px, 2.4vw, 22px);
+  letter-spacing: 0.02em;
+  color: var(--ink);
+}
+
+.fun-playlists {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-top: 10px;
+}
+
+.fun-playlist-card {
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+  padding: 10px 18px 10px 10px;
+  border-radius: 14px;
+  border: 1px solid var(--line);
+  color: var(--ink);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.fun-playlist-card > svg {
+  width: 16px;
+  height: 16px;
+  color: var(--accent);
+  flex-shrink: 0;
+}
+
+.fun-playlist-cover {
+  width: 52px;
+  height: 52px;
+  border-radius: 9px;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.fun-playlist-cover img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.fun-playlist-letterboxd {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #14181c;
+}
+
+.fun-playlist-letterboxd svg {
+  width: 42px;
+  height: 42px;
+}
+
+.fun-playlist-info {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.fun-playlist-name {
+  color: var(--ink);
+}
+
+.fun-playlist-sub {
+  color: var(--muted);
+  font-size: 11.5px;
+  font-weight: 400;
+}
+
+.fun-playlist-card:hover {
+  border-color: var(--accent);
+  background: rgba(103, 198, 156, 0.08);
+}
+
+@media (max-width: 768px) {
+  .fun-shell {
+    padding: 20px 16px 24px;
+  }
+
+  .fun-billboard {
+    aspect-ratio: 16 / 9;
+  }
+  
+  .fun-billboard-arrow {
+    opacity: 0.85;
+    visibility: visible;
+    width: 45px;
+    background: transparent;
+  }
+  
+  .fun-billboard-arrow svg {
+    width: 18px;
+    height: 18px;
+  }
+}
+
+@media (max-width: 560px) {
+  .fun-tab {
+    padding: 9px 14px;
+    font-size: 12px;
+  }
+
+  .fun-subtabs {
+    flex-wrap: nowrap;
+  }
+}
+
+@media (max-width: 480px) {
+  .fun-tab-label {
+    display: none;
+  }
+
+  .fun-tab {
+    padding: 10px 16px;
+    gap: 0;
+  }
+
+  .fun-subtab {
+    padding: 6px 12px;
+    font-size: 11px;
+  }
+
+  .fun-playlist-card {
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .fun-billboard {
+    aspect-ratio: 4 / 3;
+    border-radius: 12px;
+  }
+  
+  .fun-billboard-meta {
+    left: 16px;
+    bottom: 16px;
+  }
+}
+
 .contact-band {
   position: relative;
   z-index: 1;
   margin-top: 40px;
   padding: 72px 0;
-  background: #000000;
+  /* Black comes from the body's fun-mode fade so the glow (z-index 0)
+     shows through and the fade stays even across sections */
+  background: transparent;
   color: #f4f7f2;
   --bg: #f4f7f2;
   --ink: #000000;
@@ -1740,7 +2660,10 @@ h3 {
     grid-column: auto;
     justify-self: center;
     margin-top: 32px;
-    max-width: 290px;
+    /* Scale with the viewport so the portrait fills tablet-width screens
+       (iPad mini/Air/Pro portrait) instead of sitting tiny at a fixed 290px. */
+    width: 100%;
+    max-width: clamp(280px, 60vw, 480px);
   }
 
   .scroll-cue {
@@ -1789,9 +2712,9 @@ h3 {
     width: clamp(200px, 55vw, 320px);
     right: 0;
     bottom: 0;
-    /* Sidelined: bleeds off the bottom-right corner so ~half sits on the card,
-       sitting a little lower so it clears the text above it */
-    transform: translate(30%, calc(45% + (40px - var(--bat-progress, 0) * 40px)));
+    /* Bleeds off the bottom-right corner so it clears the text, lifted a
+       little higher than before */
+    transform: translate(30%, calc(38% + (40px - var(--bat-progress, 0) * 40px)));
   }
 
   .visiting-content {
@@ -1818,48 +2741,40 @@ h3 {
   }
 }
 
-/* Compact vertical journey list on smaller screens */
+/* Vertical zig-zag journey route on smaller screens: stops alternate
+   left/right and the dashed line snakes down between them (script.js
+   places the markers and draws the S-curves) */
 @media (max-width: 860px) {
   .journey-flow {
-    height: auto;
-    display: flex;
-    flex-direction: column;
-    gap: 24px;
-    margin: 20px 0 0;
-    padding-left: 6px;
-    transform: none;
+    /* fallback only — script.js sizes the flow to fit the measured labels */
+    height: 720px;
+    margin: 32px 0 24px;
   }
 
-  .journey-node {
-    position: relative;
-    top: auto;
+  .journey-node .journey-content {
+    width: min(62vw, 240px);
+  }
+
+  /* Left-side stops: label to the right of the marker */
+  .journey-node.j-end-bottom .journey-content,
+  .journey-node.j-apex-left .journey-content {
+    left: 20px;
+    right: auto;
+    top: var(--y);
     bottom: auto;
-    left: auto;
-    width: auto;
-    transform: none;
-    padding-left: 34px;
-  }
-
-  .journey-marker {
-    top: 4px;
-    left: 8px;
-    width: 14px;
-    height: 14px;
-    transform: none;
-  }
-
-  .journey-node .journey-content,
-  .journey-node.j-apex-right .journey-content,
-  .journey-node.j-apex-left .journey-content,
-  .journey-node.j-end-top .journey-content,
-  .journey-node.j-end-bottom .journey-content {
-    position: static;
-    width: auto;
+    transform: translateY(-50%);
     text-align: left;
-    padding: 0;
-    opacity: 1;
-    transform: none;
-    inset: auto;
+  }
+
+  /* Right-side stops: label to the left of the marker */
+  .journey-node.j-apex-right .journey-content,
+  .journey-node.j-end-top-right .journey-content {
+    right: 20px;
+    left: auto;
+    top: var(--y);
+    bottom: auto;
+    transform: translateY(-50%);
+    text-align: right;
   }
 
   .journey-node.is-x .journey-marker::before,
@@ -1931,8 +2846,8 @@ h3 {
   border: 1px solid rgba(255, 255, 255, 0.18);
   border-radius: 16px;
   background: color-mix(in srgb, var(--surface) 60%, transparent);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
+  backdrop-filter: blur(16px) saturate(140%);
+  -webkit-backdrop-filter: blur(16px) saturate(140%);
   box-shadow: 0 18px 40px rgba(0, 0, 0, 0.04),
               inset 0 1px 1px rgba(255, 255, 255, 0.15);
   display: flex;
@@ -2377,9 +3292,14 @@ h3 {
   left: 50%;
   transform: translateX(-50%);
   z-index: 40;
+  display: flex;
+  align-items: center;
+  gap: 12px;
 }
 
 .nav-links {
+  order: 1;
+  position: relative;
   display: flex;
   align-items: center;
   gap: 2px;
@@ -2396,9 +3316,10 @@ h3 {
               inset 0 -1px 0 rgba(0, 0, 0, 0.03);
 }
 
-:root.dark .nav-links {
+:root.dark .nav-links,
+body.fun-mode .nav-links {
   border: 1px solid rgba(255, 255, 255, 0.12);
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.01) 100%), color-mix(in srgb, var(--surface) 30%, transparent);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.01) 100%), color-mix(in srgb, #191d1a 30%, transparent);
   backdrop-filter: blur(32px) saturate(160%);
   -webkit-backdrop-filter: blur(32px) saturate(160%);
   box-shadow: 0 18px 48px rgba(0, 0, 0, 0.4),
@@ -2406,7 +3327,36 @@ h3 {
               inset 0 -1px 0 rgba(0, 0, 0, 0.4);
 }
 
+.nav-indicator {
+  position: absolute;
+  top: 6px;
+  bottom: 6px;
+  left: 6px;
+  width: 0;
+  opacity: 0;
+  border-radius: 999px;
+  background: rgba(21, 21, 21, 0.05);
+  transform: translateX(0);
+  transition: transform 360ms cubic-bezier(0.4, 0, 0.2, 1),
+              width 360ms cubic-bezier(0.4, 0, 0.2, 1),
+              opacity 200ms ease;
+  pointer-events: none;
+  z-index: 0;
+  will-change: transform, width;
+}
+
+/* Suppress the slide when the indicator is being placed (load / resize) */
+.nav-indicator.nav-indicator--instant {
+  transition: none;
+}
+
+:root.dark .nav-indicator,
+body.fun-mode .nav-indicator {
+  background: rgba(244, 247, 242, 0.08);
+}
+
 .nav-links a {
+  position: relative;
   display: inline-flex;
   align-items: center;
   gap: 7px;
@@ -2417,16 +3367,23 @@ h3 {
   font-weight: 700;
   letter-spacing: 0.05em;
   text-transform: uppercase;
-  transition: color 180ms ease, background 180ms ease;
+  z-index: 1;
+  transition: color 250ms ease;
 }
 
-.nav-links a:hover {
+.nav-links a:hover,
+.nav-links a.active {
   color: var(--ink);
-  background: rgba(21, 21, 21, 0.05);
 }
 
-:root.dark .nav-links a:hover {
-  background: rgba(244, 247, 242, 0.08);
+/* Nav readability on the blacked-out page */
+body.fun-mode .nav-links a {
+  color: #a0aba5;
+}
+
+body.fun-mode .nav-links a:hover,
+body.fun-mode .nav-links a.active {
+  color: #f4f7f2;
 }
 
 .nav-links .nav-resume {
@@ -2480,11 +3437,25 @@ h3 {
     right: 20px;
     left: auto;
     transform: none;
+    gap: 10px;
   }
 
   .nav-toggle {
     display: flex;
-    margin-left: auto;
+    order: 2; /* mobile: hamburger on the right */
+    margin-left: 0;
+  }
+
+  /* mobile: theme toggle to the LEFT of the hamburger */
+  .theme-toggle {
+    order: 1;
+    width: 40px;
+    height: 40px;
+  }
+
+  .theme-toggle svg {
+    width: 18px;
+    height: 18px;
   }
 
   .nav-links {
@@ -2496,12 +3467,23 @@ h3 {
     min-width: 220px;
     padding: 10px;
     border-radius: 18px;
-    background: color-mix(in srgb, var(--surface) 78%, transparent);
-    box-shadow: var(--shadow), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.22) 0%, rgba(255, 255, 255, 0.05) 100%), color-mix(in srgb, var(--surface) 38%, transparent);
+    backdrop-filter: blur(32px) saturate(150%);
+    -webkit-backdrop-filter: blur(32px) saturate(150%);
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.12),
+                inset 0 1px 0 rgba(255, 255, 255, 0.35),
+                inset 0 -1px 0 rgba(0, 0, 0, 0.03);
     opacity: 0;
     transform: translateY(-8px);
     pointer-events: none;
     transition: opacity 220ms ease, transform 220ms ease;
+  }
+
+  :root.dark .nav-links {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.01) 100%), color-mix(in srgb, var(--surface) 34%, transparent);
+    box-shadow: 0 18px 48px rgba(0, 0, 0, 0.45),
+                inset 0 1px 0 rgba(255, 255, 255, 0.15),
+                inset 0 -1px 0 rgba(0, 0, 0, 0.4);
   }
 
   .site-nav.open .nav-links {
@@ -2510,10 +3492,19 @@ h3 {
     pointer-events: auto;
   }
 
+  .nav-indicator {
+    display: none !important;
+  }
+
   .nav-links a {
     justify-content: space-between;
     padding: 12px 14px;
     border-radius: 12px;
+  }
+
+  .nav-links a:hover,
+  .nav-links a.active {
+    background: rgba(244, 247, 242, 0.08);
   }
 
   .nav-links .nav-resume {
@@ -2542,8 +3533,8 @@ h3 {
   border: 1px solid rgba(255, 255, 255, 0.18);
   border-radius: 16px;
   background: color-mix(in srgb, var(--surface) 60%, transparent);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
+  backdrop-filter: blur(16px) saturate(140%);
+  -webkit-backdrop-filter: blur(16px) saturate(140%);
   box-shadow: 0 18px 40px rgba(0, 0, 0, 0.04),
               inset 0 1px 1px rgba(255, 255, 255, 0.15);
   transition: transform 160ms ease, box-shadow 160ms ease, border-color 160ms ease;
@@ -2573,12 +3564,18 @@ h3 {
   width: 44px;
   height: 44px;
   border-radius: 12px;
-  background: rgba(22, 106, 79, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: rgba(22, 106, 79, 0.12);
+  backdrop-filter: blur(8px) saturate(140%);
+  -webkit-backdrop-filter: blur(8px) saturate(140%);
+  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.18);
   color: var(--accent);
 }
 
 :root.dark .cert-icon {
+  border-color: rgba(255, 255, 255, 0.1);
   background: rgba(103, 198, 156, 0.12);
+  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.06);
 }
 
 .cert-icon svg {
@@ -2638,6 +3635,47 @@ h3 {
   padding: 0 20px;
 }
 
+/* Stack the button row and the social row, aligned as a unit */
+.contact-inner .contact-actions {
+  flex-direction: column;
+  align-items: stretch;
+  gap: 14px;
+}
+
+.contact-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+/* Social logo buttons — centered row directly below the action buttons */
+.contact-social {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+}
+
+.contact-social a {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border: 1px solid color-mix(in srgb, var(--bg) 30%, transparent);
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.08);
+  color: var(--bg);
+  transition: color 180ms ease, border-color 180ms ease, transform 180ms ease;
+}
+
+.contact-social a:hover {
+  color: var(--accent-3);
+  border-color: var(--accent-3);
+  transform: translateY(-2px);
+}
+
 .contact-inner .primary {
   border-color: var(--bg);
   background: var(--bg);
@@ -2664,7 +3702,7 @@ h3 {
   position: relative;
   z-index: 1;
   padding: 46px 0 30px;
-  background: #000000;
+  background: transparent;
   color: #f4f7f2;
   border-top: 1px solid rgba(244, 247, 242, 0.08);
   --ink: #f4f7f2;
@@ -2696,22 +3734,26 @@ h3 {
   font-size: 13px;
 }
 
-.footer-nav {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 20px;
-}
-
-.footer-nav a {
+.footer-proverb {
+  flex: 1 1 320px;
+  max-width: 460px;
+  margin: 0;
+  text-align: center;
   color: var(--muted);
-  font-size: 12px;
-  font-weight: 700;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  transition: color 180ms ease;
+  font-size: 14px;
+  line-height: 1.6;
 }
 
-.footer-nav a:hover {
+.footer-proverb em {
+  font-style: italic;
+}
+
+.footer-proverb-author {
+  display: block;
+  margin-top: 8px;
+  font-style: italic;
+  font-size: 12px;
+  letter-spacing: 0.06em;
   color: var(--accent);
 }
 

@@ -1,1031 +1,1666 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta
-      name="description"
-      content="Nithees Kanna - Python Machine Learning and AI Developer portfolio."
-    />
-    <title>Nithees Kanna | AI & Machine Learning Developer</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@500;700&family=Space+Grotesk:wght@400;500;600;700&display=swap"
-      rel="stylesheet"
-    />
-    <link rel="stylesheet" href="styles.css?v=14" />
-  </head>
-  <body>
-    <div class="cursor-glow" aria-hidden="true"></div>
 
-    <header class="site-header">
-      <a class="brand" href="#top" aria-label="Nithees Kanna home">
-        <img src="logo.png" alt="" class="brand-logo" />
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Nithees Kanna - Python Machine Learning and AI Developer portfolio." />
+  <title>Nithees Kanna | AI & Machine Learning Developer</title>
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Nithees Kanna | AI & Machine Learning Developer" />
+  <meta property="og:description"
+    content="Python Machine Learning and AI Developer — agentic RAG workflows, vector search, and MLOps on Google Cloud." />
+  <!-- After the site is live, add absolute URLs here:
+         <meta property="og:url" content="https://your-domain/" />
+         <meta property="og:image" content="https://your-domain/nithees_bw.png" /> -->
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Nithees Kanna | AI & Machine Learning Developer" />
+  <meta name="twitter:description"
+    content="Python Machine Learning and AI Developer — agentic RAG workflows, vector search, and MLOps on Google Cloud." />
+  <link rel="icon" type="image/png" href="assets/img/brand/logo.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@500;700&family=Space+Grotesk:wght@400;500;600;700&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="assets/css/styles.css?v=19" />
+  <script>
+    // Apply the saved (or system-preferred) theme before paint to avoid a flash.
+    (function () {
+      try {
+        var saved = localStorage.getItem("theme");
+        var prefersDark =
+          window.matchMedia &&
+          window.matchMedia("(prefers-color-scheme: dark)").matches;
+        if (saved === "dark" || (saved === null && prefersDark)) {
+          document.documentElement.classList.add("dark");
+        }
+      } catch (e) { }
+    })();
+  </script>
+</head>
+
+<body>
+  <div class="cursor-glow" aria-hidden="true"></div>
+
+  <header class="site-header">
+    <a class="brand" href="#top" aria-label="Nithees Kanna home">
+      <img src="assets/img/brand/logo.png" alt="" class="brand-logo" />
+    </a>
+  </header>
+
+  <nav class="site-nav" aria-label="Primary navigation">
+    <button class="nav-toggle" type="button" aria-label="Toggle navigation menu" aria-expanded="false">
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+    </button>
+    <button class="theme-toggle" type="button" aria-label="Switch to dark mode" aria-pressed="false"
+      title="Toggle dark mode">
+      <svg class="theme-icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+      </svg>
+      <svg class="theme-icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <circle cx="12" cy="12" r="4"></circle>
+        <path
+          d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41">
+        </path>
+      </svg>
+    </button>
+    <ul class="nav-links">
+      <li class="nav-indicator" aria-hidden="true"></li>
+      <li><a href="#profile">About</a></li>
+      <li><a href="#experience">Journey</a></li>
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#certifications">Certifications</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </nav>
+
+  <main id="top">
+    <section class="hero">
+      <video class="hero-video" autoplay muted loop playsinline aria-hidden="true"></video>
+      <canvas id="videoCanvas" aria-hidden="true"></canvas>
+      <div class="hero-overlays" aria-hidden="true">
+        <span class="orb orb-1"></span>
+        <span class="orb orb-2"></span>
+        <span class="orb orb-3"></span>
+      </div>
+
+      <h1 class="hero-title reveal">
+        <span><span class="accent-char">print</span>("Hello</span>
+        <span>World")</span>
+      </h1>
+
+      <div class="hero-photo reveal">
+        <img src="assets/img/brand/nithees_bw.png" alt="Nithees Kanna" draggable="false" />
+      </div>
+
+      <a class="scroll-cue" href="#work" aria-label="Scroll to content">
+        <span>Scroll</span>
+        <span class="scroll-cue-line" aria-hidden="true"></span>
       </a>
-    </header>
+    </section>
 
-    <nav class="site-nav" aria-label="Primary navigation">
-      <button
-        class="nav-toggle"
-        type="button"
-        aria-label="Toggle navigation menu"
-        aria-expanded="false"
-      >
-        <span aria-hidden="true"></span>
-        <span aria-hidden="true"></span>
-      </button>
-      <ul class="nav-links">
-        <li><a href="#profile">About</a></li>
-        <li><a href="#experience">Journey</a></li>
-        <li><a href="#projects">Projects</a></li>
-        <li><a href="#certifications">Certifications</a></li>
-        <li><a href="#contact">Contact</a></li>
-
-      </ul>
-    </nav>
-
-    <main id="top">
-      <section class="hero">
-        <video
-          class="hero-video"
-          autoplay
-          muted
-          loop
-          playsinline
-          aria-hidden="true"
-        ></video>
-        <canvas id="videoCanvas" aria-hidden="true"></canvas>
-        <div class="hero-overlays" aria-hidden="true">
-          <span class="orb orb-1"></span>
-          <span class="orb orb-2"></span>
-          <span class="orb orb-3"></span>
+    <section class="section-shell profile-section" id="profile">
+      <div class="profile-cards-container">
+        <!-- Card 1: Visiting Card -->
+        <div class="profile-stack-card visiting-card reveal">
+          <div class="visiting-content">
+            <h2 class="visiting-title">Hey Hi! I am NK</h2>
+            <div class="visiting-subheading">
+              <span class="text-original-wrapper">
+                <span class="text-original">I am your friendly neighbourhood</span>
+                <span class="strike-line"></span>
+              </span>
+              <span class="text-vengeance">
+                NAAH I AM VENGEANCE!!!
+              </span>
+            </div>
+          </div>
+          <img class="visiting-bat" src="assets/img/brand/white_bat_symbol.png" alt="Bat Symbol" />
         </div>
 
-        <h1 class="hero-title reveal">
-          <span><span class="accent-char">print</span>("Hello</span>
-          <span>World")</span>
-        </h1>
+        <!-- Card 1 Scroll Spacer -->
+        <div class="visiting-card-spacer"></div>
 
-        <div class="hero-photo reveal">
-          <img src="nithees_bw.png" alt="Nithees Kanna" draggable="false" />
+        <!-- Card 2: Overview Card -->
+        <div class="profile-stack-card overview-card reveal">
+          <div class="profile-box">
+            <div class="profile-content">
+              <p class="profile-eyebrow">General Overview</p>
+              <h2>About Nithees Kanna</h2>
+              <p class="profile-text">
+                I am a Python Machine Learning and AI Developer focused on building robust retrieval pipelines, agentic
+                RAG workflows, vector search layers, and automated MLOps pipelines. I specialize in deploying fine-tuned
+                models onto Google Vertex AI and orchestrating multi-agent systems that solve complex, real-world data
+                challenges.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="profile-connector">
+        <div class="connector-line"></div>
+      </div>
+    </section>
+
+    <section class="section-shell experience-section" id="experience">
+      <div class="section-heading reveal">
+        <p class="eyebrow">Milestones</p>
+        <h2>Professional Journey</h2>
+      </div>
+
+      <div class="journey-flow">
+        <svg class="journey-svg" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path class="journey-svg-bg" fill="none" />
+          <path class="journey-svg-progress" fill="none" />
+        </svg>
+
+        <div class="journey-node j-end-bottom" style="--x: 5%; --y: 14%">
+          <div class="journey-marker"></div>
+          <div class="journey-content">
+            <span class="journey-date">2020 — 2024</span>
+            <h3>Bachelor of Information Technology</h3>
+            <p class="journey-role">St. Joseph's College of Technology</p>
+            <p class="journey-desc">
+              Completed a Bachelor of Information Technology at St. Joseph's College of Technology, building strong
+              foundations in programming, databases, and machine learning.
+            </p>
+          </div>
         </div>
 
-        <a class="scroll-cue" href="#work" aria-label="Scroll to content">
-          <span>Scroll</span>
-          <span class="scroll-cue-line" aria-hidden="true"></span>
-        </a>
-      </section>
+        <div class="journey-node j-apex-right" style="--x: 95%; --y: 32%">
+          <div class="journey-marker"></div>
+          <div class="journey-content">
+            <span class="journey-date">2022</span>
+            <h3>Remote Intern</h3>
+            <p class="journey-role">Bolt IO</p>
+            <p class="journey-desc">
+              Remote internship at Bolt IO — gained hands-on industry experience working on real-world software and data
+              tasks alongside coursework.
+            </p>
+          </div>
+        </div>
 
-      <section class="section-shell profile-section" id="profile">
-        <div class="profile-cards-container">
-          <!-- Card 1: Visiting Card -->
-          <div class="profile-stack-card visiting-card reveal">
-            <div class="visiting-content">
-              <h2 class="visiting-title">Hey hi I am NK</h2>
-              <div class="visiting-subheading">
-                <span class="text-original-wrapper">
-                  <span class="text-original">I am your friendly neighbourhood</span>
-                  <span class="strike-line"></span>
-                </span>
-                <span class="text-vengeance">
-                  NAAH I AM VENGEANCE
-                </span>
+        <div class="journey-node j-apex-left" style="--x: 5%; --y: 68%">
+          <div class="journey-marker"></div>
+          <div class="journey-content">
+            <span class="journey-date">2024</span>
+            <h3>Incubation Training in AI Systems</h3>
+            <p class="journey-role">Kanini</p>
+            <p class="journey-desc">
+              Completed Kanini's incubation training in AI systems, working hands-on with machine learning pipelines and
+              applied AI solution building.
+            </p>
+          </div>
+        </div>
+
+        <div class="journey-node j-end-top-right is-x" style="--x: 95%; --y: 86%">
+          <div class="journey-marker"></div>
+          <div class="journey-content">
+            <span class="journey-date">Present</span>
+            <h3>Perpetuitti Technosoft</h3>
+            <p class="journey-role">Current Role</p>
+            <p class="journey-desc">
+              Currently at Perpetuitti Technosoft, building AI and machine learning solutions — from agentic workflows
+              to production ML systems.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="journey-detail" aria-live="polite">
+        <p class="journey-detail-text"></p>
+      </div>
+    </section>
+
+    <section class="section-shell tech-section" id="tech-stack">
+      <div class="section-heading reveal">
+        <p class="eyebrow">Stack</p>
+        <h2>Technology & Frameworks</h2>
+      </div>
+      <div class="tech-grid reveal">
+        <div class="tech-slot" id="tech-slot-0">
+          <div class="tech-card">
+            <div class="tech-card-inner">
+              <div class="tech-card-front"></div>
+              <div class="tech-card-back"></div>
+            </div>
+          </div>
+        </div>
+        <div class="tech-slot" id="tech-slot-1">
+          <div class="tech-card">
+            <div class="tech-card-inner">
+              <div class="tech-card-front"></div>
+              <div class="tech-card-back"></div>
+            </div>
+          </div>
+        </div>
+        <div class="tech-slot" id="tech-slot-2">
+          <div class="tech-card">
+            <div class="tech-card-inner">
+              <div class="tech-card-front"></div>
+              <div class="tech-card-back"></div>
+            </div>
+          </div>
+        </div>
+        <div class="tech-slot" id="tech-slot-3">
+          <div class="tech-card">
+            <div class="tech-card-inner">
+              <div class="tech-card-front"></div>
+              <div class="tech-card-back"></div>
+            </div>
+          </div>
+        </div>
+        <div class="tech-slot" id="tech-slot-4">
+          <div class="tech-card">
+            <div class="tech-card-inner">
+              <div class="tech-card-front"></div>
+              <div class="tech-card-back"></div>
+            </div>
+          </div>
+        </div>
+        <div class="tech-slot" id="tech-slot-5">
+          <div class="tech-card">
+            <div class="tech-card-inner">
+              <div class="tech-card-front"></div>
+              <div class="tech-card-back"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section-shell split-section" id="work">
+      <div class="section-heading reveal">
+        <p class="eyebrow">Selected Positioning</p>
+        <h2>What I can do in an AI team</h2>
+      </div>
+      <div class="work-grid">
+        <article class="work-card reveal" data-tilt>
+          <div class="card-topline">
+            <span>01</span>
+            <span>AI Agents</span>
+          </div>
+          <div class="card-icon">
+            <svg class="card-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
+              stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10" stroke-dasharray="4 4" />
+              <circle cx="12" cy="12" r="3" />
+              <path d="M12 2v4M12 18v4M2 12h4M18 12h4" />
+            </svg>
+          </div>
+          <h3>AI Agents and agentic workflows</h3>
+          <p>
+            Build retrieval pipelines, agentic RAG flows, multi-agent setups,
+            vector search layers, and evaluation-ready AI application logic.
+          </p>
+        </article>
+
+        <article class="work-card reveal" data-tilt>
+          <div class="card-topline">
+            <span>02</span>
+            <span>Model Engineering</span>
+          </div>
+          <div class="card-icon">
+            <svg class="card-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
+              stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="5" cy="12" r="2" />
+              <circle cx="12" cy="6" r="2" />
+              <circle cx="12" cy="18" r="2" />
+              <circle cx="19" cy="12" r="2" />
+              <line x1="7" y1="12" x2="10" y2="7" />
+              <line x1="7" y1="12" x2="10" y2="17" />
+              <line x1="14" y1="7" x2="17" y2="11" />
+              <line x1="14" y1="17" x2="17" y2="13" />
+            </svg>
+          </div>
+          <h3>Model Training, Development, Evaluation, Deployment and Monitoring</h3>
+          <p>
+            Work across data collection, cleaning, model training, validation, evaluation, deployment, and continuous
+            production monitoring.
+          </p>
+        </article>
+
+        <article class="work-card reveal" data-tilt>
+          <div class="card-topline">
+            <span>03</span>
+            <span>MLOps</span>
+          </div>
+          <div class="card-icon">
+            <svg class="card-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
+              stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 2L2 7l10 5 10-5-10-5z" />
+              <path d="M2 12l10 5 10-5" />
+              <path d="M2 17l10 5 10-5" />
+            </svg>
+          </div>
+          <h3>MLOps - Google Cloud Platform, Kubernetes and Docker</h3>
+          <p>
+            Automate containerized deployment pipelines, manage container orchestration using Kubernetes, and deploy
+            robust architectures on Google Cloud Platform.
+          </p>
+        </article>
+      </div>
+    </section>
+
+    <section class="section-shell split-section" id="projects">
+      <div class="section-heading reveal">
+        <p class="eyebrow">Selected Deployments</p>
+        <h2>Featured Projects</h2>
+      </div>
+      <div class="projects-grid">
+        <!-- Highlighted Project: Project Lovelace -->
+        <article class="project-card reveal highlighted-project" data-tilt>
+          <!-- Header spanning full width -->
+          <div class="project-highlight-header">
+            <div class="project-highlight-title-group">
+              <div class="project-logo">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="44" height="44">
+                  <defs>
+                    <linearGradient id="lovelaceGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                      <stop offset="0%" stop-color="#20312d" />
+                      <stop offset="100%" stop-color="#314b43" />
+                    </linearGradient>
+                  </defs>
+                  <rect width="64" height="64" rx="16" fill="url(#lovelaceGrad)" />
+                  <circle cx="32" cy="32" r="6" fill="#fff7ef"></circle>
+                  <ellipse cx="32" cy="32" rx="22" ry="10" fill="none" stroke="rgba(255, 247, 239, 0.92)"
+                    stroke-width="2.4"></ellipse>
+                  <ellipse cx="32" cy="32" rx="22" ry="10" fill="none" stroke="rgba(255, 247, 239, 0.92)"
+                    stroke-width="2.4" transform="rotate(60 32 32)"></ellipse>
+                  <ellipse cx="32" cy="32" rx="22" ry="10" fill="none" stroke="rgba(255, 247, 239, 0.92)"
+                    stroke-width="2.4" transform="rotate(120 32 32)"></ellipse>
+                  <circle cx="52" cy="32" r="3" fill="#f2b36c"></circle>
+                  <circle cx="22" cy="15" r="3" fill="#f2b36c"></circle>
+                  <circle cx="23" cy="49" r="3" fill="#f2b36c"></circle>
+                </svg>
+              </div>
+              <div class="project-highlight-meta">
+                <h3>Project Lovelace</h3>
               </div>
             </div>
-            <img class="visiting-bat" src="white_bat_symbol.png" alt="Bat Symbol" />
+            <div class="project-links">
+              <a href="https://github.com/Nithees24/PROJECT-LOVELACE" target="_blank" rel="noopener"
+                class="project-link" aria-label="GitHub Repository">
+                <svg class="icon" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor"
+                  stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path
+                    d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22">
+                  </path>
+                </svg>
+              </a>
+            </div>
           </div>
 
-          <!-- Card 1 Scroll Spacer -->
-          <div class="visiting-card-spacer"></div>
+          <!-- Video showcase + details body -->
+          <div class="project-highlight-body">
+            <div class="project-showcase">
+              <div class="showcase-frame">
+                <div class="showcase-titlebar" aria-hidden="true">
+                  <span class="showcase-dot dot-orange"></span>
+                  <span class="showcase-dot dot-gold"></span>
+                  <span class="showcase-dot dot-green"></span>
+                  <span class="showcase-title">lovelace — live demo</span>
+                </div>
+                <video class="showcase-video" src="assets/video/lovelace.mp4" muted loop playsinline controls preload="metadata"
+                  aria-label="Project Lovelace product demo"></video>
+              </div>
+            </div>
+            <div class="project-highlight-right">
+              <p class="project-desc">An autonomous reasoning AI Agent for STEM fields designed to solve complex
+                multi-step math proving, scientific simulation, and symbolic calculation tasks with self-correcting loop
+                logic.</p>
+              <ul class="project-outcomes">
+                <li>Engineered custom reflection prompts yielding a 35% accuracy improvement in multi-step STEM proofs.
+                </li>
+                <li>Configured interactive Python sandboxes and WolframAlpha tool bindings.</li>
+                <li>Designed self-correcting reasoning loops to validate outputs dynamically.</li>
+              </ul>
+              <div class="project-tags">
+                <span>AI Agents</span>
+                <span>LangGraph</span>
+                <span>STEM Reasoning</span>
+                <span>Python</span>
+                <span>SymPy</span>
+              </div>
+            </div>
+          </div>
+        </article>
 
-          <!-- Card 2: Overview Card -->
-          <div class="profile-stack-card overview-card reveal">
-            <div class="profile-box">
-              <div class="profile-content">
-                <p class="profile-eyebrow">General Overview</p>
-                <h2>About Nithees Kanna</h2>
-                <p class="profile-text">
-                  I am a Python Machine Learning and AI Developer focused on building robust retrieval pipelines, agentic RAG workflows, vector search layers, and automated MLOps pipelines. I specialize in deploying fine-tuned models onto Google Vertex AI and orchestrating multi-agent systems that solve complex, real-world data challenges.
+        <!-- Project 02: Agentic RAG Orchestrator -->
+        <article class="project-card reveal" data-tilt>
+          <div class="project-header">
+            <span class="project-number">02</span>
+            <div class="project-links">
+              <a href="https://github.com/Nithees24/RAG_LANGCHAIN" target="_blank" rel="noopener" class="project-link"
+                aria-label="GitHub Repository">
+                <svg class="icon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor"
+                  stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path
+                    d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22">
+                  </path>
+                </svg>
+              </a>
+            </div>
+          </div>
+          <h3>Orchestra-RAG</h3>
+          <p class="project-desc">A multi-agent RAG framework using LangGraph to dynamically plan, retrieve, and
+            validate queries across multiple documentation layers.</p>
+          <ul class="project-outcomes">
+            <li>Achieved 98.4% retrieval accuracy via custom reranking layers.</li>
+            <li>Implemented self-correcting retrieval loops using LangGraph.</li>
+          </ul>
+          <div class="project-tags">
+            <span>Python</span>
+            <span>LangGraph</span>
+            <span>Pinecone</span>
+            <span>RAG</span>
+          </div>
+        </article>
+
+        <!-- Project 03: AI Workflow Identifier -->
+        <article class="project-card reveal" data-tilt>
+          <div class="project-header">
+            <span class="project-number">03</span>
+            <div class="project-links">
+              <a href="https://github.com/Nithees24/CP_AI_WORKFLOW" target="_blank" rel="noopener" class="project-link"
+                aria-label="GitHub Repository">
+                <svg class="icon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor"
+                  stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path
+                    d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22">
+                  </path>
+                </svg>
+              </a>
+            </div>
+          </div>
+          <h3>AI Workflow Identifier</h3>
+          <p class="project-desc">A multi-agent AI workflow that analyzes uploaded documents to identify semantics —
+            statements, syntax, and expected outputs — with specialized agents coordinating each stage.</p>
+          <ul class="project-outcomes">
+            <li>Orchestrated multiple AI agents to parse, classify, and cross-validate document semantics.</li>
+            <li>Automated statement, syntax, and output identification for uploaded documents.</li>
+          </ul>
+          <div class="project-tags">
+            <span>AI Agents</span>
+            <span>Python</span>
+            <span>LangChain</span>
+            <span>NLP</span>
+          </div>
+        </article>
+
+        <!-- Project 04: Documentation Bot for Legalised Works -->
+        <article class="project-card reveal" data-tilt>
+          <div class="project-header">
+            <span class="project-number">04</span>
+          </div>
+          <h3>Documentation Bot for Legalised Works</h3>
+          <p class="project-desc">An agentic documentation assistant that drafts, reviews, and organizes legalised
+            documents using cooperating AI agents for clause structuring and validation.</p>
+          <ul class="project-outcomes">
+            <li>Deployed cooperating AI agents to draft and cross-review legalised documentation.</li>
+            <li>Reduced manual drafting effort with automated clause structuring and validation.</li>
+          </ul>
+          <div class="project-tags">
+            <span>AI Agents</span>
+            <span>LLM</span>
+            <span>Document Automation</span>
+            <span>Python</span>
+          </div>
+        </article>
+      </div>
+
+      <div class="section-heading reveal" style="margin-top: 80px;">
+        <p class="eyebrow">Core Work & Research</p>
+        <h2>Academic & Applied ML</h2>
+      </div>
+      <div class="projects-grid">
+        <!-- Project 05: Weak File Security Analyzer -->
+        <article class="project-card reveal" data-tilt>
+          <div class="project-header">
+            <span class="project-number">05</span>
+          </div>
+          <h3>File Security Analyzer</h3>
+          <p class="project-desc">A security scanning application checking local files for weak protections and
+            permission configurations using ML techniques.</p>
+          <ul class="project-outcomes">
+            <li>Built classification layers using TensorFlow and Dense neural networks to predict vulnerability scores.
+            </li>
+            <li>Analyzed access control logs to identify risky user privilege delegations.</li>
+          </ul>
+          <div class="project-tags">
+            <span>TensorFlow</span>
+            <span>Security</span>
+            <span>Neural Networks</span>
+            <span>Python</span>
+          </div>
+        </article>
+
+        <!-- Project 06: Wastewater CNN Classifier -->
+        <article class="project-card reveal" data-tilt>
+          <div class="project-header">
+            <span class="project-number">06</span>
+          </div>
+          <h3>Wastewater Quality Classifier</h3>
+          <p class="project-desc">An environmental monitoring system classifying water safety and identifying potable
+            thresholds in wastewater sumps.</p>
+          <ul class="project-outcomes">
+            <li>Integrated sensor data streams measuring physical and chemical water properties.</li>
+            <li>Implemented a Convolutional Neural Network (CNN) in Python to categorize safety parameters.</li>
+          </ul>
+          <div class="project-tags">
+            <span>Python</span>
+            <span>CNN</span>
+            <span>Sensors</span>
+            <span>Data Analysis</span>
+          </div>
+        </article>
+
+        <!-- Project 07: License Plate Recognition -->
+        <article class="project-card reveal" data-tilt>
+          <div class="project-header">
+            <span class="project-number">07</span>
+          </div>
+          <h3>License Plate Detector</h3>
+          <p class="project-desc">A deep-learning computer vision system automating license plate detection and reading
+            from vehicle images.</p>
+          <ul class="project-outcomes">
+            <li>Developed a Convolutional Neural Network (CNN) model for bounding box region detection.</li>
+            <li>Applied deep regression networks to locate and isolate license text under varied light levels.</li>
+          </ul>
+          <div class="project-tags">
+            <span>CNN</span>
+            <span>Deep Regression</span>
+            <span>Computer Vision</span>
+            <span>TensorFlow</span>
+          </div>
+        </article>
+
+        <!-- Project 08: Spotify Customer Segmenter -->
+        <article class="project-card reveal" data-tilt>
+          <div class="project-header">
+            <span class="project-number">08</span>
+          </div>
+          <h3>Spotify Music Segmenter</h3>
+          <p class="project-desc">A customer segmentation application categorizing listeners based on music taste and
+            database profiles.</p>
+          <ul class="project-outcomes">
+            <li>Analyzed user listen histories, tracking acoustic qualities across different genres.</li>
+            <li>Implemented clustering models to identify distinct listener persona buckets.</li>
+          </ul>
+          <div class="project-tags">
+            <span>Clustering</span>
+            <span>Spotify API</span>
+            <span>Data Mining</span>
+            <span>Python</span>
+          </div>
+        </article>
+
+        <!-- Project 09: OpenCV Facemask Recognition -->
+        <article class="project-card reveal" data-tilt>
+          <div class="project-header">
+            <span class="project-number">09</span>
+          </div>
+          <h3>Face Mask Detector</h3>
+          <p class="project-desc">A real-time vision classifier detecting face masks in video streams and logging
+            compliance data.</p>
+          <ul class="project-outcomes">
+            <li>Built detection and tracking scripts using OpenCV and CNN models in TensorFlow.</li>
+            <li>Integrated Pytesseract for reading text and generating log entries for monitoring feeds.</li>
+          </ul>
+          <div class="project-tags">
+            <span>OpenCV</span>
+            <span>TensorFlow</span>
+            <span>Pytesseract</span>
+            <span>CNN</span>
+          </div>
+        </article>
+
+        <!-- Project 10: Hand Gesture Media Controller -->
+        <article class="project-card reveal" data-tilt>
+          <div class="project-header">
+            <span class="project-number">10</span>
+          </div>
+          <h3>Gesture Media Controller</h3>
+          <p class="project-desc">A human-computer interaction system translating real-time hand movements into PC media
+            controls.</p>
+          <ul class="project-outcomes">
+            <li>Trained lightweight gesture mapping networks using TensorFlow.</li>
+            <li>Used OpenCV streaming to trigger play, pause, and volume changes hands-free.</li>
+          </ul>
+          <div class="project-tags">
+            <span>TensorFlow</span>
+            <span>OpenCV</span>
+            <span>Computer Vision</span>
+            <span>Python</span>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="section-shell stack-section" id="stack">
+      <div class="section-heading reveal">
+        <p class="eyebrow">Capabilities</p>
+        <h2>Core Technical Matrix</h2>
+      </div>
+
+      <div class="stack-controls reveal" role="tablist" aria-label="Skill filters">
+        <span class="filter-indicator" aria-hidden="true"></span>
+        <button class="filter-button active" type="button" data-filter="all">
+          All
+        </button>
+        <button class="filter-button" type="button" data-filter="ai">
+          AI
+        </button>
+        <button class="filter-button" type="button" data-filter="data">
+          Data
+        </button>
+        <button class="filter-button" type="button" data-filter="ops">
+          Ops
+        </button>
+      </div>
+
+      <div class="stack-list reveal">
+        <button class="stack-item" type="button" data-category="ai">
+          <span>RAG Systems</span>
+          <small>retrieval, grounding, evaluation</small>
+          <div class="stack-item-badges">
+            <span class="stack-badge">LlamaIndex</span>
+            <span class="stack-badge">Ragas</span>
+            <span class="stack-badge">LangChain</span>
+          </div>
+          <template class="stack-details-template">
+            <div class="stack-details-content">
+              <h3>RAG Systems</h3>
+              <p>Designed and deployed robust Retrieval-Augmented Generation systems to query large corporate knowledge
+                bases with grounding and minimal hallucination.</p>
+              <div class="stack-details-meta">
+                <p><strong>Key Tools:</strong> LlamaIndex, Ragas evaluation, LangChain, OpenAI API</p>
+                <p><strong>Impact:</strong> Achieved 94% accuracy in response grounding and reduced hallucination rates.
                 </p>
               </div>
             </div>
+          </template>
+        </button>
+        <button class="stack-item" type="button" data-category="ai">
+          <span>Agentic RAG</span>
+          <small>tool use, planning, orchestration</small>
+          <div class="stack-item-badges">
+            <span class="stack-badge">LangGraph</span>
+            <span class="stack-badge">CrewAI</span>
+            <span class="stack-badge">Tool Calling</span>
           </div>
-        </div>
-
-        <div class="profile-connector">
-          <div class="connector-line"></div>
-        </div>
-      </section>
-
-      <section class="section-shell experience-section" id="experience">
-        <div class="section-heading reveal">
-          <p class="eyebrow">Milestones</p>
-          <h2>Professional Journey</h2>
-        </div>
-        
-        <div class="journey-flow">
-          <svg class="journey-svg" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-            <path class="journey-svg-bg" fill="none" />
-            <path class="journey-svg-progress" fill="none" />
-          </svg>
-
-          <div class="journey-node j-end-bottom" style="--x: 5%; --y: 10%">
-            <div class="journey-marker"></div>
-            <div class="journey-content">
-              <span class="journey-date">2018 — 2019</span>
-              <h3>Software Engineer Intern</h3>
-              <p class="journey-role">Backend & Data</p>
-              <p class="journey-desc">
-                Integrated database schemas and designed REST APIs. Optimized ETL workflows and developed dashboards for data visualization.
+          <template class="stack-details-template">
+            <div class="stack-details-content">
+              <h3>Agentic RAG</h3>
+              <p>Implemented autonomous agents capable of dynamic query planning, multi-step reasoning, and tool use to
+                resolve complex user queries.</p>
+              <div class="stack-details-meta">
+                <p><strong>Key Tools:</strong> LangGraph, CrewAI, GPT-4, Function Calling</p>
+                <p><strong>Impact:</strong> Enabled parallel sub-query execution, reducing retrieval latency by 35% for
+                  complex research queries.</p>
+              </div>
+            </div>
+          </template>
+        </button>
+        <button class="stack-item" type="button" data-category="ai">
+          <span>Multi AI Setup</span>
+          <small>coordinated specialist agents</small>
+          <div class="stack-item-badges">
+            <span class="stack-badge">AutoGen</span>
+            <span class="stack-badge">Orchestration</span>
+          </div>
+          <template class="stack-details-template">
+            <div class="stack-details-content">
+              <h3>Multi AI Setup</h3>
+              <p>Orchestrated networks of collaborative, specialized AI agents that pass messages, review outputs, and
+                execute code within isolated environments.</p>
+              <div class="stack-details-meta">
+                <p><strong>Key Tools:</strong> Microsoft AutoGen, custom orchestration layers, LangGraph</p>
+                <p><strong>Impact:</strong> Automated multi-perspective tasks (e.g., Code Gen -> QA Tester -> Refiner)
+                  with zero human intervention.</p>
+              </div>
+            </div>
+          </template>
+        </button>
+        <button class="stack-item" type="button" data-category="data">
+          <span>MySQL / MSSQL / PostgreSQL</span>
+          <small>relational storage</small>
+          <div class="stack-item-badges">
+            <span class="stack-badge">PostgreSQL</span>
+            <span class="stack-badge">pgvector</span>
+            <span class="stack-badge">Schema Design</span>
+          </div>
+          <template class="stack-details-template">
+            <div class="stack-details-content">
+              <h3>MySQL / MSSQL / PostgreSQL</h3>
+              <p>Architected relational database schemas, optimized complex queries, and managed transactional integrity
+                for high-throughput applications.</p>
+              <div class="stack-details-meta">
+                <p><strong>Key Tools:</strong> PostgreSQL, pgvector, MSSQL, SQL Query Profiling</p>
+                <p><strong>Impact:</strong> Reduced latency of search and retrieval operations by 50% via index
+                  optimization.</p>
+              </div>
+            </div>
+          </template>
+        </button>
+        <button class="stack-item" type="button" data-category="data">
+          <span>Pinecone / ChromaDB / FAISS</span>
+          <small>semantic search</small>
+          <div class="stack-item-badges">
+            <span class="stack-badge">Pinecone</span>
+            <span class="stack-badge">ChromaDB</span>
+            <span class="stack-badge">Embeddings</span>
+          </div>
+          <template class="stack-details-template">
+            <div class="stack-details-content">
+              <h3>Pinecone / ChromaDB / FAISS</h3>
+              <p>Configured vector databases and indexes for fast semantic search and metadata-based filtering at scale.
               </p>
-            </div>
-          </div>
-
-          <div class="journey-node j-apex-right" style="--x: 95%; --y: 23%">
-            <div class="journey-marker"></div>
-            <div class="journey-content">
-              <span class="journey-date">2019 — 2020</span>
-              <h3>Machine Learning Researcher</h3>
-              <p class="journey-role">NLP & Vision</p>
-              <p class="journey-desc">
-                Developed custom deep learning models for classification and text generation. Focused on transfer learning and optimization of transformer architectures.
-              </p>
-            </div>
-          </div>
-
-          <div class="journey-node j-apex-left" style="--x: 5%; --y: 49%">
-            <div class="journey-marker"></div>
-            <div class="journey-content">
-              <span class="journey-date">2020 — 2022</span>
-              <h3>Data & ML Engineer</h3>
-              <p class="journey-role">Infrastructure & Search</p>
-              <p class="journey-desc">
-                Designed sub-second streaming ingestion syncs for vector databases. Built automated testing suites for ML models and optimized relational DB pipelines for embedding computations.
-              </p>
-            </div>
-          </div>
-
-          <div class="journey-node j-apex-right" style="--x: 95%; --y: 75%">
-            <div class="journey-marker"></div>
-            <div class="journey-content">
-              <span class="journey-date">2022 — 2024</span>
-              <h3>Senior Machine Learning Engineer</h3>
-              <p class="journey-role">MLOps & Pipelines</p>
-              <p class="journey-desc">
-                Built continuous training and deployment pipelines on Google Vertex AI. Integrated MLflow for experiment tracking and developed custom reranking models to boost search relevance.
-              </p>
-            </div>
-          </div>
-
-          <div class="journey-node j-end-top is-x" style="--x: 5%; --y: 88%">
-            <div class="journey-marker"></div>
-            <div class="journey-content">
-              <span class="journey-date">2024 — Present</span>
-              <h3>AI Systems Architect</h3>
-              <p class="journey-role">Lead Developer</p>
-              <p class="journey-desc">
-                Architecting multi-agent orchestrations and agentic RAG workflows using LangGraph and Vertex AI. Designing production-grade evaluation frameworks and self-correcting retrieval systems.
-              </p>
-            </div>
-          </div>
-        </div>
-
-        <div class="journey-detail" aria-live="polite">
-          <p class="journey-detail-text"></p>
-        </div>
-      </section>
-
-      <section class="section-shell tech-section" id="tech-stack">
-        <div class="section-heading reveal">
-          <p class="eyebrow">Stack</p>
-          <h2>Technology & Frameworks</h2>
-        </div>
-        <div class="tech-grid reveal">
-          <div class="tech-slot" id="tech-slot-0">
-            <div class="tech-card">
-              <div class="tech-card-inner">
-                <div class="tech-card-front"></div>
-                <div class="tech-card-back"></div>
+              <div class="stack-details-meta">
+                <p><strong>Key Tools:</strong> Pinecone, ChromaDB, FAISS, HNSW indexing</p>
+                <p><strong>Impact:</strong> Supported sub-100ms similarity searches across millions of document chunks.
+                </p>
               </div>
             </div>
+          </template>
+        </button>
+        <button class="stack-item" type="button" data-category="data">
+          <span>Data Collection + Cleaning</span>
+          <small>usable training data</small>
+          <div class="stack-item-badges">
+            <span class="stack-badge">Pandas</span>
+            <span class="stack-badge">NumPy</span>
+            <span class="stack-badge">Scraping</span>
           </div>
-          <div class="tech-slot" id="tech-slot-1">
-            <div class="tech-card">
-              <div class="tech-card-inner">
-                <div class="tech-card-front"></div>
-                <div class="tech-card-back"></div>
+          <template class="stack-details-template">
+            <div class="stack-details-content">
+              <h3>Data Collection & Cleaning</h3>
+              <p>Built automated web scraping pipelines and data cleansing scripts to compile clean datasets for model
+                training and fine-tuning.</p>
+              <div class="stack-details-meta">
+                <p><strong>Key Tools:</strong> BeautifulSoup, Scrapy, Pandas, NumPy, text preprocessing</p>
+                <p><strong>Impact:</strong> Processed over 100GB of unstructured text into clean, tokenized inputs ready
+                  for vector databases.</p>
               </div>
             </div>
+          </template>
+        </button>
+        <button class="stack-item" type="button" data-category="ops">
+          <span>MLOps Automation</span>
+          <small>tests, monitoring, releases</small>
+          <div class="stack-item-badges">
+            <span class="stack-badge">Docker</span>
+            <span class="stack-badge">GitHub Actions</span>
+            <span class="stack-badge">MLflow</span>
           </div>
-          <div class="tech-slot" id="tech-slot-2">
-            <div class="tech-card">
-              <div class="tech-card-inner">
-                <div class="tech-card-front"></div>
-                <div class="tech-card-back"></div>
+          <template class="stack-details-template">
+            <div class="stack-details-content">
+              <h3>MLOps Automation</h3>
+              <p>Automated model testing, deployment, and performance monitoring pipelines to ensure high reliability in
+                production.</p>
+              <div class="stack-details-meta">
+                <p><strong>Key Tools:</strong> Docker, GitHub Actions, MLflow, Prometheus, Grafana</p>
+                <p><strong>Impact:</strong> Enabled seamless CI/CD for prompt templates and agent tools with
+                  zero-downtime rollouts.</p>
               </div>
             </div>
+          </template>
+        </button>
+        <button class="stack-item" type="button" data-category="ops">
+          <span>Google Vertex AI</span>
+          <small>managed ML workflows</small>
+          <div class="stack-item-badges">
+            <span class="stack-badge">Vertex AI</span>
+            <span class="stack-badge">AutoML</span>
+            <span class="stack-badge">GCP</span>
           </div>
-          <div class="tech-slot" id="tech-slot-3">
-            <div class="tech-card">
-              <div class="tech-card-inner">
-                <div class="tech-card-front"></div>
-                <div class="tech-card-back"></div>
+          <template class="stack-details-template">
+            <div class="stack-details-content">
+              <h3>Google Vertex AI</h3>
+              <p>Managed cloud-native ML lifecycles using Google Cloud's AI platform for training, hosting, and
+                deploying custom models.</p>
+              <div class="stack-details-meta">
+                <p><strong>Key Tools:</strong> Vertex AI Pipelines, Model Registry, Endpoint Deployments</p>
+                <p><strong>Impact:</strong> Scaled inference endpoints to handle spikes in traffic with automated load
+                  balancing.</p>
               </div>
             </div>
+          </template>
+        </button>
+        <button class="stack-item" type="button" data-category="ops">
+          <span>APIs + CI/CD</span>
+          <small>integration-ready systems</small>
+          <div class="stack-item-badges">
+            <span class="stack-badge">FastAPI</span>
+            <span class="stack-badge">Docker</span>
+            <span class="stack-badge">Cloud Run</span>
           </div>
-          <div class="tech-slot" id="tech-slot-4">
-            <div class="tech-card">
-              <div class="tech-card-inner">
-                <div class="tech-card-front"></div>
-                <div class="tech-card-back"></div>
+          <template class="stack-details-template">
+            <div class="stack-details-content">
+              <h3>APIs & CI/CD</h3>
+              <p>Developed high-performance FastAPI microservices integrated with automated deployment workflows.</p>
+              <div class="stack-details-meta">
+                <p><strong>Key Tools:</strong> FastAPI, Pydantic, Docker, GitHub Actions, GCP Cloud Run</p>
+                <p><strong>Impact:</strong> Maintained 99.9% uptime and streamlined the integration of AI models into
+                  frontend applications.</p>
               </div>
             </div>
-          </div>
-          <div class="tech-slot" id="tech-slot-5">
-            <div class="tech-card">
-              <div class="tech-card-inner">
-                <div class="tech-card-front"></div>
-                <div class="tech-card-back"></div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+          </template>
+        </button>
+      </div>
 
-      <section class="section-shell split-section" id="work">
-        <div class="section-heading reveal">
-          <p class="eyebrow">Selected Positioning</p>
-          <h2>What I can do in an AI team</h2>
+      <div class="stack-details-panel reveal" id="stack-details-panel" aria-live="polite">
+        <div class="stack-details-wrapper">
+          <div class="stack-details-placeholder">
+            <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="1.8" fill="none"
+              class="placeholder-icon">
+              <circle cx="12" cy="12" r="10"></circle>
+              <line x1="12" y1="16" x2="12" y2="12"></line>
+              <line x1="12" y1="8" x2="12.01" y2="8"></line>
+            </svg>
+            <span>Select any capability above to see real-world details, key tools, and project impact.</span>
+          </div>
+          <div class="stack-details-inner" style="display: none;"></div>
         </div>
-        <div class="work-grid">
-          <article class="work-card reveal" data-tilt>
-            <div class="card-topline">
-              <span>01</span>
-              <span>AI Agents</span>
-            </div>
-            <div class="card-icon">
-              <svg class="card-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                <circle cx="12" cy="12" r="10" stroke-dasharray="4 4" />
-                <circle cx="12" cy="12" r="3" />
-                <path d="M12 2v4M12 18v4M2 12h4M18 12h4" />
-              </svg>
-            </div>
-            <h3>AI Agents and agentic workflows</h3>
-            <p>
-              Build retrieval pipelines, agentic RAG flows, multi-agent setups,
-              vector search layers, and evaluation-ready AI application logic.
-            </p>
-          </article>
+      </div>
+    </section>
 
-          <article class="work-card reveal" data-tilt>
-            <div class="card-topline">
-              <span>02</span>
-              <span>Model Engineering</span>
-            </div>
-            <div class="card-icon">
-              <svg class="card-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                <circle cx="5" cy="12" r="2" />
-                <circle cx="12" cy="6" r="2" />
-                <circle cx="12" cy="18" r="2" />
-                <circle cx="19" cy="12" r="2" />
-                <line x1="7" y1="12" x2="10" y2="7" />
-                <line x1="7" y1="12" x2="10" y2="17" />
-                <line x1="14" y1="7" x2="17" y2="11" />
-                <line x1="14" y1="17" x2="17" y2="13" />
-              </svg>
-            </div>
-            <h3>Model Training, Development, Evaluation, Deployment and Monitoring</h3>
-            <p>
-              Work across data collection, cleaning, model training, validation, evaluation, deployment, and continuous production monitoring.
-            </p>
-          </article>
-
-          <article class="work-card reveal" data-tilt>
-            <div class="card-topline">
-              <span>03</span>
-              <span>MLOps</span>
-            </div>
-            <div class="card-icon">
-              <svg class="card-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M12 2L2 7l10 5 10-5-10-5z" />
-                <path d="M2 12l10 5 10-5" />
-                <path d="M2 17l10 5 10-5" />
-              </svg>
-            </div>
-            <h3>MLOps - Google Cloud Platform, Kubernetes and Docker</h3>
-            <p>
-              Automate containerized deployment pipelines, manage container orchestration using Kubernetes, and deploy robust architectures on Google Cloud Platform.
-            </p>
-          </article>
+    <section class="section-shell process-section" id="process">
+      <div class="section-heading reveal">
+        <p class="eyebrow">How I Work</p>
+        <h2>From problem framing to maintainable AI</h2>
+      </div>
+      <div class="timeline reveal">
+        <!-- The visual track line connecting the numbers -->
+        <div class="timeline-track" aria-hidden="true">
+          <div class="timeline-track-fill"></div>
         </div>
-      </section>
 
-      <section class="section-shell split-section" id="projects">
-        <div class="section-heading reveal">
-          <p class="eyebrow">Selected Deployments</p>
-          <h2>Featured Projects</h2>
+        <article class="timeline-step" id="step-1" tabindex="0">
+          <span class="timeline-step-num">1</span>
+          <h3>Frame the problem</h3>
+          <p class="timeline-step-summary">Clarify objective, data shape, metrics, constraints, and the expected user
+            workflow.</p>
+          <div class="timeline-step-details">
+            <ul class="timeline-details-list">
+              <li><strong>Activities:</strong> Stakeholder alignment, metric definition (e.g., NDCG, recall), and data
+                profiling.</li>
+              <li><strong>Deliverables:</strong> Baseline evaluation sets, system architecture diagrams, and scoping
+                documentation.</li>
+            </ul>
+          </div>
+          <div class="timeline-chevron" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none">
+              <polyline points="6 9 12 15 18 9"></polyline>
+            </svg>
+          </div>
+        </article>
+
+        <article class="timeline-step" id="step-2" tabindex="0">
+          <span class="timeline-step-num">2</span>
+          <h3>Build the system path</h3>
+          <p class="timeline-step-summary">Connect data, retrieval, model logic, APIs, and automation into one testable
+            flow.</p>
+          <div class="timeline-step-details">
+            <ul class="timeline-details-list">
+              <li><strong>Activities:</strong> End-to-end pipeline prototyping, LLM orchestration (LangGraph), and tool
+                integration.</li>
+              <li><strong>Deliverables:</strong> Working FastAPI microservices, relational/vector schemas, and
+                mock-tested code paths.</li>
+            </ul>
+          </div>
+          <div class="timeline-chevron" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none">
+              <polyline points="6 9 12 15 18 9"></polyline>
+            </svg>
+          </div>
+        </article>
+
+        <article class="timeline-step" id="step-3" tabindex="0">
+          <span class="timeline-step-num">3</span>
+          <h3>Measure and harden</h3>
+          <p class="timeline-step-summary">Validate outputs, add checks, monitor behavior, and prepare for iteration in
+            production.</p>
+          <div class="timeline-step-details">
+            <ul class="timeline-details-list">
+              <li><strong>Activities:</strong> Latency and accuracy profiling, safety guardrail setup, and CI/CD
+                pipelines.</li>
+              <li><strong>Deliverables:</strong> LLM monitoring dashboards, security integration (input/output filters),
+                and deployment setups.</li>
+            </ul>
+          </div>
+          <div class="timeline-chevron" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none">
+              <polyline points="6 9 12 15 18 9"></polyline>
+            </svg>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="section-shell certs-section" id="certifications">
+      <div class="section-heading reveal">
+        <p class="eyebrow">Continuous Learning</p>
+        <h2>Courses & Certifications</h2>
+      </div>
+      <div class="certs-grid">
+        <article class="cert-card reveal">
+          <div class="cert-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+              stroke-linejoin="round">
+              <circle cx="12" cy="8" r="6" />
+              <path d="M15.5 13 17 22l-5-3-5 3 1.5-9" />
+            </svg>
+          </div>
+          <div class="cert-body">
+            <h3>Accelerating Deep Learning with GPUs</h3>
+            <p class="cert-provider">IBM · Cognitive Class</p>
+          </div>
+          <span class="cert-year">2023</span>
+        </article>
+
+        <article class="cert-card reveal">
+          <div class="cert-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+              stroke-linejoin="round">
+              <circle cx="12" cy="8" r="6" />
+              <path d="M15.5 13 17 22l-5-3-5 3 1.5-9" />
+            </svg>
+          </div>
+          <div class="cert-body">
+            <h3>Deep Learning Fundamentals</h3>
+            <p class="cert-provider">DeepLearning.TV · Cognitive Class</p>
+          </div>
+          <span class="cert-year">2023</span>
+        </article>
+
+        <article class="cert-card reveal">
+          <div class="cert-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+              stroke-linejoin="round">
+              <circle cx="12" cy="8" r="6" />
+              <path d="M15.5 13 17 22l-5-3-5 3 1.5-9" />
+            </svg>
+          </div>
+          <div class="cert-body">
+            <h3>Machine Learning with Python</h3>
+            <p class="cert-provider">IBM · Cognitive Class</p>
+          </div>
+          <span class="cert-year">2022</span>
+        </article>
+
+        <article class="cert-card reveal">
+          <div class="cert-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+              stroke-linejoin="round">
+              <circle cx="12" cy="8" r="6" />
+              <path d="M15.5 13 17 22l-5-3-5 3 1.5-9" />
+            </svg>
+          </div>
+          <div class="cert-body">
+            <h3>Data Analysis with Python</h3>
+            <p class="cert-provider">IBM · Cognitive Class</p>
+          </div>
+          <span class="cert-year">2022</span>
+        </article>
+
+        <article class="cert-card reveal">
+          <div class="cert-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+              stroke-linejoin="round">
+              <circle cx="12" cy="8" r="6" />
+              <path d="M15.5 13 17 22l-5-3-5 3 1.5-9" />
+            </svg>
+          </div>
+          <div class="cert-body">
+            <h3>Python Data Structures</h3>
+            <p class="cert-provider">University of Michigan · Coursera</p>
+          </div>
+          <span class="cert-year">2021</span>
+        </article>
+
+        <article class="cert-card reveal">
+          <div class="cert-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+              stroke-linejoin="round">
+              <circle cx="12" cy="8" r="6" />
+              <path d="M15.5 13 17 22l-5-3-5 3 1.5-9" />
+            </svg>
+          </div>
+          <div class="cert-body">
+            <h3>Programming for Everybody (Getting Started with Python)</h3>
+            <p class="cert-provider">University of Michigan · Coursera</p>
+          </div>
+          <span class="cert-year">2021</span>
+        </article>
+
+        <article class="cert-card reveal">
+          <div class="cert-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+              stroke-linejoin="round">
+              <circle cx="12" cy="8" r="6" />
+              <path d="M15.5 13 17 22l-5-3-5 3 1.5-9" />
+            </svg>
+          </div>
+          <div class="cert-body">
+            <h3>Google Ads Search Certification</h3>
+            <p class="cert-provider">Google</p>
+          </div>
+          <span class="cert-year">2024</span>
+        </article>
+      </div>
+    </section>
+
+    <section class="section-shell fun-section" id="fun">
+      <div class="section-heading reveal">
+        <p class="eyebrow">Beyond the Code</p>
+        <h2>Want to know the fun side of me?</h2>
+        <p class="fun-section-lead">Here is my favourites of pop culture</p>
+      </div>
+      <div class="fun-shell reveal">
+        <div class="fun-tabs" role="tablist" aria-label="Fun categories">
+          <div class="fun-tab-indicator"></div>
+          <button class="fun-tab active" type="button" data-tab="music">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+              stroke-linejoin="round" aria-hidden="true">
+              <path d="M9 18V5l12-2v13" />
+              <circle cx="6" cy="18" r="3" />
+              <circle cx="18" cy="16" r="3" />
+            </svg>
+            <span class="fun-tab-label">Music</span>
+          </button>
+          <button class="fun-tab" type="button" data-tab="movies">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+              stroke-linejoin="round" aria-hidden="true">
+              <rect x="2" y="3" width="20" height="18" rx="2" />
+              <path d="M7 3v18M17 3v18M2 9h5M2 15h5M17 9h5M17 15h5" />
+            </svg>
+            <span class="fun-tab-label">Movies</span>
+          </button>
+          <button class="fun-tab" type="button" data-tab="games">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+              stroke-linejoin="round" aria-hidden="true">
+              <path d="M6 12h4M8 10v4" />
+              <circle cx="15.5" cy="11" r="0.5" fill="currentColor" />
+              <circle cx="18" cy="13" r="0.5" fill="currentColor" />
+              <path
+                d="M17.32 5H6.68a4 4 0 0 0-3.98 3.6c-.01.06-.65 6.4-.65 6.4a2.8 2.8 0 0 0 4.9 2.1L8.5 15h7l1.55 2.1a2.8 2.8 0 0 0 4.9-2.1s-.64-6.34-.65-6.4A4 4 0 0 0 17.32 5z" />
+            </svg>
+            <span class="fun-tab-label">Games</span>
+          </button>
+          <button class="fun-tab" type="button" data-tab="sports">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+              stroke-linejoin="round" aria-hidden="true">
+              <path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6" />
+              <path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18" />
+              <path d="M4 22h16" />
+              <path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22" />
+              <path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22" />
+              <path d="M18 2H6v7a6 6 0 0 0 12 0V2Z" />
+            </svg>
+            <span class="fun-tab-label">Sports</span>
+          </button>
         </div>
-        <div class="projects-grid">
-          <!-- Highlighted Project: Project Lovelace -->
-          <article class="project-card reveal highlighted-project" data-tilt>
-            <!-- Header spanning full width -->
-            <div class="project-highlight-header">
-              <div class="project-highlight-title-group">
-                <div class="project-logo">
-                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="44" height="44">
-                    <defs>
-                      <linearGradient id="lovelaceGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                        <stop offset="0%" stop-color="#20312d"/>
-                        <stop offset="100%" stop-color="#314b43"/>
-                      </linearGradient>
-                    </defs>
-                    <rect width="64" height="64" rx="16" fill="url(#lovelaceGrad)"/>
-                    <circle cx="32" cy="32" r="6" fill="#fff7ef"></circle>
-                    <ellipse cx="32" cy="32" rx="22" ry="10" fill="none" stroke="rgba(255, 247, 239, 0.92)" stroke-width="2.4"></ellipse>
-                    <ellipse cx="32" cy="32" rx="22" ry="10" fill="none" stroke="rgba(255, 247, 239, 0.92)" stroke-width="2.4" transform="rotate(60 32 32)"></ellipse>
-                    <ellipse cx="32" cy="32" rx="22" ry="10" fill="none" stroke="rgba(255, 247, 239, 0.92)" stroke-width="2.4" transform="rotate(120 32 32)"></ellipse>
-                    <circle cx="52" cy="32" r="3" fill="#f2b36c"></circle>
-                    <circle cx="22" cy="15" r="3" fill="#f2b36c"></circle>
-                    <circle cx="23" cy="49" r="3" fill="#f2b36c"></circle>
-                  </svg>
+
+        <!-- Music: artist billboard carousel -->
+        <div class="fun-panel is-active" data-panel="music">
+          <p class="fun-panel-note">The artists on repeat while the models train.</p>
+          <div class="fun-billboard" data-carousel="music">
+            <div class="fun-billboard-track">
+              <div class="fun-billboard-slide active" data-index="0">
+                <img src="assets/img/music/arr.jpg" alt="A. R. Rahman" class="fun-billboard-img" loading="lazy">
+                <div class="fun-billboard-scrim"></div>
+                <div class="fun-billboard-meta">
+                  <span class="fun-billboard-title">A. R. Rahman</span>
                 </div>
-                <div class="project-highlight-meta">
-                  <h3>Project Lovelace</h3>
+              </div>
+              <div class="fun-billboard-slide" data-index="1">
+                <img src="assets/img/music/anirudh.jpg" alt="Anirudh Ravichander" class="fun-billboard-img" loading="lazy">
+                <div class="fun-billboard-scrim"></div>
+                <div class="fun-billboard-meta">
+                  <span class="fun-billboard-title">Anirudh Ravichander</span>
                 </div>
               </div>
-              <div class="project-links">
-                <a href="#" class="project-link" aria-label="GitHub Repository">
-                  <svg class="icon" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg>
-                </a>
+              <div class="fun-billboard-slide" data-index="2">
+                <img src="assets/img/music/u1.jpg" alt="Yuvan Shankar Raja (U1)" class="fun-billboard-img" loading="lazy">
+                <div class="fun-billboard-scrim"></div>
+                <div class="fun-billboard-meta">
+                  <span class="fun-billboard-title">Yuvan Shankar Raja (U1)</span>
+                </div>
+              </div>
+              <div class="fun-billboard-slide" data-index="3">
+                <img src="assets/img/music/harris.jpg" alt="Harris Jayaraj" class="fun-billboard-img" loading="lazy">
+                <div class="fun-billboard-scrim"></div>
+                <div class="fun-billboard-meta">
+                  <span class="fun-billboard-title">Harris Jayaraj</span>
+                </div>
+              </div>
+              <div class="fun-billboard-slide" data-index="4">
+                <img src="assets/img/music/vs.jpg" alt="Vidyasagar" class="fun-billboard-img" loading="lazy">
+                <div class="fun-billboard-scrim"></div>
+                <div class="fun-billboard-meta">
+                  <span class="fun-billboard-title">Vidyasagar</span>
+                </div>
               </div>
             </div>
+          </div>
+          <p class="fun-billboard-note">MAYBE NOT THE BEST, BUT MY FAV ❤️</p>
+          <p class="fun-playlists-heading">Check out my playlist</p>
+          <div class="fun-playlists">
+            <a class="fun-playlist-card" href="https://music.apple.com/in/library/all-playlists/" target="_blank"
+              rel="noopener">
+              <span class="fun-playlist-cover" aria-hidden="true">
+                <img src="assets/img/playlist/sunmusic.png" alt="" loading="lazy">
+              </span>
+              <span class="fun-playlist-info">
+                <span class="fun-playlist-name">Sun Music</span>
+                <span class="fun-playlist-sub">Listen on Apple Music</span>
+              </span>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+                stroke-linejoin="round" aria-hidden="true">
+                <circle cx="12" cy="12" r="10" />
+                <polygon points="10 8 16 12 10 16 10 8" />
+              </svg>
+            </a>
+            <a class="fun-playlist-card" href="https://music.apple.com/in/library/playlist/p.dl0kQgYczYbrzdX"
+              target="_blank" rel="noopener">
+              <span class="fun-playlist-cover" aria-hidden="true">
+                <img src="assets/img/playlist/u1.jpg" alt="" loading="lazy">
+              </span>
+              <span class="fun-playlist-info">
+                <span class="fun-playlist-name">Handpicked of U1</span>
+                <span class="fun-playlist-sub">Listen on Apple Music</span>
+              </span>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+                stroke-linejoin="round" aria-hidden="true">
+                <circle cx="12" cy="12" r="10" />
+                <polygon points="10 8 16 12 10 16 10 8" />
+              </svg>
+            </a>
+          </div>
+        </div>
 
-            <!-- Video showcase + details body -->
-            <div class="project-highlight-body">
-              <div class="project-showcase">
-                <div class="showcase-frame">
-                  <div class="showcase-titlebar" aria-hidden="true">
-                    <span class="showcase-dot dot-orange"></span>
-                    <span class="showcase-dot dot-gold"></span>
-                    <span class="showcase-dot dot-green"></span>
-                    <span class="showcase-title">lovelace — live demo</span>
+        <!-- Movies: directors / actors billboard carousel -->
+        <div class="fun-panel" data-panel="movies">
+          <div class="fun-subtabs" aria-label="Movie favourites">
+            <div class="fun-subtab-indicator"></div>
+            <button class="fun-subtab active" type="button" data-subtab="films">Films</button>
+            <button class="fun-subtab" type="button" data-subtab="directors">Directors</button>
+            <button class="fun-subtab" type="button" data-subtab="actors">Actors</button>
+          </div>
+
+          <div class="fun-subpanel is-active" data-subpanel="films">
+            <div class="fun-billboard" data-carousel="movies-films">
+              <div class="fun-billboard-track">
+                <div class="fun-billboard-slide active" data-index="0">
+                  <img src="assets/img/movies/anbe_sivam.jpg" alt="Anbe Sivam" class="fun-billboard-img" loading="lazy">
+                  <div class="fun-billboard-scrim"></div>
+                  <div class="fun-billboard-meta">
+                    <img src="assets/img/movies/logos/anbe_sivam.png" alt="Anbe Sivam Logo" class="fun-billboard-logo"
+                      loading="lazy">
                   </div>
-                  <video
-                    class="showcase-video"
-                    src="lovelace.mp4"
-                    muted
-                    loop
-                    playsinline
-                    controls
-                    preload="metadata"
-                    aria-label="Project Lovelace product demo"
-                  ></video>
+                </div>
+                <div class="fun-billboard-slide" data-index="1">
+                  <img src="assets/img/movies/fight_club.jpg" alt="Fight Club" class="fun-billboard-img" loading="lazy">
+                  <div class="fun-billboard-scrim"></div>
+                  <div class="fun-billboard-meta">
+                    <img src="assets/img/movies/logos/fight_club.png" alt="Fight Club Logo"
+                      class="fun-billboard-logo logo-fight-club" loading="lazy">
+                  </div>
+                </div>
+                <div class="fun-billboard-slide" data-index="2">
+                  <img src="assets/img/movies/interstellar.jpg" alt="Interstellar" class="fun-billboard-img" loading="lazy">
+                  <div class="fun-billboard-scrim"></div>
+                  <div class="fun-billboard-meta">
+                    <img src="assets/img/movies/logos/interstellar.png" alt="Interstellar Logo" class="fun-billboard-logo"
+                      loading="lazy">
+                  </div>
+                </div>
+                <div class="fun-billboard-slide" data-index="3">
+                  <img src="assets/img/movies/the_dark_knight.jpg" alt="The Dark Knight" class="fun-billboard-img" loading="lazy">
+                  <div class="fun-billboard-scrim"></div>
+                  <div class="fun-billboard-meta">
+                    <img src="assets/img/movies/logos/the_dark_knight.png" alt="The Dark Knight Logo" class="fun-billboard-logo"
+                      loading="lazy">
+                  </div>
+                </div>
+                <div class="fun-billboard-slide" data-index="4">
+                  <img src="assets/img/movies/nayakan.jpg" alt="Nayakan" class="fun-billboard-img" loading="lazy">
+                  <div class="fun-billboard-scrim"></div>
+                  <div class="fun-billboard-meta">
+                    <img src="assets/img/movies/logos/nayakan.png" alt="Nayakan Logo" class="fun-billboard-logo" loading="lazy">
+                  </div>
+                </div>
+                <div class="fun-billboard-slide" data-index="5">
+                  <img src="assets/img/movies/cars.jpg" alt="Cars" class="fun-billboard-img" loading="lazy">
+                  <div class="fun-billboard-scrim"></div>
+                  <div class="fun-billboard-meta">
+                    <img src="assets/img/movies/logos/cars.png" alt="Cars Logo" class="fun-billboard-logo logo-cars"
+                      loading="lazy">
+                  </div>
+                </div>
+                <div class="fun-billboard-slide" data-index="6">
+                  <img src="assets/img/movies/wall_e.jpg" alt="WALL-E" class="fun-billboard-img" loading="lazy">
+                  <div class="fun-billboard-scrim"></div>
+                  <div class="fun-billboard-meta">
+                    <img src="assets/img/movies/logos/wall_e.png" alt="WALL-E Logo" class="fun-billboard-logo" loading="lazy">
+                  </div>
+                </div>
+                <div class="fun-billboard-slide" data-index="7">
+                  <img src="assets/img/movies/schindlers_list.jpg" alt="Schindler's List" class="fun-billboard-img" loading="lazy">
+                  <div class="fun-billboard-scrim"></div>
+                  <div class="fun-billboard-meta">
+                    <img src="assets/img/movies/logos/schindlers_list.png" alt="Schindler's List Logo" class="fun-billboard-logo"
+                      loading="lazy">
+                  </div>
+                </div>
+                <div class="fun-billboard-slide" data-index="8">
+                  <img src="assets/img/movies/vaanam.jpg" alt="Vaanam" class="fun-billboard-img" loading="lazy">
+                  <div class="fun-billboard-scrim"></div>
+                  <div class="fun-billboard-meta">
+                    <img src="assets/img/movies/logos/vaanam.png" alt="Vaanam Logo" class="fun-billboard-logo" loading="lazy">
+                  </div>
+                </div>
+                <div class="fun-billboard-slide" data-index="9">
+                  <img src="assets/img/movies/vettaikaaran.jpg" alt="Vettaikaaran" class="fun-billboard-img" loading="lazy">
+                  <div class="fun-billboard-scrim"></div>
+                  <div class="fun-billboard-meta">
+                    <img src="assets/img/movies/logos/vettaikaaran.png" alt="Vettaikaaran Logo" class="fun-billboard-logo"
+                      loading="lazy">
+                  </div>
                 </div>
               </div>
-              <div class="project-highlight-right">
-                <p class="project-desc">An autonomous reasoning AI Agent for STEM fields designed to solve complex multi-step math proving, scientific simulation, and symbolic calculation tasks with self-correcting loop logic.</p>
-                <ul class="project-outcomes">
-                  <li>Engineered custom reflection prompts yielding a 35% accuracy improvement in multi-step STEM proofs.</li>
-                  <li>Configured interactive Python sandboxes and WolframAlpha tool bindings.</li>
-                  <li>Designed self-correcting reasoning loops to validate outputs dynamically.</li>
-                </ul>
-                <div class="project-tags">
-                  <span>AI Agents</span>
-                  <span>LangGraph</span>
-                  <span>STEM Reasoning</span>
-                  <span>Python</span>
-                  <span>SymPy</span>
+            </div>
+          </div>
+
+          <div class="fun-subpanel" data-subpanel="directors">
+            <div class="fun-billboard" data-carousel="movies-directors">
+              <div class="fun-billboard-track">
+                <div class="fun-billboard-slide active" data-index="0">
+                  <img src="assets/img/directors/nolan.jpg" alt="Christopher Nolan" class="fun-billboard-img" loading="lazy">
+                  <div class="fun-billboard-scrim"></div>
+                  <div class="fun-billboard-meta">
+                    <span class="fun-billboard-title">Christopher Nolan</span>
+                  </div>
+                </div>
+                <div class="fun-billboard-slide" data-index="1">
+                  <img src="assets/img/directors/quintin.jpg" alt="Quentin Tarantino" class="fun-billboard-img" loading="lazy">
+                  <div class="fun-billboard-scrim"></div>
+                  <div class="fun-billboard-meta">
+                    <span class="fun-billboard-title">Quentin Tarantino</span>
+                  </div>
+                </div>
+                <div class="fun-billboard-slide" data-index="2">
+                  <img src="assets/img/directors/dennis.jpg" alt="Denis Villeneuve" class="fun-billboard-img" loading="lazy">
+                  <div class="fun-billboard-scrim"></div>
+                  <div class="fun-billboard-meta">
+                    <span class="fun-billboard-title">Denis Villeneuve</span>
+                  </div>
+                </div>
+                <div class="fun-billboard-slide" data-index="3">
+                  <img src="assets/img/directors/martin.jpg" alt="Martin Scorsese" class="fun-billboard-img" loading="lazy">
+                  <div class="fun-billboard-scrim"></div>
+                  <div class="fun-billboard-meta">
+                    <span class="fun-billboard-title">Martin Scorsese</span>
+                  </div>
+                </div>
+                <div class="fun-billboard-slide" data-index="4">
+                  <img src="assets/img/directors/steven.jpg" alt="Steven Spielberg" class="fun-billboard-img" loading="lazy">
+                  <div class="fun-billboard-scrim"></div>
+                  <div class="fun-billboard-meta">
+                    <span class="fun-billboard-title">Steven Spielberg</span>
+                  </div>
+                </div>
+                <div class="fun-billboard-slide" data-index="5">
+                  <img src="assets/img/directors/david_fincher.jpg" alt="David Fincher" class="fun-billboard-img" loading="lazy">
+                  <div class="fun-billboard-scrim"></div>
+                  <div class="fun-billboard-meta">
+                    <span class="fun-billboard-title">David Fincher</span>
+                  </div>
+                </div>
+                <div class="fun-billboard-slide" data-index="6">
+                  <img src="assets/img/directors/loki.jpg" alt="Lokesh Kanagaraj" class="fun-billboard-img" loading="lazy">
+                  <div class="fun-billboard-scrim"></div>
+                  <div class="fun-billboard-meta">
+                    <span class="fun-billboard-title">Lokesh Kanagaraj</span>
+                  </div>
+                </div>
+                <div class="fun-billboard-slide" data-index="7">
+                  <img src="assets/img/directors/karthick.jpg" alt="Karthik Subbaraj" class="fun-billboard-img" loading="lazy">
+                  <div class="fun-billboard-scrim"></div>
+                  <div class="fun-billboard-meta">
+                    <span class="fun-billboard-title">Karthik Subbaraj</span>
+                  </div>
+                </div>
+                <div class="fun-billboard-slide" data-index="8">
+                  <img src="assets/img/directors/ranjith.jpg" alt="Pa. Ranjith" class="fun-billboard-img" loading="lazy">
+                  <div class="fun-billboard-scrim"></div>
+                  <div class="fun-billboard-meta">
+                    <span class="fun-billboard-title">Pa. Ranjith</span>
+                  </div>
+                </div>
+                <div class="fun-billboard-slide" data-index="9">
+                  <img src="assets/img/directors/vetri.jpg" alt="Vetrimaaran" class="fun-billboard-img" loading="lazy">
+                  <div class="fun-billboard-scrim"></div>
+                  <div class="fun-billboard-meta">
+                    <span class="fun-billboard-title">Vetrimaaran</span>
+                  </div>
                 </div>
               </div>
             </div>
-          </article>
+          </div>
 
-          <!-- Project 02: Agentic RAG Orchestrator -->
-          <article class="project-card reveal" data-tilt>
-            <div class="project-header">
-              <span class="project-number">02</span>
-              <div class="project-links">
-                <a href="#" class="project-link" aria-label="GitHub Repository">
-                  <svg class="icon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg>
-                </a>
-              </div>
-            </div>
-            <h3>Orchestra-RAG</h3>
-            <p class="project-desc">A multi-agent RAG framework using LangGraph to dynamically plan, retrieve, and validate queries across multiple documentation layers.</p>
-            <ul class="project-outcomes">
-              <li>Achieved 98.4% retrieval accuracy via custom reranking layers.</li>
-              <li>Implemented self-correcting retrieval loops using LangGraph.</li>
-            </ul>
-            <div class="project-tags">
-              <span>Python</span>
-              <span>LangGraph</span>
-              <span>Pinecone</span>
-              <span>RAG</span>
-            </div>
-          </article>
-
-          <!-- Project 03: Vertex AI MLOps Pipeline -->
-          <article class="project-card reveal" data-tilt>
-            <div class="project-header">
-              <span class="project-number">03</span>
-              <div class="project-links">
-                <a href="#" class="project-link" aria-label="GitHub Repository">
-                  <svg class="icon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg>
-                </a>
-              </div>
-            </div>
-            <h3>AutoTrain Vertex</h3>
-            <p class="project-desc">Continuous training and automated MLOps evaluation pipeline deploying fine-tuned transformer models onto Google Vertex AI endpoints.</p>
-            <ul class="project-outcomes">
-              <li>Automated deployment pipeline using Google Cloud Build and Vertex AI.</li>
-              <li>Monitored training runs, parameters, and loss metrics with MLflow.</li>
-            </ul>
-            <div class="project-tags">
-              <span>Vertex AI</span>
-              <span>Docker</span>
-              <span>MLOps</span>
-              <span>GitHub Actions</span>
-            </div>
-          </article>
-
-          <!-- Project 04: Real-Time Vector Sync -->
-          <article class="project-card reveal" data-tilt>
-            <div class="project-header">
-              <span class="project-number">04</span>
-              <div class="project-links">
-                <a href="#" class="project-link" aria-label="GitHub Repository">
-                  <svg class="icon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg>
-                </a>
-              </div>
-            </div>
-            <h3>VectorSync Engine</h3>
-            <p class="project-desc">A streaming ingestion sync computing real-time embeddings from relational DB changes directly into vector indexing stores.</p>
-            <ul class="project-outcomes">
-              <li>Reduced latency to sub-second vector synchronization.</li>
-              <li>Configured high-throughput queue utilizing Redis streams.</li>
-            </ul>
-            <div class="project-tags">
-              <span>FastAPI</span>
-              <span>PostgreSQL</span>
-              <span>Redis</span>
-              <span>ChromaDB</span>
-            </div>
-          </article>
-        </div>
-
-        <div class="section-heading reveal" style="margin-top: 80px;">
-          <p class="eyebrow">Core Work & Research</p>
-          <h2>Academic & Applied ML</h2>
-        </div>
-        <div class="projects-grid">
-          <!-- Project 05: Weak File Security Analyzer -->
-          <article class="project-card reveal" data-tilt>
-            <div class="project-header">
-              <span class="project-number">05</span>
-              <div class="project-links">
-                <a href="#" class="project-link" aria-label="GitHub Repository">
-                  <svg class="icon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg>
-                </a>
-              </div>
-            </div>
-            <h3>File Security Analyzer</h3>
-            <p class="project-desc">A security scanning application checking local files for weak protections and permission configurations using ML techniques.</p>
-            <ul class="project-outcomes">
-              <li>Built classification layers using TensorFlow and Dense neural networks to predict vulnerability scores.</li>
-              <li>Analyzed access control logs to identify risky user privilege delegations.</li>
-            </ul>
-            <div class="project-tags">
-              <span>TensorFlow</span>
-              <span>Security</span>
-              <span>Neural Networks</span>
-              <span>Python</span>
-            </div>
-          </article>
-
-          <!-- Project 06: Wastewater CNN Classifier -->
-          <article class="project-card reveal" data-tilt>
-            <div class="project-header">
-              <span class="project-number">06</span>
-              <div class="project-links">
-                <a href="#" class="project-link" aria-label="GitHub Repository">
-                  <svg class="icon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg>
-                </a>
-              </div>
-            </div>
-            <h3>Wastewater Quality Classifier</h3>
-            <p class="project-desc">An environmental monitoring system classifying water safety and identifying potable thresholds in wastewater sumps.</p>
-            <ul class="project-outcomes">
-              <li>Integrated sensor data streams measuring physical and chemical water properties.</li>
-              <li>Implemented a Convolutional Neural Network (CNN) in Python to categorize safety parameters.</li>
-            </ul>
-            <div class="project-tags">
-              <span>Python</span>
-              <span>CNN</span>
-              <span>Sensors</span>
-              <span>Data Analysis</span>
-            </div>
-          </article>
-
-          <!-- Project 07: License Plate Recognition -->
-          <article class="project-card reveal" data-tilt>
-            <div class="project-header">
-              <span class="project-number">07</span>
-              <div class="project-links">
-                <a href="#" class="project-link" aria-label="GitHub Repository">
-                  <svg class="icon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg>
-                </a>
-              </div>
-            </div>
-            <h3>License Plate Detector</h3>
-            <p class="project-desc">A deep-learning computer vision system automating license plate detection and reading from vehicle images.</p>
-            <ul class="project-outcomes">
-              <li>Developed a Convolutional Neural Network (CNN) model for bounding box region detection.</li>
-              <li>Applied deep regression networks to locate and isolate license text under varied light levels.</li>
-            </ul>
-            <div class="project-tags">
-              <span>CNN</span>
-              <span>Deep Regression</span>
-              <span>Computer Vision</span>
-              <span>TensorFlow</span>
-            </div>
-          </article>
-
-          <!-- Project 08: Spotify Customer Segmenter -->
-          <article class="project-card reveal" data-tilt>
-            <div class="project-header">
-              <span class="project-number">08</span>
-              <div class="project-links">
-                <a href="#" class="project-link" aria-label="GitHub Repository">
-                  <svg class="icon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg>
-                </a>
-              </div>
-            </div>
-            <h3>Spotify Music Segmenter</h3>
-            <p class="project-desc">A customer segmentation application categorizing listeners based on music taste and database profiles.</p>
-            <ul class="project-outcomes">
-              <li>Analyzed user listen histories, tracking acoustic qualities across different genres.</li>
-              <li>Implemented clustering models to identify distinct listener persona buckets.</li>
-            </ul>
-            <div class="project-tags">
-              <span>Clustering</span>
-              <span>Spotify API</span>
-              <span>Data Mining</span>
-              <span>Python</span>
-            </div>
-          </article>
-
-          <!-- Project 09: OpenCV Facemask Recognition -->
-          <article class="project-card reveal" data-tilt>
-            <div class="project-header">
-              <span class="project-number">09</span>
-              <div class="project-links">
-                <a href="#" class="project-link" aria-label="GitHub Repository">
-                  <svg class="icon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg>
-                </a>
-              </div>
-            </div>
-            <h3>Face Mask Detector</h3>
-            <p class="project-desc">A real-time vision classifier detecting face masks in video streams and logging compliance data.</p>
-            <ul class="project-outcomes">
-              <li>Built detection and tracking scripts using OpenCV and CNN models in TensorFlow.</li>
-              <li>Integrated Pytesseract for reading text and generating log entries for monitoring feeds.</li>
-            </ul>
-            <div class="project-tags">
-              <span>OpenCV</span>
-              <span>TensorFlow</span>
-              <span>Pytesseract</span>
-              <span>CNN</span>
-            </div>
-          </article>
-
-          <!-- Project 10: Hand Gesture Media Controller -->
-          <article class="project-card reveal" data-tilt>
-            <div class="project-header">
-              <span class="project-number">10</span>
-              <div class="project-links">
-                <a href="#" class="project-link" aria-label="GitHub Repository">
-                  <svg class="icon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg>
-                </a>
-              </div>
-            </div>
-            <h3>Gesture Media Controller</h3>
-            <p class="project-desc">A human-computer interaction system translating real-time hand movements into PC media controls.</p>
-            <ul class="project-outcomes">
-              <li>Trained lightweight gesture mapping networks using TensorFlow.</li>
-              <li>Used OpenCV streaming to trigger play, pause, and volume changes hands-free.</li>
-            </ul>
-            <div class="project-tags">
-              <span>TensorFlow</span>
-              <span>OpenCV</span>
-              <span>Computer Vision</span>
-              <span>Python</span>
-            </div>
-          </article>
-        </div>
-      </section>
-
-      <section class="section-shell stack-section" id="stack">
-        <div class="section-heading reveal">
-          <p class="eyebrow">Capabilities</p>
-          <h2>Core Technical Matrix</h2>
-        </div>
-
-        <div class="stack-controls reveal" aria-label="Skill filters">
-          <button class="filter-button active" type="button" data-filter="all">
-            All
-          </button>
-          <button class="filter-button" type="button" data-filter="ai">
-            AI
-          </button>
-          <button class="filter-button" type="button" data-filter="data">
-            Data
-          </button>
-          <button class="filter-button" type="button" data-filter="ops">
-            Ops
-          </button>
-        </div>
-
-        <div class="stack-list reveal">
-          <button class="stack-item" type="button" data-category="ai">
-            <span>RAG Systems</span>
-            <small>retrieval, grounding, evaluation</small>
-            <div class="stack-item-badges">
-              <span class="stack-badge">LlamaIndex</span>
-              <span class="stack-badge">Ragas</span>
-              <span class="stack-badge">LangChain</span>
-            </div>
-            <template class="stack-details-template">
-              <div class="stack-details-content">
-                <h3>RAG Systems</h3>
-                <p>Designed and deployed robust Retrieval-Augmented Generation systems to query large corporate knowledge bases with grounding and minimal hallucination.</p>
-                <div class="stack-details-meta">
-                  <p><strong>Key Tools:</strong> LlamaIndex, Ragas evaluation, LangChain, OpenAI API</p>
-                  <p><strong>Impact:</strong> Achieved 94% accuracy in response grounding and reduced hallucination rates.</p>
+          <div class="fun-subpanel" data-subpanel="actors">
+            <div class="fun-billboard" data-carousel="movies-actors">
+              <div class="fun-billboard-track">
+                <div class="fun-billboard-slide active" data-index="0">
+                  <img src="assets/img/actors/leo.jpg" alt="Leonardo DiCaprio" class="fun-billboard-img" loading="lazy">
+                  <div class="fun-billboard-scrim"></div>
+                  <div class="fun-billboard-meta">
+                    <span class="fun-billboard-title">Leonardo DiCaprio</span>
+                  </div>
+                </div>
+                <div class="fun-billboard-slide" data-index="1">
+                  <img src="assets/img/actors/cillian.jpg" alt="Cillian Murphy" class="fun-billboard-img" loading="lazy">
+                  <div class="fun-billboard-scrim"></div>
+                  <div class="fun-billboard-meta">
+                    <span class="fun-billboard-title">Cillian Murphy</span>
+                  </div>
+                </div>
+                <div class="fun-billboard-slide" data-index="2">
+                  <img src="assets/img/actors/christian_bale.jpg" alt="Christian Bale" class="fun-billboard-img" loading="lazy">
+                  <div class="fun-billboard-scrim"></div>
+                  <div class="fun-billboard-meta">
+                    <span class="fun-billboard-title">Christian Bale</span>
+                  </div>
+                </div>
+                <div class="fun-billboard-slide" data-index="3">
+                  <img src="assets/img/actors/rober_d_jr.jpg" alt="Robert Downey Jr." class="fun-billboard-img" loading="lazy">
+                  <div class="fun-billboard-scrim"></div>
+                  <div class="fun-billboard-meta">
+                    <span class="fun-billboard-title">Robert Downey Jr.</span>
+                  </div>
+                </div>
+                <div class="fun-billboard-slide" data-index="4">
+                  <img src="assets/img/actors/al_pachino.jpg" alt="Al Pacino" class="fun-billboard-img" loading="lazy">
+                  <div class="fun-billboard-scrim"></div>
+                  <div class="fun-billboard-meta">
+                    <span class="fun-billboard-title">Al Pacino</span>
+                  </div>
+                </div>
+                <div class="fun-billboard-slide" data-index="5">
+                  <img src="assets/img/actors/tom_cruise.jpg" alt="Tom Cruise" class="fun-billboard-img" loading="lazy">
+                  <div class="fun-billboard-scrim"></div>
+                  <div class="fun-billboard-meta">
+                    <span class="fun-billboard-title">Tom Cruise</span>
+                  </div>
+                </div>
+                <div class="fun-billboard-slide" data-index="6">
+                  <img src="assets/img/actors/kamal.jpg" alt="Kamal Haasan" class="fun-billboard-img" loading="lazy">
+                  <div class="fun-billboard-scrim"></div>
+                  <div class="fun-billboard-meta">
+                    <span class="fun-billboard-title">Kamal Haasan</span>
+                  </div>
+                </div>
+                <div class="fun-billboard-slide" data-index="7">
+                  <img src="assets/img/actors/suriya.jpg" alt="Suriya" class="fun-billboard-img" loading="lazy">
+                  <div class="fun-billboard-scrim"></div>
+                  <div class="fun-billboard-meta">
+                    <span class="fun-billboard-title">Suriya</span>
+                  </div>
+                </div>
+                <div class="fun-billboard-slide" data-index="8">
+                  <img src="assets/img/actors/karthi.jpg" alt="Karthi" class="fun-billboard-img" loading="lazy">
+                  <div class="fun-billboard-scrim"></div>
+                  <div class="fun-billboard-meta">
+                    <span class="fun-billboard-title">Karthi</span>
+                  </div>
+                </div>
+                <div class="fun-billboard-slide" data-index="9">
+                  <img src="assets/img/actors/simbu.jpg" alt="Silambarasan (Simbu)" class="fun-billboard-img" loading="lazy">
+                  <div class="fun-billboard-scrim"></div>
+                  <div class="fun-billboard-meta">
+                    <span class="fun-billboard-title">Silambarasan (Simbu)</span>
+                  </div>
                 </div>
               </div>
-            </template>
-          </button>
-          <button class="stack-item" type="button" data-category="ai">
-            <span>Agentic RAG</span>
-            <small>tool use, planning, orchestration</small>
-            <div class="stack-item-badges">
-              <span class="stack-badge">LangGraph</span>
-              <span class="stack-badge">CrewAI</span>
-              <span class="stack-badge">Tool Calling</span>
             </div>
-            <template class="stack-details-template">
-              <div class="stack-details-content">
-                <h3>Agentic RAG</h3>
-                <p>Implemented autonomous agents capable of dynamic query planning, multi-step reasoning, and tool use to resolve complex user queries.</p>
-                <div class="stack-details-meta">
-                  <p><strong>Key Tools:</strong> LangGraph, CrewAI, GPT-4, Function Calling</p>
-                  <p><strong>Impact:</strong> Enabled parallel sub-query execution, reducing retrieval latency by 35% for complex research queries.</p>
-                </div>
-              </div>
-            </template>
-          </button>
-          <button class="stack-item" type="button" data-category="ai">
-            <span>Multi AI Setup</span>
-            <small>coordinated specialist agents</small>
-            <div class="stack-item-badges">
-              <span class="stack-badge">AutoGen</span>
-              <span class="stack-badge">Orchestration</span>
-            </div>
-            <template class="stack-details-template">
-              <div class="stack-details-content">
-                <h3>Multi AI Setup</h3>
-                <p>Orchestrated networks of collaborative, specialized AI agents that pass messages, review outputs, and execute code within isolated environments.</p>
-                <div class="stack-details-meta">
-                  <p><strong>Key Tools:</strong> Microsoft AutoGen, custom orchestration layers, LangGraph</p>
-                  <p><strong>Impact:</strong> Automated multi-perspective tasks (e.g., Code Gen -> QA Tester -> Refiner) with zero human intervention.</p>
-                </div>
-              </div>
-            </template>
-          </button>
-          <button class="stack-item" type="button" data-category="data">
-            <span>MySQL / MSSQL / PostgreSQL</span>
-            <small>relational storage</small>
-            <div class="stack-item-badges">
-              <span class="stack-badge">PostgreSQL</span>
-              <span class="stack-badge">pgvector</span>
-              <span class="stack-badge">Schema Design</span>
-            </div>
-            <template class="stack-details-template">
-              <div class="stack-details-content">
-                <h3>MySQL / MSSQL / PostgreSQL</h3>
-                <p>Architected relational database schemas, optimized complex queries, and managed transactional integrity for high-throughput applications.</p>
-                <div class="stack-details-meta">
-                  <p><strong>Key Tools:</strong> PostgreSQL, pgvector, MSSQL, SQL Query Profiling</p>
-                  <p><strong>Impact:</strong> Reduced latency of search and retrieval operations by 50% via index optimization.</p>
-                </div>
-              </div>
-            </template>
-          </button>
-          <button class="stack-item" type="button" data-category="data">
-            <span>Pinecone / ChromaDB / FAISS</span>
-            <small>semantic search</small>
-            <div class="stack-item-badges">
-              <span class="stack-badge">Pinecone</span>
-              <span class="stack-badge">ChromaDB</span>
-              <span class="stack-badge">Embeddings</span>
-            </div>
-            <template class="stack-details-template">
-              <div class="stack-details-content">
-                <h3>Pinecone / ChromaDB / FAISS</h3>
-                <p>Configured vector databases and indexes for fast semantic search and metadata-based filtering at scale.</p>
-                <div class="stack-details-meta">
-                  <p><strong>Key Tools:</strong> Pinecone, ChromaDB, FAISS, HNSW indexing</p>
-                  <p><strong>Impact:</strong> Supported sub-100ms similarity searches across millions of document chunks.</p>
-                </div>
-              </div>
-            </template>
-          </button>
-          <button class="stack-item" type="button" data-category="data">
-            <span>Data Collection + Cleaning</span>
-            <small>usable training data</small>
-            <div class="stack-item-badges">
-              <span class="stack-badge">Pandas</span>
-              <span class="stack-badge">NumPy</span>
-              <span class="stack-badge">Scraping</span>
-            </div>
-            <template class="stack-details-template">
-              <div class="stack-details-content">
-                <h3>Data Collection & Cleaning</h3>
-                <p>Built automated web scraping pipelines and data cleansing scripts to compile clean datasets for model training and fine-tuning.</p>
-                <div class="stack-details-meta">
-                  <p><strong>Key Tools:</strong> BeautifulSoup, Scrapy, Pandas, NumPy, text preprocessing</p>
-                  <p><strong>Impact:</strong> Processed over 100GB of unstructured text into clean, tokenized inputs ready for vector databases.</p>
-                </div>
-              </div>
-            </template>
-          </button>
-          <button class="stack-item" type="button" data-category="ops">
-            <span>MLOps Automation</span>
-            <small>tests, monitoring, releases</small>
-            <div class="stack-item-badges">
-              <span class="stack-badge">Docker</span>
-              <span class="stack-badge">GitHub Actions</span>
-              <span class="stack-badge">MLflow</span>
-            </div>
-            <template class="stack-details-template">
-              <div class="stack-details-content">
-                <h3>MLOps Automation</h3>
-                <p>Automated model testing, deployment, and performance monitoring pipelines to ensure high reliability in production.</p>
-                <div class="stack-details-meta">
-                  <p><strong>Key Tools:</strong> Docker, GitHub Actions, MLflow, Prometheus, Grafana</p>
-                  <p><strong>Impact:</strong> Enabled seamless CI/CD for prompt templates and agent tools with zero-downtime rollouts.</p>
-                </div>
-              </div>
-            </template>
-          </button>
-          <button class="stack-item" type="button" data-category="ops">
-            <span>Google Vertex AI</span>
-            <small>managed ML workflows</small>
-            <div class="stack-item-badges">
-              <span class="stack-badge">Vertex AI</span>
-              <span class="stack-badge">AutoML</span>
-              <span class="stack-badge">GCP</span>
-            </div>
-            <template class="stack-details-template">
-              <div class="stack-details-content">
-                <h3>Google Vertex AI</h3>
-                <p>Managed cloud-native ML lifecycles using Google Cloud's AI platform for training, hosting, and deploying custom models.</p>
-                <div class="stack-details-meta">
-                  <p><strong>Key Tools:</strong> Vertex AI Pipelines, Model Registry, Endpoint Deployments</p>
-                  <p><strong>Impact:</strong> Scaled inference endpoints to handle spikes in traffic with automated load balancing.</p>
-                </div>
-              </div>
-            </template>
-          </button>
-          <button class="stack-item" type="button" data-category="ops">
-            <span>APIs + CI/CD</span>
-            <small>integration-ready systems</small>
-            <div class="stack-item-badges">
-              <span class="stack-badge">FastAPI</span>
-              <span class="stack-badge">Docker</span>
-              <span class="stack-badge">Cloud Run</span>
-            </div>
-            <template class="stack-details-template">
-              <div class="stack-details-content">
-                <h3>APIs & CI/CD</h3>
-                <p>Developed high-performance FastAPI microservices integrated with automated deployment workflows.</p>
-                <div class="stack-details-meta">
-                  <p><strong>Key Tools:</strong> FastAPI, Pydantic, Docker, GitHub Actions, GCP Cloud Run</p>
-                  <p><strong>Impact:</strong> Maintained 99.9% uptime and streamlined the integration of AI models into frontend applications.</p>
-                </div>
-              </div>
-            </template>
-          </button>
-        </div>
+          </div>
 
-        <div class="stack-details-panel reveal" id="stack-details-panel" aria-live="polite">
-          <div class="stack-details-wrapper">
-            <div class="stack-details-placeholder">
-              <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="1.8" fill="none" class="placeholder-icon"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
-              <span>Select any capability above to see real-world details, key tools, and project impact.</span>
-            </div>
-            <div class="stack-details-inner" style="display: none;"></div>
+          <p class="fun-billboard-note">MAYBE NOT THE BEST, BUT MY FAV ❤️</p>
+          <div class="fun-playlists">
+            <a class="fun-playlist-card" href="https://letterboxd.com/Nithees24/" target="_blank" rel="noopener">
+              <span class="fun-playlist-cover fun-playlist-letterboxd" aria-hidden="true">
+                <svg viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg">
+                  <circle cx="150" cy="250" r="62" fill="#ff8000" />
+                  <circle cx="250" cy="250" r="62" fill="#00e054" />
+                  <circle cx="350" cy="250" r="62" fill="#40bcf4" />
+                </svg>
+              </span>
+              <span class="fun-playlist-info">
+                <span class="fun-playlist-name">Letterboxd</span>
+                <span class="fun-playlist-sub">Follow me @Nithees24</span>
+              </span>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+                stroke-linejoin="round" aria-hidden="true">
+                <path d="M7 17 17 7" />
+                <path d="M7 7h10v10" />
+              </svg>
+            </a>
           </div>
         </div>
-      </section>
 
-      <section class="section-shell process-section" id="process">
-        <div class="section-heading reveal">
-          <p class="eyebrow">How I Work</p>
-          <h2>From problem framing to maintainable AI</h2>
-        </div>
-        <div class="timeline reveal">
-          <!-- The visual track line connecting the numbers -->
-          <div class="timeline-track" aria-hidden="true">
-            <div class="timeline-track-fill"></div>
+        <!-- Games: billboard carousel -->
+        <div class="fun-panel" data-panel="games">
+          <p class="fun-panel-note">The games I queue up when the GPUs need a break.</p>
+          <div class="fun-billboard" data-carousel="games">
+            <div class="fun-billboard-track">
+              <div class="fun-billboard-slide active" data-index="0">
+                <img src="assets/img/games/rdr2.jpg" alt="Red Dead Redemption 2" class="fun-billboard-img" loading="lazy">
+                <div class="fun-billboard-scrim"></div>
+                <div class="fun-billboard-meta">
+                  <img src="assets/img/games/logos/rdr2.png" alt="Red Dead Redemption 2 Logo" class="fun-billboard-logo logo-rdr2"
+                    loading="lazy">
+                </div>
+              </div>
+              <div class="fun-billboard-slide" data-index="1">
+                <img src="assets/img/games/cyberpunk.jpg" alt="Cyberpunk 2077" class="fun-billboard-img" loading="lazy">
+                <div class="fun-billboard-scrim"></div>
+                <div class="fun-billboard-meta">
+                  <img src="assets/img/games/logos/cyberpunk.png" alt="Cyberpunk 2077 Logo"
+                    class="fun-billboard-logo logo-cyberpunk" loading="lazy">
+                </div>
+              </div>
+              <div class="fun-billboard-slide" data-index="2">
+                <img src="assets/img/games/gta_v.jpg" alt="GTA V" class="fun-billboard-img" loading="lazy">
+                <div class="fun-billboard-scrim"></div>
+                <div class="fun-billboard-meta">
+                  <img src="assets/img/games/logos/gta_v.png" alt="GTA V Logo" class="fun-billboard-logo logo-gta" loading="lazy">
+                </div>
+              </div>
+              <div class="fun-billboard-slide" data-index="3">
+                <img src="assets/img/games/ets_2.jpg" alt="Euro Truck Simulator 2" class="fun-billboard-img" loading="lazy">
+                <div class="fun-billboard-scrim"></div>
+                <div class="fun-billboard-meta">
+                  <img src="assets/img/games/logos/ets_2.png" alt="Euro Truck Simulator 2 Logo" class="fun-billboard-logo logo-ets"
+                    loading="lazy">
+                </div>
+              </div>
+              <div class="fun-billboard-slide" data-index="4">
+                <img src="assets/img/games/msfs.jpg" alt="Microsoft Flight Simulator" class="fun-billboard-img" loading="lazy">
+                <div class="fun-billboard-scrim"></div>
+                <div class="fun-billboard-meta">
+                  <img src="assets/img/games/logos/microsoft_flight_simulator.png" alt="Microsoft Flight Simulator Logo"
+                    class="fun-billboard-logo logo-msfs" loading="lazy">
+                </div>
+              </div>
+            </div>
           </div>
-          
-          <article class="timeline-step" id="step-1" tabindex="0">
-            <span class="timeline-step-num">1</span>
-            <h3>Frame the problem</h3>
-            <p class="timeline-step-summary">Clarify objective, data shape, metrics, constraints, and the expected user workflow.</p>
-            <div class="timeline-step-details">
-              <ul class="timeline-details-list">
-                <li><strong>Activities:</strong> Stakeholder alignment, metric definition (e.g., NDCG, recall), and data profiling.</li>
-                <li><strong>Deliverables:</strong> Baseline evaluation sets, system architecture diagrams, and scoping documentation.</li>
-              </ul>
-            </div>
-            <div class="timeline-chevron" aria-hidden="true">
-              <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none"><polyline points="6 9 12 15 18 9"></polyline></svg>
-            </div>
-          </article>
-
-          <article class="timeline-step" id="step-2" tabindex="0">
-            <span class="timeline-step-num">2</span>
-            <h3>Build the system path</h3>
-            <p class="timeline-step-summary">Connect data, retrieval, model logic, APIs, and automation into one testable flow.</p>
-            <div class="timeline-step-details">
-              <ul class="timeline-details-list">
-                <li><strong>Activities:</strong> End-to-end pipeline prototyping, LLM orchestration (LangGraph), and tool integration.</li>
-                <li><strong>Deliverables:</strong> Working FastAPI microservices, relational/vector schemas, and mock-tested code paths.</li>
-              </ul>
-            </div>
-            <div class="timeline-chevron" aria-hidden="true">
-              <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none"><polyline points="6 9 12 15 18 9"></polyline></svg>
-            </div>
-          </article>
-
-          <article class="timeline-step" id="step-3" tabindex="0">
-            <span class="timeline-step-num">3</span>
-            <h3>Measure and harden</h3>
-            <p class="timeline-step-summary">Validate outputs, add checks, monitor behavior, and prepare for iteration in production.</p>
-            <div class="timeline-step-details">
-              <ul class="timeline-details-list">
-                <li><strong>Activities:</strong> Latency and accuracy profiling, safety guardrail setup, and CI/CD pipelines.</li>
-                <li><strong>Deliverables:</strong> LLM monitoring dashboards, security integration (input/output filters), and deployment setups.</li>
-              </ul>
-            </div>
-            <div class="timeline-chevron" aria-hidden="true">
-              <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none"><polyline points="6 9 12 15 18 9"></polyline></svg>
-            </div>
-          </article>
+          <p class="fun-billboard-note">MAYBE NOT THE BEST, BUT MY FAV ❤️</p>
         </div>
-      </section>
 
-      <section class="section-shell certs-section" id="certifications">
-        <div class="section-heading reveal">
-          <p class="eyebrow">Continuous Learning</p>
-          <h2>Courses & Certifications</h2>
-        </div>
-        <div class="certs-grid">
-          <article class="cert-card reveal">
-            <div class="cert-icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                <circle cx="12" cy="8" r="6" />
-                <path d="M15.5 13 17 22l-5-3-5 3 1.5-9" />
-              </svg>
-            </div>
-            <div class="cert-body">
-              <h3>Accelerating Deep Learning with GPUs</h3>
-              <p class="cert-provider">IBM · Cognitive Class</p>
-            </div>
-            <span class="cert-year">2023</span>
-          </article>
-
-          <article class="cert-card reveal">
-            <div class="cert-icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                <circle cx="12" cy="8" r="6" />
-                <path d="M15.5 13 17 22l-5-3-5 3 1.5-9" />
-              </svg>
-            </div>
-            <div class="cert-body">
-              <h3>Deep Learning Fundamentals</h3>
-              <p class="cert-provider">DeepLearning.TV · Cognitive Class</p>
-            </div>
-            <span class="cert-year">2023</span>
-          </article>
-
-          <article class="cert-card reveal">
-            <div class="cert-icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                <circle cx="12" cy="8" r="6" />
-                <path d="M15.5 13 17 22l-5-3-5 3 1.5-9" />
-              </svg>
-            </div>
-            <div class="cert-body">
-              <h3>Machine Learning with Python</h3>
-              <p class="cert-provider">IBM · Cognitive Class</p>
-            </div>
-            <span class="cert-year">2022</span>
-          </article>
-
-          <article class="cert-card reveal">
-            <div class="cert-icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                <circle cx="12" cy="8" r="6" />
-                <path d="M15.5 13 17 22l-5-3-5 3 1.5-9" />
-              </svg>
-            </div>
-            <div class="cert-body">
-              <h3>Data Analysis with Python</h3>
-              <p class="cert-provider">IBM · Cognitive Class</p>
-            </div>
-            <span class="cert-year">2022</span>
-          </article>
-
-          <article class="cert-card reveal">
-            <div class="cert-icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                <circle cx="12" cy="8" r="6" />
-                <path d="M15.5 13 17 22l-5-3-5 3 1.5-9" />
-              </svg>
-            </div>
-            <div class="cert-body">
-              <h3>Python Data Structures</h3>
-              <p class="cert-provider">University of Michigan · Coursera</p>
-            </div>
-            <span class="cert-year">2021</span>
-          </article>
-
-          <article class="cert-card reveal">
-            <div class="cert-icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                <circle cx="12" cy="8" r="6" />
-                <path d="M15.5 13 17 22l-5-3-5 3 1.5-9" />
-              </svg>
-            </div>
-            <div class="cert-body">
-              <h3>Programming for Everybody (Getting Started with Python)</h3>
-              <p class="cert-provider">University of Michigan · Coursera</p>
-            </div>
-            <span class="cert-year">2021</span>
-          </article>
-
-          <article class="cert-card reveal">
-            <div class="cert-icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                <circle cx="12" cy="8" r="6" />
-                <path d="M15.5 13 17 22l-5-3-5 3 1.5-9" />
-              </svg>
-            </div>
-            <div class="cert-body">
-              <h3>Google Ads Search Certification</h3>
-              <p class="cert-provider">Google</p>
-            </div>
-            <span class="cert-year">2024</span>
-          </article>
-        </div>
-      </section>
-
-      <section class="contact-band" id="contact">
-        <div class="section-shell contact-inner reveal">
-          <div>
-            <p class="eyebrow">Contact</p>
-            <h2>Let's build something intelligent together.</h2>
-            <p class="contact-note">
-              Open to AI/ML opportunities and collaborations. Reach out via email or connect with me on LinkedIn and GitHub.
-            </p>
+        <!-- Sports: cricket / football / f1 billboard carousels -->
+        <!-- Athlete photos from Wikimedia Commons (CC BY / CC BY-SA — attribution required):
+               dhoni.jpg      https://commons.wikimedia.org/wiki/File:Mahendra_Singh_Dhoni_batting.JPG (CC BY-SA)
+               kohli.jpg      https://commons.wikimedia.org/wiki/File:Virat_Kohli_batting_2013.jpg (CC BY-SA 4.0)
+               rohit.jpg      https://commons.wikimedia.org/wiki/File:Rohit_Sharma_Batting.jpg (CC BY-SA)
+               ponting.jpg    https://commons.wikimedia.org/wiki/File:Ricky_Ponting_2015.jpg (CC BY-SA)
+               sangakkara.jpg https://commons.wikimedia.org/wiki/File:Kumar_Sangakkara_bat_in_hand.JPG (CC BY-SA 4.0)
+               messi.jpg      https://commons.wikimedia.org/wiki/File:Lionel_Messi_NE_Revolution_Inter_Miami_7.9.25-178.jpg (CC BY-SA 4.0)
+               neymar.jpg     https://commons.wikimedia.org/wiki/File:Neymar_Junior_Brazil_V_Morocco_13_June_2026-40.jpg (CC BY-SA 4.0)
+               yamal.jpg      https://commons.wikimedia.org/wiki/File:Lamine_Yamal_in_2025.jpg (CC BY 4.0)
+               haaland.jpg    https://commons.wikimedia.org/wiki/File:Erling_Haaland_Morocco_v_Norway_7_June_2026-51.jpg (CC BY-SA 4.0)
+               hamilton.jpg   https://commons.wikimedia.org/wiki/File:Lewis_Hamilton_Silverstone_2018.jpg (CC BY)
+          -->
+        <div class="fun-panel" data-panel="sports">
+          <div class="fun-subtabs" aria-label="Sports favourites">
+            <div class="fun-subtab-indicator"></div>
+            <button class="fun-subtab active" type="button" data-subtab="cricket">Cricket</button>
+            <button class="fun-subtab" type="button" data-subtab="football">Football</button>
+            <button class="fun-subtab" type="button" data-subtab="f1">F1</button>
           </div>
-          <div class="contact-actions">
-            <a class="button primary" href="https://mail.google.com/mail/?view=cm&amp;fs=1&amp;to=nithees2424@gmail.com" target="_blank" rel="noopener">
-              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+
+          <div class="fun-subpanel is-active" data-subpanel="cricket">
+            <div class="fun-billboard" data-carousel="sports-cricket">
+              <div class="fun-billboard-track">
+                <div class="fun-billboard-slide active" data-index="0">
+                  <img src="assets/img/sports/dhoni.jpg" alt="MS Dhoni" class="fun-billboard-img" loading="lazy">
+                  <div class="fun-billboard-scrim"></div>
+                  <div class="fun-billboard-meta">
+                    <span class="fun-billboard-title">MS Dhoni</span>
+                  </div>
+                </div>
+                <div class="fun-billboard-slide" data-index="1">
+                  <img src="assets/img/sports/kohli.jpg" alt="Virat Kohli" class="fun-billboard-img" loading="lazy">
+                  <div class="fun-billboard-scrim"></div>
+                  <div class="fun-billboard-meta">
+                    <span class="fun-billboard-title">Virat Kohli</span>
+                  </div>
+                </div>
+                <div class="fun-billboard-slide" data-index="2">
+                  <img src="assets/img/sports/rohit.jpg" alt="Rohit Sharma" class="fun-billboard-img" loading="lazy">
+                  <div class="fun-billboard-scrim"></div>
+                  <div class="fun-billboard-meta">
+                    <span class="fun-billboard-title">Rohit Sharma</span>
+                  </div>
+                </div>
+                <div class="fun-billboard-slide" data-index="3">
+                  <img src="assets/img/sports/ponting.jpg" alt="Ricky Ponting" class="fun-billboard-img" loading="lazy">
+                  <div class="fun-billboard-scrim"></div>
+                  <div class="fun-billboard-meta">
+                    <span class="fun-billboard-title">Ricky Ponting</span>
+                  </div>
+                </div>
+                <div class="fun-billboard-slide" data-index="4">
+                  <img src="assets/img/sports/sangakkara.jpg" alt="Kumar Sangakkara" class="fun-billboard-img" loading="lazy">
+                  <div class="fun-billboard-scrim"></div>
+                  <div class="fun-billboard-meta">
+                    <span class="fun-billboard-title">Kumar Sangakkara</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="fun-subpanel" data-subpanel="football">
+            <div class="fun-billboard" data-carousel="sports-football">
+              <div class="fun-billboard-track">
+                <div class="fun-billboard-slide active" data-index="0">
+                  <img src="assets/img/sports/messi.jpg" alt="Lionel Messi" class="fun-billboard-img" loading="lazy">
+                  <div class="fun-billboard-scrim"></div>
+                  <div class="fun-billboard-meta">
+                    <span class="fun-billboard-title">Lionel Messi</span>
+                  </div>
+                </div>
+                <div class="fun-billboard-slide" data-index="1">
+                  <img src="assets/img/sports/neymar.jpg" alt="Neymar Jr" class="fun-billboard-img" loading="lazy">
+                  <div class="fun-billboard-scrim"></div>
+                  <div class="fun-billboard-meta">
+                    <span class="fun-billboard-title">Neymar Jr</span>
+                  </div>
+                </div>
+                <div class="fun-billboard-slide" data-index="2">
+                  <img src="assets/img/sports/yamal.jpg" alt="Lamine Yamal" class="fun-billboard-img" loading="lazy">
+                  <div class="fun-billboard-scrim"></div>
+                  <div class="fun-billboard-meta">
+                    <span class="fun-billboard-title">Lamine Yamal</span>
+                  </div>
+                </div>
+                <div class="fun-billboard-slide" data-index="3">
+                  <img src="assets/img/sports/haaland.jpg" alt="Erling Haaland" class="fun-billboard-img" loading="lazy">
+                  <div class="fun-billboard-scrim"></div>
+                  <div class="fun-billboard-meta">
+                    <span class="fun-billboard-title">Erling Haaland</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="fun-subpanel" data-subpanel="f1">
+            <div class="fun-billboard" data-carousel="sports-f1">
+              <div class="fun-billboard-track">
+                <div class="fun-billboard-slide active" data-index="0">
+                  <img src="assets/img/sports/hamilton.jpg" alt="Lewis Hamilton" class="fun-billboard-img" loading="lazy">
+                  <div class="fun-billboard-scrim"></div>
+                  <div class="fun-billboard-meta">
+                    <span class="fun-billboard-title">Lewis Hamilton</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <p class="fun-billboard-note">MAYBE NOT THE BEST, BUT MY FAV ❤️</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="contact-band" id="contact">
+      <div class="section-shell contact-inner reveal">
+        <div>
+          <p class="eyebrow">Contact</p>
+          <h2>Let's build something intelligent together.</h2>
+          <p class="contact-note">
+            Open to AI/ML opportunities and collaborations. Reach out via email or connect with me on LinkedIn and
+            GitHub.
+          </p>
+        </div>
+        <div class="contact-actions">
+          <div class="contact-buttons">
+            <a class="button primary" href="https://mail.google.com/mail/?view=cm&amp;fs=1&amp;to=nithees4242@gmail.com"
+              target="_blank" rel="noopener">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                 <rect x="2" y="4" width="20" height="16" rx="2" />
                 <path d="m22 7-10 6L2 7" />
               </svg>
               Email Me
             </a>
-            <a class="button secondary" href="https://www.linkedin.com/in/nithees-kanna-585495185/" target="_blank" rel="noopener" aria-label="LinkedIn profile">
+            <a class="button secondary" href="https://www.linkedin.com/in/nithees-kanna-585495185/" target="_blank"
+              rel="noopener" aria-label="LinkedIn profile">
               <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true">
                 <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6zM2 9h4v12H2z" />
                 <circle cx="4" cy="4" r="2" />
               </svg>
               LinkedIn
             </a>
-            <a class="button secondary" href="https://github.com/Nithees24" target="_blank" rel="noopener" aria-label="GitHub profile">
-              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22" />
+            <a class="button secondary" href="https://github.com/Nithees24" target="_blank" rel="noopener"
+              aria-label="GitHub profile">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path
+                  d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22" />
               </svg>
               GitHub
             </a>
-            <a class="button secondary" href="test.pdf" download="Nithees_Kanna_Resume.pdf">
-              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <a class="button secondary" href="assets/docs/resume.pdf" download="Nithees_Kanna_Resume.pdf">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                 <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
                 <polyline points="7 10 12 15 17 10" />
                 <line x1="12" y1="15" x2="12" y2="3" />
@@ -1033,49 +1668,77 @@
               Resume
             </a>
           </div>
-        </div>
-      </section>
-    </main>
-
-    <footer class="site-footer">
-      <div class="section-shell footer-inner">
-        <div class="footer-brand">
-          <p class="footer-name">Nithees Kanna</p>
-          <p class="footer-tag">AI & Machine Learning Developer</p>
-        </div>
-        <nav class="footer-nav" aria-label="Footer navigation">
-          <a href="#profile">About</a>
-          <a href="#experience">Journey</a>
-          <a href="#projects">Projects</a>
-          <a href="#certifications">Certifications</a>
-          <a href="#contact">Contact</a>
-        </nav>
-        <div class="footer-social">
-          <a href="https://github.com/Nithees24" target="_blank" rel="noopener" aria-label="GitHub">
-            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22" />
-            </svg>
-          </a>
-          <a href="https://www.linkedin.com/in/nithees-kanna-585495185/" target="_blank" rel="noopener" aria-label="LinkedIn">
-            <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true">
-              <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6zM2 9h4v12H2z" />
-              <circle cx="4" cy="4" r="2" />
-            </svg>
-          </a>
-          <a href="https://mail.google.com/mail/?view=cm&amp;fs=1&amp;to=nithees2424@gmail.com" target="_blank" rel="noopener" aria-label="Email">
-            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <rect x="2" y="4" width="20" height="16" rx="2" />
-              <path d="m22 7-10 6L2 7" />
-            </svg>
-          </a>
+          <div class="contact-social">
+            <a href="https://x.com/nitheeeees_str" target="_blank" rel="noopener" aria-label="X (Twitter)">
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true">
+                <path
+                  d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+              </svg>
+            </a>
+            <a href="https://www.instagram.com/nk_shade_" target="_blank" rel="noopener" aria-label="Instagram">
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <rect x="2" y="2" width="20" height="20" rx="5" />
+                <circle cx="12" cy="12" r="4" />
+                <circle cx="17.5" cy="6.5" r="1.1" fill="currentColor" stroke="none" />
+              </svg>
+            </a>
+            <a href="https://www.facebook.com/nithees24" target="_blank" rel="noopener" aria-label="Facebook">
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true">
+                <path
+                  d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
+              </svg>
+            </a>
+          </div>
         </div>
       </div>
-      <div class="section-shell footer-bottom">
-        <p>© 2026 Nithees Kanna. All rights reserved.</p>
-        <p>Built with HTML, CSS & JavaScript, Claude Code and Design, Google Antigravity and Stitch.</p>
-      </div>
-    </footer>
+    </section>
+  </main>
 
-    <script src="script.js?v=21"></script>
-  </body>
+  <footer class="site-footer">
+    <div class="section-shell footer-inner">
+      <div class="footer-brand">
+        <p class="footer-name">Nithees Kanna</p>
+        <p class="footer-tag">AI & Machine Learning Developer</p>
+      </div>
+      <p class="footer-proverb">
+        <em>&ldquo;It matters not who sets the pace, but who finishes first to win the race&rdquo;</em>
+        <span class="footer-proverb-author">&mdash; STR</span>
+      </p>
+      <div class="footer-social">
+        <a href="https://github.com/Nithees24" target="_blank" rel="noopener" aria-label="GitHub">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path
+              d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22" />
+          </svg>
+        </a>
+        <a href="https://www.linkedin.com/in/nithees-kanna-585495185/" target="_blank" rel="noopener"
+          aria-label="LinkedIn">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true">
+            <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6zM2 9h4v12H2z" />
+            <circle cx="4" cy="4" r="2" />
+          </svg>
+        </a>
+        <a href="https://mail.google.com/mail/?view=cm&amp;fs=1&amp;to=nithees4242@gmail.com" target="_blank"
+          rel="noopener" aria-label="Email">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <rect x="2" y="4" width="20" height="16" rx="2" />
+            <path d="m22 7-10 6L2 7" />
+          </svg>
+        </a>
+      </div>
+    </div>
+    <div class="section-shell footer-bottom">
+      <p>© 2026 Nithees Kanna. All rights reserved.</p>
+      <p>Built with HTML, CSS & JavaScript, Claude Code and Design (Fable 5 and Opus 4.8), Google Antigravity (Gemini
+        3.5
+        Flash and 3.1 Pro) and Stitch.</p>
+    </div>
+  </footer>
+
+  <script src="assets/js/script.js?v=24"></script>
+</body>
+
 </html>
