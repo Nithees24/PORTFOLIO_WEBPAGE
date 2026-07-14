@@ -688,8 +688,14 @@ const floatingLabels = [
   { text: "L05: COGNITIVE_STEM", cx: 0.0, cy: 0.72, cz: -0.1, targetRegion: "BRAINSTEM" }
 ];
 
+// Canvas CSS dimensions, refreshed only on resize. getBoundingClientRect() forces a
+// synchronous layout, so the 60fps draw loop reads these instead of measuring per frame.
+const canvasBox = { width: 0, height: 0 };
+
 function syncCanvasSize() {
   const rect = canvas.getBoundingClientRect();
+  canvasBox.width = rect.width;
+  canvasBox.height = rect.height;
   const ratio = Math.min(window.devicePixelRatio || 1, 1.5);
   canvas.width = rect.width * ratio;
   canvas.height = rect.height * ratio;
@@ -1035,7 +1041,7 @@ function drawSystem(now = 0) {
   }
   lastFrameTime = now;
 
-  const rect = canvas.getBoundingClientRect();
+  const rect = canvasBox; // cached; measuring here would force a layout every frame
   const time = now * 0.00022;
 
   // Clear background for transparent overlay on light page theme
@@ -1264,8 +1270,7 @@ window.addEventListener("pointerdown", (event) => {
     return;
   }
 
-  const rect = canvas.getBoundingClientRect();
-  const isMobile = rect.width < 768;
+  const isMobile = canvasBox.width < 768; // cached; avoids a layout on every pointerdown
 
   isDragging = true;
   document.body.style.cursor = "grabbing";

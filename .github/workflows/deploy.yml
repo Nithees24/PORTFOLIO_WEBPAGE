@@ -1,0 +1,80 @@
+name: Deploy to GitHub Pages
+
+# Minifies CSS/JS at deploy time and publishes the result. The files in the repo stay
+# readable and are the only ones you edit: the minification happens to a copy, so the
+# deployed site can never drift from the source the way a checked-in *.min.css would.
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Let a running deploy finish rather than cancelling it midway.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Stage the site
+        run: |
+          mkdir -p _site
+          rsync -a \
+            --exclude '.git' \
+            --exclude '.github' \
+            --exclude '.claude' \
+            --exclude '_site' \
+            ./ _site/
+
+      - name: Minify CSS and JS in place
+        run: |
+          # Write to a temp file and move, rather than reading and writing the same
+          # path in one command.
+          #
+          # terser's defaults do not mangle top-level names, which matters because
+          # script.js is a classic (non-module) script sharing the global scope.
+          npx --yes terser@5 _site/assets/js/script.js -c -m -o _site/assets/js/script.min.js
+          mv _site/assets/js/script.min.js _site/assets/js/script.js
+
+          npx --yes clean-css-cli@5 -o _site/assets/css/styles.min.css _site/assets/css/styles.css
+          mv _site/assets/css/styles.min.css _site/assets/css/styles.css
+
+      - name: Report savings
+        run: |
+          echo "### Minified assets" >> "$GITHUB_STEP_SUMMARY"
+          echo "| file | source | deployed |" >> "$GITHUB_STEP_SUMMARY"
+          echo "|---|---|---|" >> "$GITHUB_STEP_SUMMARY"
+          for f in assets/js/script.js assets/css/styles.css; do
+            src=$(wc -c < "$f")
+            out=$(wc -c < "_site/$f")
+            echo "| $f | $src B | $out B |" >> "$GITHUB_STEP_SUMMARY"
+          done
+
+      - uses: actions/configure-pages@v5
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

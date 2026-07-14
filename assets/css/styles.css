@@ -1,8 +1,13 @@
 @font-face {
   font-family: 'Coolvetica';
-  src: url('../fonts/Coolvetica.ttf') format('truetype');
+  /* woff2 first; the ttf is only reached by browsers that lack woff2 support. */
+  src: url('../fonts/Coolvetica.woff2') format('woff2'),
+       url('../fonts/Coolvetica.ttf') format('truetype');
   font-weight: normal;
   font-style: normal;
+  /* Render headings in the fallback face immediately rather than holding text
+     invisible until Coolvetica arrives. */
+  font-display: swap;
 }
 
 :root {

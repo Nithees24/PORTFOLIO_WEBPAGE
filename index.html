@@ -30,10 +30,18 @@
   <link rel="icon" type="image/png" href="assets/img/brand/logo.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link
-    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@500;700&family=Space+Grotesk:wght@400;500;600;700&display=swap"
-    rel="stylesheet" />
-  <link rel="stylesheet" href="assets/css/styles.css?v=22" />
+  <!-- Google Fonts CSS is fetched off the critical path: `media="print"` makes it
+       non-render-blocking, and onload flips it to `all` once it arrives. The families
+       already use display=swap, so text paints in the fallback face either way. -->
+  <link rel="preload" as="style"
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@500;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" />
+  <link rel="stylesheet" media="print" onload="this.media='all';this.onload=null;"
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@500;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" />
+  <noscript>
+    <link rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@500;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" />
+  </noscript>
+  <link rel="stylesheet" href="assets/css/styles.css?v=24" />
   <script>
     // Apply the saved theme before paint to avoid a flash.
     // Light is the default: the OS "prefers-color-scheme: dark" setting is
@@ -74,7 +82,9 @@
 
   <header class="site-header">
     <a class="brand" href="#top" aria-label="Nithees Kanna home">
-      <img src="assets/img/brand/logo.png" alt="" class="brand-logo" />
+      <!-- LCP element: browsers fetch images at low priority by default, so hint it up. -->
+      <img src="assets/img/brand/logo.png" alt="" class="brand-logo" width="512" height="512"
+        fetchpriority="high" />
     </a>
   </header>
 
@@ -1931,7 +1941,7 @@
     </div>
   </footer>
 
-  <script src="assets/js/script.js?v=28"></script>
+  <script src="assets/js/script.js?v=29"></script>
 </body>
 
 </html>
