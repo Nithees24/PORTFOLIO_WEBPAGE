@@ -134,8 +134,13 @@
 
       <div class="hero-photo reveal">
         <picture>
-          <source type="image/webp" srcset="assets/img/brand/nithees_bw.webp" />
-          <img src="assets/img/brand/nithees_bw.png" alt="Nithees Kanna" draggable="false" />
+          <source type="image/webp" srcset="assets/img/brand/nithees_bw.webp" width="1400" height="1629" />
+          <!-- Intrinsic size lets the browser reserve the box before the image lands.
+               Without it the hero grows on load and drags the bottom-anchored .orb-2
+               with it, which is the bulk of the page's layout shift. Both sources share
+               the same 1100:1280 ratio, so one set of dimensions covers the picture. -->
+          <img src="assets/img/brand/nithees_bw.png" alt="Nithees Kanna" draggable="false"
+            width="1100" height="1280" />
         </picture>
       </div>
 
