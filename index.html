@@ -35,14 +35,12 @@
     rel="stylesheet" />
   <link rel="stylesheet" href="assets/css/styles.css?v=22" />
   <script>
-    // Apply the saved (or system-preferred) theme before paint to avoid a flash.
+    // Apply the saved theme before paint to avoid a flash.
+    // Light is the default: the OS "prefers-color-scheme: dark" setting is
+    // deliberately ignored, so dark mode only ever comes from an explicit toggle.
     (function () {
       try {
-        var saved = localStorage.getItem("theme");
-        var prefersDark =
-          window.matchMedia &&
-          window.matchMedia("(prefers-color-scheme: dark)").matches;
-        if (saved === "dark" || (saved === null && prefersDark)) {
+        if (localStorage.getItem("theme") === "dark") {
           document.documentElement.classList.add("dark");
         }
       } catch (e) { }
@@ -440,7 +438,7 @@
                   <span class="showcase-dot dot-green"></span>
                   <span class="showcase-title">lovelace — live demo</span>
                 </div>
-                <video class="showcase-video" src="assets/video/lovelace.mp4" muted loop playsinline autoplay preload="metadata"
+                <video class="showcase-video" src="assets/video/lovelace.mp4" muted loop playsinline preload="none"
                   controlslist="nodownload nofullscreen noremoteplayback" oncontextmenu="return false;"
                   aria-label="Project Lovelace product demo"></video>
               </div>
@@ -1100,7 +1098,7 @@
       <div class="fun-shell reveal">
         <div class="fun-tabs" role="tablist" aria-label="Fun categories">
           <div class="fun-tab-indicator"></div>
-          <button class="fun-tab active" type="button" data-tab="music">
+          <button class="fun-tab active" type="button" data-tab="music" aria-label="Music">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
               stroke-linejoin="round" aria-hidden="true">
               <path d="M9 18V5l12-2v13" />
@@ -1109,7 +1107,7 @@
             </svg>
             <span class="fun-tab-label">Music</span>
           </button>
-          <button class="fun-tab" type="button" data-tab="movies">
+          <button class="fun-tab" type="button" data-tab="movies" aria-label="Movies">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
               stroke-linejoin="round" aria-hidden="true">
               <rect x="2" y="3" width="20" height="18" rx="2" />
@@ -1117,7 +1115,7 @@
             </svg>
             <span class="fun-tab-label">Movies</span>
           </button>
-          <button class="fun-tab" type="button" data-tab="games">
+          <button class="fun-tab" type="button" data-tab="games" aria-label="Games">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
               stroke-linejoin="round" aria-hidden="true">
               <path d="M6 12h4M8 10v4" />
@@ -1128,7 +1126,7 @@
             </svg>
             <span class="fun-tab-label">Games</span>
           </button>
-          <button class="fun-tab" type="button" data-tab="sports">
+          <button class="fun-tab" type="button" data-tab="sports" aria-label="Sports">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
               stroke-linejoin="round" aria-hidden="true">
               <path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6" />
