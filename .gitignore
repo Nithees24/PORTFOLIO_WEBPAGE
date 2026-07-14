@@ -23,7 +23,6 @@ desktop.ini
 .project
 .classpath
 .c9/
-.agents/
 *.launch
 .settings/
 *.sublime-workspace
@@ -33,6 +32,9 @@ desktop.ini
 *.njsproj
 *.sln
 *.swp
+
+# Claude Code (keep launch.json / settings.json tracked; ignore local-only settings)
+.claude/settings.local.json
 
 # Local env files
 .env

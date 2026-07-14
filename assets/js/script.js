@@ -135,6 +135,15 @@ function startHeroTypewriter() {
     }
   }
 
+  // Reduced motion: skip the endless type/erase/cycle — paint one static
+  // phrase (with accent colours, no blinking cursor) and stop.
+  if (prefersReducedMotion) {
+    const { a, aAccent, b, bAccent } = phrases[0];
+    draw(line1, a, aAccent, false);
+    draw(line2, b, bAccent, false);
+    return;
+  }
+
   let p = 0;
   function runPhrase() {
     const { a, aAccent, b, bAccent } = phrases[p];
@@ -243,8 +252,12 @@ const moveFilterIndicator = (button, instant = false) => {
 filterButtons.forEach((button) => {
   button.addEventListener("click", () => {
     const filter = button.dataset.filter;
-    filterButtons.forEach((item) => item.classList.remove("active"));
+    filterButtons.forEach((item) => {
+      item.classList.remove("active");
+      item.setAttribute("aria-pressed", "false");
+    });
     button.classList.add("active");
+    button.setAttribute("aria-pressed", "true");
     moveFilterIndicator(button);
 
     // Clear active item and close details panel when switching filters
@@ -1894,6 +1907,82 @@ document.querySelectorAll(".fun-subtabs").forEach((group) => {
   });
 });
 
+// --- Accessibility: upgrade the fun tabs/subtabs to keyboard-navigable ARIA
+//     tablists — roving tabindex, Arrow/Home/End keys, aria-selected, and
+//     tab<->panel wiring. Activation is automatic (arrow key selects). This is
+//     additive: existing click handlers still drive the panel switching. ---
+function enhanceTabList(list, tabSelector, dataKey, idPrefix, getPanel) {
+  if (!list) return;
+  const tabs = Array.from(list.querySelectorAll(tabSelector));
+  if (!tabs.length) return;
+  list.setAttribute("role", "tablist");
+
+  tabs.forEach((tab, idx) => {
+    tab.setAttribute("role", "tab");
+    const key = tab.dataset[dataKey] || String(idx);
+    if (!tab.id) tab.id = idPrefix + "-tab-" + key;
+    const panel = getPanel(tab);
+    if (panel) {
+      if (!panel.id) panel.id = idPrefix + "-panel-" + key;
+      panel.setAttribute("role", "tabpanel");
+      panel.setAttribute("aria-labelledby", tab.id);
+      if (!panel.hasAttribute("tabindex")) panel.setAttribute("tabindex", "-1");
+      tab.setAttribute("aria-controls", panel.id);
+    }
+  });
+
+  // Reflect the active tab into aria-selected + roving tabindex.
+  const syncState = () => {
+    tabs.forEach((tab) => {
+      const active = tab.classList.contains("active");
+      tab.setAttribute("aria-selected", String(active));
+      tab.tabIndex = active ? 0 : -1;
+    });
+  };
+  syncState();
+
+  // Any activation (mouse or keyboard) bubbles here → refresh ARIA/roving state.
+  list.addEventListener("click", syncState);
+
+  // Arrow / Home / End move focus and activate the target tab.
+  list.addEventListener("keydown", (e) => {
+    const current = tabs.indexOf(document.activeElement);
+    if (current === -1) return;
+    let target = current;
+    switch (e.key) {
+      case "ArrowRight":
+      case "ArrowDown": target = (current + 1) % tabs.length; break;
+      case "ArrowLeft":
+      case "ArrowUp": target = (current - 1 + tabs.length) % tabs.length; break;
+      case "Home": target = 0; break;
+      case "End": target = tabs.length - 1; break;
+      default: return;
+    }
+    e.preventDefault();
+    tabs[target].focus();
+    tabs[target].click();
+  });
+}
+
+enhanceTabList(
+  document.querySelector(".fun-tabs"),
+  ".fun-tab",
+  "tab",
+  "fun",
+  (tab) => document.querySelector('.fun-panel[data-panel="' + tab.dataset.tab + '"]')
+);
+
+document.querySelectorAll(".fun-subtabs").forEach((group) => {
+  const panel = group.closest(".fun-panel");
+  enhanceTabList(
+    group,
+    ".fun-subtab",
+    "subtab",
+    "fun-" + (panel ? panel.dataset.panel : "sub"),
+    (tab) => (panel ? panel.querySelector('.fun-subpanel[data-subpanel="' + tab.dataset.subtab + '"]') : null)
+  );
+});
+
 // Align indicators on load and resize
 window.addEventListener("load", initAllTabIndicators);
 window.addEventListener("resize", initAllTabIndicators);
@@ -1908,10 +1997,14 @@ document.querySelectorAll(".fun-billboard").forEach((billboard) => {
   let autoSlideTimer = null;
   const slideInterval = 5000; // slide every 5s
 
+  // Human-readable carousel name (e.g. "sports f1") for specific a11y labels,
+  // so each carousel's controls are distinguishable to screen reader users.
+  const carouselName = (billboard.dataset.carousel || "image").replace(/-/g, " ");
+
   // Dynamically inject minimalist left/right chevron arrow overlays
   const prevBtn = document.createElement("button");
   prevBtn.className = "fun-billboard-arrow prev";
-  prevBtn.setAttribute("aria-label", "Previous slide");
+  prevBtn.setAttribute("aria-label", "Previous " + carouselName + " slide");
   prevBtn.innerHTML = `
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
       <polyline points="15 18 9 12 15 6"></polyline>
@@ -1920,7 +2013,7 @@ document.querySelectorAll(".fun-billboard").forEach((billboard) => {
 
   const nextBtn = document.createElement("button");
   nextBtn.className = "fun-billboard-arrow next";
-  nextBtn.setAttribute("aria-label", "Next slide");
+  nextBtn.setAttribute("aria-label", "Next " + carouselName + " slide");
   nextBtn.innerHTML = `
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
       <polyline points="9 18 15 12 9 6"></polyline>
@@ -1948,6 +2041,8 @@ document.querySelectorAll(".fun-billboard").forEach((billboard) => {
   };
 
   const startAutoSlide = () => {
+    // Reduced motion: no auto-advance. Manual arrows/click/swipe still work.
+    if (prefersReducedMotion) return;
     if (autoSlideTimer) clearInterval(autoSlideTimer);
     autoSlideTimer = setInterval(nextSlide, slideInterval);
   };
@@ -2017,6 +2112,26 @@ document.querySelectorAll(".fun-billboard").forEach((billboard) => {
       startAutoSlide();
     }
   }, { passive: true });
+
+  // Keyboard: make the carousel a focusable region with Left/Right arrow-key
+  // navigation (in addition to the injected arrow buttons).
+  billboard.setAttribute("role", "group");
+  billboard.setAttribute("aria-roledescription", "carousel");
+  if (!billboard.hasAttribute("tabindex")) billboard.setAttribute("tabindex", "0");
+  if (!billboard.hasAttribute("aria-label")) {
+    billboard.setAttribute("aria-label", carouselName + " carousel");
+  }
+  billboard.addEventListener("keydown", (e) => {
+    if (e.key === "ArrowLeft") {
+      e.preventDefault();
+      prevSlide();
+      startAutoSlide();
+    } else if (e.key === "ArrowRight") {
+      e.preventDefault();
+      nextSlide();
+      startAutoSlide();
+    }
+  });
 
   // Initial auto slide start
   startAutoSlide();
@@ -2229,6 +2344,15 @@ if (siteNav && navToggle) {
     if (siteNav.classList.contains("open") && !siteNav.contains(event.target)) {
       siteNav.classList.remove("open");
       navToggle.setAttribute("aria-expanded", "false");
+    }
+  });
+
+  // Close on Escape and return focus to the toggle (keyboard users)
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape" && siteNav.classList.contains("open")) {
+      siteNav.classList.remove("open");
+      navToggle.setAttribute("aria-expanded", "false");
+      navToggle.focus();
     }
   });
 }

@@ -10,20 +10,30 @@
   <meta property="og:title" content="Nithees Kanna | AI & Machine Learning Developer" />
   <meta property="og:description"
     content="Python Machine Learning and AI Developer — agentic RAG workflows, vector search, and MLOps on Google Cloud." />
-  <!-- After the site is live, add absolute URLs here:
-         <meta property="og:url" content="https://your-domain/" />
-         <meta property="og:image" content="https://your-domain/nithees_bw.png" /> -->
-  <meta name="twitter:card" content="summary" />
+  <meta property="og:site_name" content="Nithees Kanna" />
+  <meta property="og:locale" content="en_US" />
+  <!-- Absolute URLs use the GitHub Pages project base (repo PORTFOLIO_WEBPAGE).
+       When a custom domain goes live, update the base in all 6 places: og:url,
+       og:image, twitter:image, canonical (below), and url/image in JSON-LD. -->
+  <meta property="og:url" content="https://nithees24.github.io/PORTFOLIO_WEBPAGE/" />
+  <meta property="og:image" content="https://nithees24.github.io/PORTFOLIO_WEBPAGE/assets/img/brand/og-card.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="Nithees Kanna — AI & Machine Learning Developer" />
+  <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Nithees Kanna | AI & Machine Learning Developer" />
   <meta name="twitter:description"
     content="Python Machine Learning and AI Developer — agentic RAG workflows, vector search, and MLOps on Google Cloud." />
+  <meta name="twitter:image" content="https://nithees24.github.io/PORTFOLIO_WEBPAGE/assets/img/brand/og-card.png" />
+  <meta name="twitter:image:alt" content="Nithees Kanna — AI & Machine Learning Developer" />
+  <link rel="canonical" href="https://nithees24.github.io/PORTFOLIO_WEBPAGE/" />
   <link rel="icon" type="image/png" href="assets/img/brand/logo.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link
     href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@500;700&family=Space+Grotesk:wght@400;500;600;700&display=swap"
     rel="stylesheet" />
-  <link rel="stylesheet" href="assets/css/styles.css?v=19" />
+  <link rel="stylesheet" href="assets/css/styles.css?v=22" />
   <script>
     // Apply the saved (or system-preferred) theme before paint to avoid a flash.
     (function () {
@@ -37,6 +47,27 @@
         }
       } catch (e) { }
     })();
+  </script>
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "ProfilePage",
+      "mainEntity": {
+        "@type": "Person",
+        "name": "Nithees Kanna",
+        "url": "https://nithees24.github.io/PORTFOLIO_WEBPAGE/",
+        "image": "https://nithees24.github.io/PORTFOLIO_WEBPAGE/assets/img/brand/og-card.png",
+        "jobTitle": "AI & Machine Learning Developer",
+        "description": "Python Machine Learning and AI Developer — agentic RAG workflows, vector search, and MLOps on Google Cloud.",
+        "sameAs": [
+          "https://github.com/Nithees24",
+          "https://www.linkedin.com/in/nithees-kanna-585495185/",
+          "https://www.instagram.com/nk_shade_",
+          "https://x.com/nitheeeees_str",
+          "https://www.facebook.com/nithees24"
+        ]
+      }
+    }
   </script>
 </head>
 
@@ -94,7 +125,10 @@
       </h1>
 
       <div class="hero-photo reveal">
-        <img src="assets/img/brand/nithees_bw.png" alt="Nithees Kanna" draggable="false" />
+        <picture>
+          <source type="image/webp" srcset="assets/img/brand/nithees_bw.webp" />
+          <img src="assets/img/brand/nithees_bw.png" alt="Nithees Kanna" draggable="false" />
+        </picture>
       </div>
 
       <a class="scroll-cue" href="#work" aria-label="Scroll to content">
@@ -385,7 +419,7 @@
             </div>
             <div class="project-links">
               <a href="https://github.com/Nithees24/PROJECT-LOVELACE" target="_blank" rel="noopener"
-                class="project-link" aria-label="GitHub Repository">
+                class="project-link" aria-label="Project Lovelace GitHub repository">
                 <svg class="icon" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor"
                   stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                   <path
@@ -406,7 +440,8 @@
                   <span class="showcase-dot dot-green"></span>
                   <span class="showcase-title">lovelace — live demo</span>
                 </div>
-                <video class="showcase-video" src="assets/video/lovelace.mp4" muted loop playsinline controls preload="metadata"
+                <video class="showcase-video" src="assets/video/lovelace.mp4" muted loop playsinline autoplay preload="metadata"
+                  controlslist="nodownload nofullscreen noremoteplayback" oncontextmenu="return false;"
                   aria-label="Project Lovelace product demo"></video>
               </div>
             </div>
@@ -437,7 +472,7 @@
             <span class="project-number">02</span>
             <div class="project-links">
               <a href="https://github.com/Nithees24/RAG_LANGCHAIN" target="_blank" rel="noopener" class="project-link"
-                aria-label="GitHub Repository">
+                aria-label="Orchestra-RAG GitHub repository">
                 <svg class="icon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor"
                   stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                   <path
@@ -468,7 +503,7 @@
             <span class="project-number">03</span>
             <div class="project-links">
               <a href="https://github.com/Nithees24/CP_AI_WORKFLOW" target="_blank" rel="noopener" class="project-link"
-                aria-label="GitHub Repository">
+                aria-label="AI Workflow Identifier GitHub repository">
                 <svg class="icon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor"
                   stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                   <path
@@ -648,18 +683,18 @@
         <h2>Core Technical Matrix</h2>
       </div>
 
-      <div class="stack-controls reveal" role="tablist" aria-label="Skill filters">
+      <div class="stack-controls reveal" role="group" aria-label="Filter skills by category">
         <span class="filter-indicator" aria-hidden="true"></span>
-        <button class="filter-button active" type="button" data-filter="all">
+        <button class="filter-button active" type="button" data-filter="all" aria-pressed="true">
           All
         </button>
-        <button class="filter-button" type="button" data-filter="ai">
+        <button class="filter-button" type="button" data-filter="ai" aria-pressed="false">
           AI
         </button>
-        <button class="filter-button" type="button" data-filter="data">
+        <button class="filter-button" type="button" data-filter="data" aria-pressed="false">
           Data
         </button>
-        <button class="filter-button" type="button" data-filter="ops">
+        <button class="filter-button" type="button" data-filter="ops" aria-pressed="false">
           Ops
         </button>
       </div>
@@ -1113,35 +1148,50 @@
           <div class="fun-billboard" data-carousel="music">
             <div class="fun-billboard-track">
               <div class="fun-billboard-slide active" data-index="0">
-                <img src="assets/img/music/arr.jpg" alt="A. R. Rahman" class="fun-billboard-img" loading="lazy">
+                <picture>
+                  <source type="image/webp" srcset="assets/img/music/arr.webp" />
+                  <img src="assets/img/music/arr.jpg" alt="A. R. Rahman" class="fun-billboard-img" loading="lazy">
+                </picture>
                 <div class="fun-billboard-scrim"></div>
                 <div class="fun-billboard-meta">
                   <span class="fun-billboard-title">A. R. Rahman</span>
                 </div>
               </div>
               <div class="fun-billboard-slide" data-index="1">
-                <img src="assets/img/music/anirudh.jpg" alt="Anirudh Ravichander" class="fun-billboard-img" loading="lazy">
+                <picture>
+                  <source type="image/webp" srcset="assets/img/music/anirudh.webp" />
+                  <img src="assets/img/music/anirudh.jpg" alt="Anirudh Ravichander" class="fun-billboard-img" loading="lazy">
+                </picture>
                 <div class="fun-billboard-scrim"></div>
                 <div class="fun-billboard-meta">
                   <span class="fun-billboard-title">Anirudh Ravichander</span>
                 </div>
               </div>
               <div class="fun-billboard-slide" data-index="2">
-                <img src="assets/img/music/u1.jpg" alt="Yuvan Shankar Raja (U1)" class="fun-billboard-img" loading="lazy">
+                <picture>
+                  <source type="image/webp" srcset="assets/img/music/u1.webp" />
+                  <img src="assets/img/music/u1.jpg" alt="Yuvan Shankar Raja (U1)" class="fun-billboard-img" loading="lazy">
+                </picture>
                 <div class="fun-billboard-scrim"></div>
                 <div class="fun-billboard-meta">
                   <span class="fun-billboard-title">Yuvan Shankar Raja (U1)</span>
                 </div>
               </div>
               <div class="fun-billboard-slide" data-index="3">
-                <img src="assets/img/music/harris.jpg" alt="Harris Jayaraj" class="fun-billboard-img" loading="lazy">
+                <picture>
+                  <source type="image/webp" srcset="assets/img/music/harris.webp" />
+                  <img src="assets/img/music/harris.jpg" alt="Harris Jayaraj" class="fun-billboard-img" loading="lazy">
+                </picture>
                 <div class="fun-billboard-scrim"></div>
                 <div class="fun-billboard-meta">
                   <span class="fun-billboard-title">Harris Jayaraj</span>
                 </div>
               </div>
               <div class="fun-billboard-slide" data-index="4">
-                <img src="assets/img/music/vs.jpg" alt="Vidyasagar" class="fun-billboard-img" loading="lazy">
+                <picture>
+                  <source type="image/webp" srcset="assets/img/music/vs.webp" />
+                  <img src="assets/img/music/vs.jpg" alt="Vidyasagar" class="fun-billboard-img" loading="lazy">
+                </picture>
                 <div class="fun-billboard-scrim"></div>
                 <div class="fun-billboard-meta">
                   <span class="fun-billboard-title">Vidyasagar</span>
@@ -1198,7 +1248,10 @@
             <div class="fun-billboard" data-carousel="movies-films">
               <div class="fun-billboard-track">
                 <div class="fun-billboard-slide active" data-index="0">
-                  <img src="assets/img/movies/anbe_sivam.jpg" alt="Anbe Sivam" class="fun-billboard-img" loading="lazy">
+                  <picture>
+                    <source type="image/webp" srcset="assets/img/movies/anbe_sivam.webp" />
+                    <img src="assets/img/movies/anbe_sivam.jpg" alt="Anbe Sivam" class="fun-billboard-img" loading="lazy">
+                  </picture>
                   <div class="fun-billboard-scrim"></div>
                   <div class="fun-billboard-meta">
                     <img src="assets/img/movies/logos/anbe_sivam.png" alt="Anbe Sivam Logo" class="fun-billboard-logo"
@@ -1206,7 +1259,10 @@
                   </div>
                 </div>
                 <div class="fun-billboard-slide" data-index="1">
-                  <img src="assets/img/movies/fight_club.jpg" alt="Fight Club" class="fun-billboard-img" loading="lazy">
+                  <picture>
+                    <source type="image/webp" srcset="assets/img/movies/fight_club.webp" />
+                    <img src="assets/img/movies/fight_club.jpg" alt="Fight Club" class="fun-billboard-img" loading="lazy">
+                  </picture>
                   <div class="fun-billboard-scrim"></div>
                   <div class="fun-billboard-meta">
                     <img src="assets/img/movies/logos/fight_club.png" alt="Fight Club Logo"
@@ -1214,7 +1270,10 @@
                   </div>
                 </div>
                 <div class="fun-billboard-slide" data-index="2">
-                  <img src="assets/img/movies/interstellar.jpg" alt="Interstellar" class="fun-billboard-img" loading="lazy">
+                  <picture>
+                    <source type="image/webp" srcset="assets/img/movies/interstellar.webp" />
+                    <img src="assets/img/movies/interstellar.jpg" alt="Interstellar" class="fun-billboard-img" loading="lazy">
+                  </picture>
                   <div class="fun-billboard-scrim"></div>
                   <div class="fun-billboard-meta">
                     <img src="assets/img/movies/logos/interstellar.png" alt="Interstellar Logo" class="fun-billboard-logo"
@@ -1222,7 +1281,10 @@
                   </div>
                 </div>
                 <div class="fun-billboard-slide" data-index="3">
-                  <img src="assets/img/movies/the_dark_knight.jpg" alt="The Dark Knight" class="fun-billboard-img" loading="lazy">
+                  <picture>
+                    <source type="image/webp" srcset="assets/img/movies/the_dark_knight.webp" />
+                    <img src="assets/img/movies/the_dark_knight.jpg" alt="The Dark Knight" class="fun-billboard-img" loading="lazy">
+                  </picture>
                   <div class="fun-billboard-scrim"></div>
                   <div class="fun-billboard-meta">
                     <img src="assets/img/movies/logos/the_dark_knight.png" alt="The Dark Knight Logo" class="fun-billboard-logo"
@@ -1230,14 +1292,20 @@
                   </div>
                 </div>
                 <div class="fun-billboard-slide" data-index="4">
-                  <img src="assets/img/movies/nayakan.jpg" alt="Nayakan" class="fun-billboard-img" loading="lazy">
+                  <picture>
+                    <source type="image/webp" srcset="assets/img/movies/nayakan.webp" />
+                    <img src="assets/img/movies/nayakan.jpg" alt="Nayakan" class="fun-billboard-img" loading="lazy">
+                  </picture>
                   <div class="fun-billboard-scrim"></div>
                   <div class="fun-billboard-meta">
                     <img src="assets/img/movies/logos/nayakan.png" alt="Nayakan Logo" class="fun-billboard-logo" loading="lazy">
                   </div>
                 </div>
                 <div class="fun-billboard-slide" data-index="5">
-                  <img src="assets/img/movies/cars.jpg" alt="Cars" class="fun-billboard-img" loading="lazy">
+                  <picture>
+                    <source type="image/webp" srcset="assets/img/movies/cars.webp" />
+                    <img src="assets/img/movies/cars.jpg" alt="Cars" class="fun-billboard-img" loading="lazy">
+                  </picture>
                   <div class="fun-billboard-scrim"></div>
                   <div class="fun-billboard-meta">
                     <img src="assets/img/movies/logos/cars.png" alt="Cars Logo" class="fun-billboard-logo logo-cars"
@@ -1245,14 +1313,20 @@
                   </div>
                 </div>
                 <div class="fun-billboard-slide" data-index="6">
-                  <img src="assets/img/movies/wall_e.jpg" alt="WALL-E" class="fun-billboard-img" loading="lazy">
+                  <picture>
+                    <source type="image/webp" srcset="assets/img/movies/wall_e.webp" />
+                    <img src="assets/img/movies/wall_e.jpg" alt="WALL-E" class="fun-billboard-img" loading="lazy">
+                  </picture>
                   <div class="fun-billboard-scrim"></div>
                   <div class="fun-billboard-meta">
                     <img src="assets/img/movies/logos/wall_e.png" alt="WALL-E Logo" class="fun-billboard-logo" loading="lazy">
                   </div>
                 </div>
                 <div class="fun-billboard-slide" data-index="7">
-                  <img src="assets/img/movies/schindlers_list.jpg" alt="Schindler's List" class="fun-billboard-img" loading="lazy">
+                  <picture>
+                    <source type="image/webp" srcset="assets/img/movies/schindlers_list.webp" />
+                    <img src="assets/img/movies/schindlers_list.jpg" alt="Schindler's List" class="fun-billboard-img" loading="lazy">
+                  </picture>
                   <div class="fun-billboard-scrim"></div>
                   <div class="fun-billboard-meta">
                     <img src="assets/img/movies/logos/schindlers_list.png" alt="Schindler's List Logo" class="fun-billboard-logo"
@@ -1260,14 +1334,20 @@
                   </div>
                 </div>
                 <div class="fun-billboard-slide" data-index="8">
-                  <img src="assets/img/movies/vaanam.jpg" alt="Vaanam" class="fun-billboard-img" loading="lazy">
+                  <picture>
+                    <source type="image/webp" srcset="assets/img/movies/vaanam.webp" />
+                    <img src="assets/img/movies/vaanam.jpg" alt="Vaanam" class="fun-billboard-img" loading="lazy">
+                  </picture>
                   <div class="fun-billboard-scrim"></div>
                   <div class="fun-billboard-meta">
                     <img src="assets/img/movies/logos/vaanam.png" alt="Vaanam Logo" class="fun-billboard-logo" loading="lazy">
                   </div>
                 </div>
                 <div class="fun-billboard-slide" data-index="9">
-                  <img src="assets/img/movies/vettaikaaran.jpg" alt="Vettaikaaran" class="fun-billboard-img" loading="lazy">
+                  <picture>
+                    <source type="image/webp" srcset="assets/img/movies/vettaikaaran.webp" />
+                    <img src="assets/img/movies/vettaikaaran.jpg" alt="Vettaikaaran" class="fun-billboard-img" loading="lazy">
+                  </picture>
                   <div class="fun-billboard-scrim"></div>
                   <div class="fun-billboard-meta">
                     <img src="assets/img/movies/logos/vettaikaaran.png" alt="Vettaikaaran Logo" class="fun-billboard-logo"
@@ -1282,70 +1362,100 @@
             <div class="fun-billboard" data-carousel="movies-directors">
               <div class="fun-billboard-track">
                 <div class="fun-billboard-slide active" data-index="0">
-                  <img src="assets/img/directors/nolan.jpg" alt="Christopher Nolan" class="fun-billboard-img" loading="lazy">
+                  <picture>
+                    <source type="image/webp" srcset="assets/img/directors/nolan.webp" />
+                    <img src="assets/img/directors/nolan.jpg" alt="Christopher Nolan" class="fun-billboard-img" loading="lazy">
+                  </picture>
                   <div class="fun-billboard-scrim"></div>
                   <div class="fun-billboard-meta">
                     <span class="fun-billboard-title">Christopher Nolan</span>
                   </div>
                 </div>
                 <div class="fun-billboard-slide" data-index="1">
-                  <img src="assets/img/directors/quintin.jpg" alt="Quentin Tarantino" class="fun-billboard-img" loading="lazy">
+                  <picture>
+                    <source type="image/webp" srcset="assets/img/directors/quintin.webp" />
+                    <img src="assets/img/directors/quintin.jpg" alt="Quentin Tarantino" class="fun-billboard-img" loading="lazy">
+                  </picture>
                   <div class="fun-billboard-scrim"></div>
                   <div class="fun-billboard-meta">
                     <span class="fun-billboard-title">Quentin Tarantino</span>
                   </div>
                 </div>
                 <div class="fun-billboard-slide" data-index="2">
-                  <img src="assets/img/directors/dennis.jpg" alt="Denis Villeneuve" class="fun-billboard-img" loading="lazy">
+                  <picture>
+                    <source type="image/webp" srcset="assets/img/directors/dennis.webp" />
+                    <img src="assets/img/directors/dennis.jpg" alt="Denis Villeneuve" class="fun-billboard-img" loading="lazy">
+                  </picture>
                   <div class="fun-billboard-scrim"></div>
                   <div class="fun-billboard-meta">
                     <span class="fun-billboard-title">Denis Villeneuve</span>
                   </div>
                 </div>
                 <div class="fun-billboard-slide" data-index="3">
-                  <img src="assets/img/directors/martin.jpg" alt="Martin Scorsese" class="fun-billboard-img" loading="lazy">
+                  <picture>
+                    <source type="image/webp" srcset="assets/img/directors/martin.webp" />
+                    <img src="assets/img/directors/martin.jpg" alt="Martin Scorsese" class="fun-billboard-img" loading="lazy">
+                  </picture>
                   <div class="fun-billboard-scrim"></div>
                   <div class="fun-billboard-meta">
                     <span class="fun-billboard-title">Martin Scorsese</span>
                   </div>
                 </div>
                 <div class="fun-billboard-slide" data-index="4">
-                  <img src="assets/img/directors/steven.jpg" alt="Steven Spielberg" class="fun-billboard-img" loading="lazy">
+                  <picture>
+                    <source type="image/webp" srcset="assets/img/directors/steven.webp" />
+                    <img src="assets/img/directors/steven.jpg" alt="Steven Spielberg" class="fun-billboard-img" loading="lazy">
+                  </picture>
                   <div class="fun-billboard-scrim"></div>
                   <div class="fun-billboard-meta">
                     <span class="fun-billboard-title">Steven Spielberg</span>
                   </div>
                 </div>
                 <div class="fun-billboard-slide" data-index="5">
-                  <img src="assets/img/directors/david_fincher.jpg" alt="David Fincher" class="fun-billboard-img" loading="lazy">
+                  <picture>
+                    <source type="image/webp" srcset="assets/img/directors/david_fincher.webp" />
+                    <img src="assets/img/directors/david_fincher.jpg" alt="David Fincher" class="fun-billboard-img" loading="lazy">
+                  </picture>
                   <div class="fun-billboard-scrim"></div>
                   <div class="fun-billboard-meta">
                     <span class="fun-billboard-title">David Fincher</span>
                   </div>
                 </div>
                 <div class="fun-billboard-slide" data-index="6">
-                  <img src="assets/img/directors/loki.jpg" alt="Lokesh Kanagaraj" class="fun-billboard-img" loading="lazy">
+                  <picture>
+                    <source type="image/webp" srcset="assets/img/directors/loki.webp" />
+                    <img src="assets/img/directors/loki.jpg" alt="Lokesh Kanagaraj" class="fun-billboard-img" loading="lazy">
+                  </picture>
                   <div class="fun-billboard-scrim"></div>
                   <div class="fun-billboard-meta">
                     <span class="fun-billboard-title">Lokesh Kanagaraj</span>
                   </div>
                 </div>
                 <div class="fun-billboard-slide" data-index="7">
-                  <img src="assets/img/directors/karthick.jpg" alt="Karthik Subbaraj" class="fun-billboard-img" loading="lazy">
+                  <picture>
+                    <source type="image/webp" srcset="assets/img/directors/karthick.webp" />
+                    <img src="assets/img/directors/karthick.jpg" alt="Karthik Subbaraj" class="fun-billboard-img" loading="lazy">
+                  </picture>
                   <div class="fun-billboard-scrim"></div>
                   <div class="fun-billboard-meta">
                     <span class="fun-billboard-title">Karthik Subbaraj</span>
                   </div>
                 </div>
                 <div class="fun-billboard-slide" data-index="8">
-                  <img src="assets/img/directors/ranjith.jpg" alt="Pa. Ranjith" class="fun-billboard-img" loading="lazy">
+                  <picture>
+                    <source type="image/webp" srcset="assets/img/directors/ranjith.webp" />
+                    <img src="assets/img/directors/ranjith.jpg" alt="Pa. Ranjith" class="fun-billboard-img" loading="lazy">
+                  </picture>
                   <div class="fun-billboard-scrim"></div>
                   <div class="fun-billboard-meta">
                     <span class="fun-billboard-title">Pa. Ranjith</span>
                   </div>
                 </div>
                 <div class="fun-billboard-slide" data-index="9">
-                  <img src="assets/img/directors/vetri.jpg" alt="Vetrimaaran" class="fun-billboard-img" loading="lazy">
+                  <picture>
+                    <source type="image/webp" srcset="assets/img/directors/vetri.webp" />
+                    <img src="assets/img/directors/vetri.jpg" alt="Vetrimaaran" class="fun-billboard-img" loading="lazy">
+                  </picture>
                   <div class="fun-billboard-scrim"></div>
                   <div class="fun-billboard-meta">
                     <span class="fun-billboard-title">Vetrimaaran</span>
@@ -1359,70 +1469,100 @@
             <div class="fun-billboard" data-carousel="movies-actors">
               <div class="fun-billboard-track">
                 <div class="fun-billboard-slide active" data-index="0">
-                  <img src="assets/img/actors/leo.jpg" alt="Leonardo DiCaprio" class="fun-billboard-img" loading="lazy">
+                  <picture>
+                    <source type="image/webp" srcset="assets/img/actors/leo.webp" />
+                    <img src="assets/img/actors/leo.jpg" alt="Leonardo DiCaprio" class="fun-billboard-img" loading="lazy">
+                  </picture>
                   <div class="fun-billboard-scrim"></div>
                   <div class="fun-billboard-meta">
                     <span class="fun-billboard-title">Leonardo DiCaprio</span>
                   </div>
                 </div>
                 <div class="fun-billboard-slide" data-index="1">
-                  <img src="assets/img/actors/cillian.jpg" alt="Cillian Murphy" class="fun-billboard-img" loading="lazy">
+                  <picture>
+                    <source type="image/webp" srcset="assets/img/actors/cillian.webp" />
+                    <img src="assets/img/actors/cillian.jpg" alt="Cillian Murphy" class="fun-billboard-img" loading="lazy">
+                  </picture>
                   <div class="fun-billboard-scrim"></div>
                   <div class="fun-billboard-meta">
                     <span class="fun-billboard-title">Cillian Murphy</span>
                   </div>
                 </div>
                 <div class="fun-billboard-slide" data-index="2">
-                  <img src="assets/img/actors/christian_bale.jpg" alt="Christian Bale" class="fun-billboard-img" loading="lazy">
+                  <picture>
+                    <source type="image/webp" srcset="assets/img/actors/christian_bale.webp" />
+                    <img src="assets/img/actors/christian_bale.jpg" alt="Christian Bale" class="fun-billboard-img" loading="lazy">
+                  </picture>
                   <div class="fun-billboard-scrim"></div>
                   <div class="fun-billboard-meta">
                     <span class="fun-billboard-title">Christian Bale</span>
                   </div>
                 </div>
                 <div class="fun-billboard-slide" data-index="3">
-                  <img src="assets/img/actors/rober_d_jr.jpg" alt="Robert Downey Jr." class="fun-billboard-img" loading="lazy">
+                  <picture>
+                    <source type="image/webp" srcset="assets/img/actors/rober_d_jr.webp" />
+                    <img src="assets/img/actors/rober_d_jr.jpg" alt="Robert Downey Jr." class="fun-billboard-img" loading="lazy">
+                  </picture>
                   <div class="fun-billboard-scrim"></div>
                   <div class="fun-billboard-meta">
                     <span class="fun-billboard-title">Robert Downey Jr.</span>
                   </div>
                 </div>
                 <div class="fun-billboard-slide" data-index="4">
-                  <img src="assets/img/actors/al_pachino.jpg" alt="Al Pacino" class="fun-billboard-img" loading="lazy">
+                  <picture>
+                    <source type="image/webp" srcset="assets/img/actors/al_pachino.webp" />
+                    <img src="assets/img/actors/al_pachino.jpg" alt="Al Pacino" class="fun-billboard-img" loading="lazy">
+                  </picture>
                   <div class="fun-billboard-scrim"></div>
                   <div class="fun-billboard-meta">
                     <span class="fun-billboard-title">Al Pacino</span>
                   </div>
                 </div>
                 <div class="fun-billboard-slide" data-index="5">
-                  <img src="assets/img/actors/tom_cruise.jpg" alt="Tom Cruise" class="fun-billboard-img" loading="lazy">
+                  <picture>
+                    <source type="image/webp" srcset="assets/img/actors/tom_cruise.webp" />
+                    <img src="assets/img/actors/tom_cruise.jpg" alt="Tom Cruise" class="fun-billboard-img" loading="lazy">
+                  </picture>
                   <div class="fun-billboard-scrim"></div>
                   <div class="fun-billboard-meta">
                     <span class="fun-billboard-title">Tom Cruise</span>
                   </div>
                 </div>
                 <div class="fun-billboard-slide" data-index="6">
-                  <img src="assets/img/actors/kamal.jpg" alt="Kamal Haasan" class="fun-billboard-img" loading="lazy">
+                  <picture>
+                    <source type="image/webp" srcset="assets/img/actors/kamal.webp" />
+                    <img src="assets/img/actors/kamal.jpg" alt="Kamal Haasan" class="fun-billboard-img" loading="lazy">
+                  </picture>
                   <div class="fun-billboard-scrim"></div>
                   <div class="fun-billboard-meta">
                     <span class="fun-billboard-title">Kamal Haasan</span>
                   </div>
                 </div>
                 <div class="fun-billboard-slide" data-index="7">
-                  <img src="assets/img/actors/suriya.jpg" alt="Suriya" class="fun-billboard-img" loading="lazy">
+                  <picture>
+                    <source type="image/webp" srcset="assets/img/actors/suriya.webp" />
+                    <img src="assets/img/actors/suriya.jpg" alt="Suriya" class="fun-billboard-img" loading="lazy">
+                  </picture>
                   <div class="fun-billboard-scrim"></div>
                   <div class="fun-billboard-meta">
                     <span class="fun-billboard-title">Suriya</span>
                   </div>
                 </div>
                 <div class="fun-billboard-slide" data-index="8">
-                  <img src="assets/img/actors/karthi.jpg" alt="Karthi" class="fun-billboard-img" loading="lazy">
+                  <picture>
+                    <source type="image/webp" srcset="assets/img/actors/karthi.webp" />
+                    <img src="assets/img/actors/karthi.jpg" alt="Karthi" class="fun-billboard-img" loading="lazy">
+                  </picture>
                   <div class="fun-billboard-scrim"></div>
                   <div class="fun-billboard-meta">
                     <span class="fun-billboard-title">Karthi</span>
                   </div>
                 </div>
                 <div class="fun-billboard-slide" data-index="9">
-                  <img src="assets/img/actors/simbu.jpg" alt="Silambarasan (Simbu)" class="fun-billboard-img" loading="lazy">
+                  <picture>
+                    <source type="image/webp" srcset="assets/img/actors/simbu.webp" />
+                    <img src="assets/img/actors/simbu.jpg" alt="Silambarasan (Simbu)" class="fun-billboard-img" loading="lazy">
+                  </picture>
                   <div class="fun-billboard-scrim"></div>
                   <div class="fun-billboard-meta">
                     <span class="fun-billboard-title">Silambarasan (Simbu)</span>
@@ -1461,7 +1601,10 @@
           <div class="fun-billboard" data-carousel="games">
             <div class="fun-billboard-track">
               <div class="fun-billboard-slide active" data-index="0">
-                <img src="assets/img/games/rdr2.jpg" alt="Red Dead Redemption 2" class="fun-billboard-img" loading="lazy">
+                <picture>
+                  <source type="image/webp" srcset="assets/img/games/rdr2.webp" />
+                  <img src="assets/img/games/rdr2.jpg" alt="Red Dead Redemption 2" class="fun-billboard-img" loading="lazy">
+                </picture>
                 <div class="fun-billboard-scrim"></div>
                 <div class="fun-billboard-meta">
                   <img src="assets/img/games/logos/rdr2.png" alt="Red Dead Redemption 2 Logo" class="fun-billboard-logo logo-rdr2"
@@ -1469,7 +1612,10 @@
                 </div>
               </div>
               <div class="fun-billboard-slide" data-index="1">
-                <img src="assets/img/games/cyberpunk.jpg" alt="Cyberpunk 2077" class="fun-billboard-img" loading="lazy">
+                <picture>
+                  <source type="image/webp" srcset="assets/img/games/cyberpunk.webp" />
+                  <img src="assets/img/games/cyberpunk.jpg" alt="Cyberpunk 2077" class="fun-billboard-img" loading="lazy">
+                </picture>
                 <div class="fun-billboard-scrim"></div>
                 <div class="fun-billboard-meta">
                   <img src="assets/img/games/logos/cyberpunk.png" alt="Cyberpunk 2077 Logo"
@@ -1477,14 +1623,20 @@
                 </div>
               </div>
               <div class="fun-billboard-slide" data-index="2">
-                <img src="assets/img/games/gta_v.jpg" alt="GTA V" class="fun-billboard-img" loading="lazy">
+                <picture>
+                  <source type="image/webp" srcset="assets/img/games/gta_v.webp" />
+                  <img src="assets/img/games/gta_v.jpg" alt="GTA V" class="fun-billboard-img" loading="lazy">
+                </picture>
                 <div class="fun-billboard-scrim"></div>
                 <div class="fun-billboard-meta">
                   <img src="assets/img/games/logos/gta_v.png" alt="GTA V Logo" class="fun-billboard-logo logo-gta" loading="lazy">
                 </div>
               </div>
               <div class="fun-billboard-slide" data-index="3">
-                <img src="assets/img/games/ets_2.jpg" alt="Euro Truck Simulator 2" class="fun-billboard-img" loading="lazy">
+                <picture>
+                  <source type="image/webp" srcset="assets/img/games/ets_2.webp" />
+                  <img src="assets/img/games/ets_2.jpg" alt="Euro Truck Simulator 2" class="fun-billboard-img" loading="lazy">
+                </picture>
                 <div class="fun-billboard-scrim"></div>
                 <div class="fun-billboard-meta">
                   <img src="assets/img/games/logos/ets_2.png" alt="Euro Truck Simulator 2 Logo" class="fun-billboard-logo logo-ets"
@@ -1492,7 +1644,10 @@
                 </div>
               </div>
               <div class="fun-billboard-slide" data-index="4">
-                <img src="assets/img/games/msfs.jpg" alt="Microsoft Flight Simulator" class="fun-billboard-img" loading="lazy">
+                <picture>
+                  <source type="image/webp" srcset="assets/img/games/msfs.webp" />
+                  <img src="assets/img/games/msfs.jpg" alt="Microsoft Flight Simulator" class="fun-billboard-img" loading="lazy">
+                </picture>
                 <div class="fun-billboard-scrim"></div>
                 <div class="fun-billboard-meta">
                   <img src="assets/img/games/logos/microsoft_flight_simulator.png" alt="Microsoft Flight Simulator Logo"
@@ -1529,35 +1684,50 @@
             <div class="fun-billboard" data-carousel="sports-cricket">
               <div class="fun-billboard-track">
                 <div class="fun-billboard-slide active" data-index="0">
-                  <img src="assets/img/sports/dhoni.jpg" alt="MS Dhoni" class="fun-billboard-img" loading="lazy">
+                  <picture>
+                    <source type="image/webp" srcset="assets/img/sports/dhoni.webp" />
+                    <img src="assets/img/sports/dhoni.jpg" alt="MS Dhoni" class="fun-billboard-img" loading="lazy">
+                  </picture>
                   <div class="fun-billboard-scrim"></div>
                   <div class="fun-billboard-meta">
                     <span class="fun-billboard-title">MS Dhoni</span>
                   </div>
                 </div>
                 <div class="fun-billboard-slide" data-index="1">
-                  <img src="assets/img/sports/kohli.jpg" alt="Virat Kohli" class="fun-billboard-img" loading="lazy">
+                  <picture>
+                    <source type="image/webp" srcset="assets/img/sports/kohli.webp" />
+                    <img src="assets/img/sports/kohli.jpg" alt="Virat Kohli" class="fun-billboard-img" loading="lazy">
+                  </picture>
                   <div class="fun-billboard-scrim"></div>
                   <div class="fun-billboard-meta">
                     <span class="fun-billboard-title">Virat Kohli</span>
                   </div>
                 </div>
                 <div class="fun-billboard-slide" data-index="2">
-                  <img src="assets/img/sports/rohit.jpg" alt="Rohit Sharma" class="fun-billboard-img" loading="lazy">
+                  <picture>
+                    <source type="image/webp" srcset="assets/img/sports/rohit.webp" />
+                    <img src="assets/img/sports/rohit.jpg" alt="Rohit Sharma" class="fun-billboard-img" loading="lazy">
+                  </picture>
                   <div class="fun-billboard-scrim"></div>
                   <div class="fun-billboard-meta">
                     <span class="fun-billboard-title">Rohit Sharma</span>
                   </div>
                 </div>
                 <div class="fun-billboard-slide" data-index="3">
-                  <img src="assets/img/sports/ponting.jpg" alt="Ricky Ponting" class="fun-billboard-img" loading="lazy">
+                  <picture>
+                    <source type="image/webp" srcset="assets/img/sports/ponting.webp" />
+                    <img src="assets/img/sports/ponting.jpg" alt="Ricky Ponting" class="fun-billboard-img" loading="lazy">
+                  </picture>
                   <div class="fun-billboard-scrim"></div>
                   <div class="fun-billboard-meta">
                     <span class="fun-billboard-title">Ricky Ponting</span>
                   </div>
                 </div>
                 <div class="fun-billboard-slide" data-index="4">
-                  <img src="assets/img/sports/sangakkara.jpg" alt="Kumar Sangakkara" class="fun-billboard-img" loading="lazy">
+                  <picture>
+                    <source type="image/webp" srcset="assets/img/sports/sangakkara.webp" />
+                    <img src="assets/img/sports/sangakkara.jpg" alt="Kumar Sangakkara" class="fun-billboard-img" loading="lazy">
+                  </picture>
                   <div class="fun-billboard-scrim"></div>
                   <div class="fun-billboard-meta">
                     <span class="fun-billboard-title">Kumar Sangakkara</span>
@@ -1571,28 +1741,40 @@
             <div class="fun-billboard" data-carousel="sports-football">
               <div class="fun-billboard-track">
                 <div class="fun-billboard-slide active" data-index="0">
-                  <img src="assets/img/sports/messi.jpg" alt="Lionel Messi" class="fun-billboard-img" loading="lazy">
+                  <picture>
+                    <source type="image/webp" srcset="assets/img/sports/messi.webp" />
+                    <img src="assets/img/sports/messi.jpg" alt="Lionel Messi" class="fun-billboard-img" loading="lazy">
+                  </picture>
                   <div class="fun-billboard-scrim"></div>
                   <div class="fun-billboard-meta">
                     <span class="fun-billboard-title">Lionel Messi</span>
                   </div>
                 </div>
                 <div class="fun-billboard-slide" data-index="1">
-                  <img src="assets/img/sports/neymar.jpg" alt="Neymar Jr" class="fun-billboard-img" loading="lazy">
+                  <picture>
+                    <source type="image/webp" srcset="assets/img/sports/neymar.webp" />
+                    <img src="assets/img/sports/neymar.jpg" alt="Neymar Jr" class="fun-billboard-img" loading="lazy">
+                  </picture>
                   <div class="fun-billboard-scrim"></div>
                   <div class="fun-billboard-meta">
                     <span class="fun-billboard-title">Neymar Jr</span>
                   </div>
                 </div>
                 <div class="fun-billboard-slide" data-index="2">
-                  <img src="assets/img/sports/yamal.jpg" alt="Lamine Yamal" class="fun-billboard-img" loading="lazy">
+                  <picture>
+                    <source type="image/webp" srcset="assets/img/sports/yamal.webp" />
+                    <img src="assets/img/sports/yamal.jpg" alt="Lamine Yamal" class="fun-billboard-img" loading="lazy">
+                  </picture>
                   <div class="fun-billboard-scrim"></div>
                   <div class="fun-billboard-meta">
                     <span class="fun-billboard-title">Lamine Yamal</span>
                   </div>
                 </div>
                 <div class="fun-billboard-slide" data-index="3">
-                  <img src="assets/img/sports/haaland.jpg" alt="Erling Haaland" class="fun-billboard-img" loading="lazy">
+                  <picture>
+                    <source type="image/webp" srcset="assets/img/sports/haaland.webp" />
+                    <img src="assets/img/sports/haaland.jpg" alt="Erling Haaland" class="fun-billboard-img" loading="lazy">
+                  </picture>
                   <div class="fun-billboard-scrim"></div>
                   <div class="fun-billboard-meta">
                     <span class="fun-billboard-title">Erling Haaland</span>
@@ -1606,10 +1788,23 @@
             <div class="fun-billboard" data-carousel="sports-f1">
               <div class="fun-billboard-track">
                 <div class="fun-billboard-slide active" data-index="0">
-                  <img src="assets/img/sports/hamilton.jpg" alt="Lewis Hamilton" class="fun-billboard-img" loading="lazy">
+                  <picture>
+                    <source type="image/webp" srcset="assets/img/sports/hamilton.webp" />
+                    <img src="assets/img/sports/hamilton.jpg" alt="Lewis Hamilton" class="fun-billboard-img" loading="lazy">
+                  </picture>
                   <div class="fun-billboard-scrim"></div>
                   <div class="fun-billboard-meta">
                     <span class="fun-billboard-title">Lewis Hamilton</span>
+                  </div>
+                </div>
+                <div class="fun-billboard-slide" data-index="1">
+                  <picture>
+                    <source type="image/webp" srcset="assets/img/sports/leclerc.webp" />
+                    <img src="assets/img/sports/leclerc.jpg" alt="Charles Leclerc" class="fun-billboard-img" loading="lazy">
+                  </picture>
+                  <div class="fun-billboard-scrim"></div>
+                  <div class="fun-billboard-meta">
+                    <span class="fun-billboard-title">Charles Leclerc</span>
                   </div>
                 </div>
               </div>
@@ -1738,7 +1933,7 @@
     </div>
   </footer>
 
-  <script src="assets/js/script.js?v=24"></script>
+  <script src="assets/js/script.js?v=28"></script>
 </body>
 
 </html>

@@ -20,11 +20,13 @@
 
 :root.dark {
   color-scheme: dark;
-  --bg: #111412;
-  --surface: #191d1a;
-  --ink: #f4f7f2;
-  --muted: #b0b9b2;
-  --line: rgba(244, 247, 242, 0.14);
+  /* EXPERIMENT: full pitch-black dark mode (neutral, no greenish tint).
+     To revert, restore the original greenish values noted per line. */
+  --bg: #000000;          /* was #111412 */
+  --surface: #0a0a0b;     /* was #191d1a */
+  --ink: #f5f5f4;         /* was #f4f7f2 */
+  --muted: #b4b4b6;       /* was #b0b9b2 */
+  --line: rgba(245, 245, 245, 0.12); /* was rgba(244, 247, 242, 0.14) */
   --accent: #67c69c;
   --accent-2: #ee815f;
   --accent-3: #f3c96c;
@@ -82,8 +84,10 @@ body.fun-mode::before {
 }
 
 :root.dark body::before {
+  /* EXPERIMENT: green ambient orb neutralized for pitch-black base. To revert,
+     restore rgba(103, 198, 156, 0.08) on the first radial-gradient below. */
   background:
-    radial-gradient(600px 420px at 12% 18%, rgba(103, 198, 156, 0.08), transparent 70%),
+    radial-gradient(600px 420px at 12% 18%, rgba(150, 160, 155, 0.05), transparent 70%),
     radial-gradient(520px 380px at 88% 30%, rgba(238, 129, 95, 0.06), transparent 70%),
     radial-gradient(640px 460px at 50% 78%, rgba(243, 201, 108, 0.05), transparent 72%);
 }
@@ -242,6 +246,20 @@ body.fun-mode .theme-toggle {
   outline-offset: 3px;
 }
 
+/* Visible keyboard focus for the interactive controls made keyboard-navigable
+   in script.js (fun tabs/subtabs, carousels + arrows, filters, nav links).
+   :focus-visible only paints for keyboard/AT users, not mouse clicks. */
+.fun-tab:focus-visible,
+.fun-subtab:focus-visible,
+.filter-button:focus-visible,
+.fun-billboard:focus-visible,
+.fun-billboard-arrow:focus-visible,
+.nav-links a:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: 8px;
+}
+
 .theme-toggle svg {
   width: 20px;
   height: 20px;
@@ -376,6 +394,10 @@ body.fun-mode .theme-toggle {
   transition: transform 500ms cubic-bezier(0.16, 1, 0.3, 1);
 }
 
+.hero-photo picture {
+  display: block;
+}
+
 .hero-photo img {
   display: block;
   width: 100%;
@@ -435,10 +457,12 @@ body.fun-mode .theme-toggle {
 }
 
 :root.dark .hero::after {
+  /* EXPERIMENT: pitch-black hero base (greenish-blacks -> pure black). To revert,
+     restore: radial rgba(103,198,156,0.08); #0c0e0d and rgba(17,20,18,...). */
   background:
-    radial-gradient(circle at 74% 34%, rgba(103, 198, 156, 0.08), transparent 50%),
-    linear-gradient(90deg, #0c0e0d, rgba(17, 20, 18, 0.85) 60%, rgba(12, 14, 13, 0.95)),
-    linear-gradient(180deg, rgba(17, 20, 18, 0.5), #0c0e0d);
+    radial-gradient(circle at 74% 34%, rgba(150, 160, 155, 0.04), transparent 50%),
+    linear-gradient(90deg, #000000, rgba(6, 6, 7, 0.85) 60%, #000000),
+    linear-gradient(180deg, rgba(6, 6, 7, 0.5), #000000);
 }
 
 .hero-overlays {
@@ -2097,6 +2121,14 @@ body.fun-mode .fun-billboard::after {
   z-index: 2;
 }
 
+/* <picture> wrapper (WebP source + fallback <img>) must fill the slide so the
+   inner .fun-billboard-img keeps sizing against the frame, not the wrapper. */
+.fun-billboard-slide picture {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
 .fun-billboard-img {
   width: 100%;
   height: 100%;
@@ -2110,26 +2142,29 @@ body.fun-mode .fun-billboard::after {
   object-position: 50% 22%;
 }
 
-/* Individual athlete image position overrides to ensure faces/heads are not cropped */
-.fun-billboard-slide img[src*="messi"] {
+/* Individual athlete image position overrides to ensure faces/heads are not
+   cropped. Scoped to the sports panel so they outrank the panel-wide 50% 22%
+   default above (that descendant selector is more specific than a bare
+   .fun-billboard-slide img[...] rule, which is why these need the extra scope). */
+.fun-panel[data-panel="sports"] .fun-billboard-img[src*="messi"] {
   object-position: 50% 10%;
 }
-.fun-billboard-slide img[src*="neymar"] {
+.fun-panel[data-panel="sports"] .fun-billboard-img[src*="neymar"] {
   object-position: 50% 20%;
 }
-.fun-billboard-slide img[src*="yamal"] {
+.fun-panel[data-panel="sports"] .fun-billboard-img[src*="yamal"] {
   object-position: 50% 20%;
 }
-.fun-billboard-slide img[src*="haaland"] {
+.fun-panel[data-panel="sports"] .fun-billboard-img[src*="haaland"] {
   object-position: 50% 15%;
 }
-.fun-billboard-slide img[src*="ponting"] {
-  object-position: 50% 50%;
+.fun-panel[data-panel="sports"] .fun-billboard-img[src*="ponting"] {
+  object-position: 50% 14%;
 }
-.fun-billboard-slide img[src*="rohit"] {
+.fun-panel[data-panel="sports"] .fun-billboard-img[src*="rohit"] {
   object-position: 50% 10%;
 }
-.fun-billboard-slide img[src*="kohli"] {
+.fun-panel[data-panel="sports"] .fun-billboard-img[src*="kohli"] {
   object-position: 50% 15%;
 }
 .fun-billboard-slide img[src*="vettaikaaran"] {
@@ -2216,7 +2251,7 @@ body.fun-mode .fun-billboard::after {
 .fun-billboard-slide img[src*="gta"] {
   object-position: 50% 25%;
 }
-.fun-billboard-slide img[src*="ets"] {
+.fun-billboard-slide img[src$="ets_2.jpg"] {
   object-position: 50% 60%;
 }
 
@@ -2830,6 +2865,7 @@ body.fun-mode .fun-billboard::after {
     scroll-behavior: auto !important;
     transition-duration: 0.01ms !important;
     animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
   }
 }
 
@@ -3137,6 +3173,15 @@ body.fun-mode .fun-billboard::after {
   display: block;
   width: 100%;
   height: auto;
+  pointer-events: none;
+}
+
+.showcase-video::-webkit-media-controls {
+  display: none !important;
+}
+
+.showcase-video::-webkit-media-controls-enclosure {
+  display: none !important;
 }
 
 .project-card.highlighted-project .project-tags span {
